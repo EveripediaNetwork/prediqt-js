@@ -1,0 +1,40 @@
+{
+  "name": "prediqt-js",
+  "version": "0.0.1",
+  "description": "PredIQt JavaScript/TypeScript Client Library",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepublishOnly": "tsc",
+    "test": "jest --coverage",
+    "posttest": "tslint -p .",
+    "docs": "tsc && documentation readme dist/index.js -s API"
+  },
+  "homepage": "https://github.com/everipedianetwork/prediqt-js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/everipedianetwork/prediqt-js.git"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "*",
+    "@types/text-encoding": "*",
+    "@types/debug": "*",
+    "@types/isomorphic-fetch": "*",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "documentation": "*",
+    "jest": "*",
+    "ts-jest": "*",
+    "ts-node": "*",
+    "tslint": "*",
+    "typescript": "*"
+  },
+  "dependencies": {
+    "eosjs": "^20.0.0",
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
