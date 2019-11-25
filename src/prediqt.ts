@@ -17,6 +17,9 @@ export class Prediqt {
         this.auth = auth;
     }
 
+    /**
+     * Set a fee for the platform (admin only)
+     */
     public async setFee(fee: Fee): Promise<any> {
         return await this.api.transact(
             {
@@ -37,6 +40,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Accept a proposed market
+     */
     public async acceptMarket(resolver: string, marketId: number): Promise<any> {
         return await this.api.transact(
             {
@@ -57,6 +63,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Claim shares for a particular market
+     */
     public async claimShares(user: string, marketId: number): Promise<any> {
         return await this.api.transact(
             {
@@ -77,6 +86,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Cancel an order of type No
+     */
     public async cancelOrderNo(user: string, marketId: number, id: number): Promise<any> {
         return await this.api.transact(
             {
@@ -98,6 +110,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Cancel an order of type Yes
+     */
     public async cancelOrderYes(user: string, marketId: number, id: number): Promise<any> {
         return await this.api.transact(
             {
@@ -119,6 +134,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Create a Market
+     */
     public async createMarket(creator: string, resolver: string, ipfs: string, time_in: number): Promise<any> {
         return await this.api.transact(
             {
@@ -141,6 +159,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Delete an existing Market
+     */
     public async delMarket(marketId: number): Promise<any> {
         return await this.api.transact(
             {
@@ -160,6 +181,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Open an order for share type No in a market
+     */
     public async limitOrderNo(user: string, marketId: number, shares: number, limit: string, referral: string, buy: boolean): Promise<any> {
         return await this.api.transact(
             {
@@ -184,6 +208,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Open an order for share type Yes in a market
+     */
     public async limitOrderYes(user: string, marketId: number, shares: number, limit: string, referral: string, buy: boolean): Promise<any> {
         return await this.api.transact(
             {
@@ -208,6 +235,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Set a market as invalid (only resolver)
+     */
     public async marketInvalid(marketId: number, memo: string): Promise<any> {
         return await this.api.transact(
             {
@@ -228,6 +258,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Set the outcome of a market (only resolver)
+     */
     public async marketResolve(resolver: string, marketId: number, sharetype: boolean, memo: string): Promise<any> {
         return await this.api.transact(
             {
@@ -250,6 +283,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Propose a market to be part of the active markets
+     */
     public async proposeMarket(creator: string, resolver: string, ipfs: string, time_in: number): Promise<any> {
         return await this.api.transact(
             {
@@ -272,6 +308,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Reject a proposed market (resolver only)
+     */
     public async rejectMarket(resolver: string, marketId: number): Promise<any> {
         return await this.api.transact(
             {
@@ -292,6 +331,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Change resolver for a market (admin only)
+     */
     public async setResolver(resolver: string, marketId: number): Promise<any> {
         return await this.api.transact(
             {
@@ -312,6 +354,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Transfer shares between users
+     */
     public async transferShares(from: string, to: string, shares: number, sharetype: boolean, marketId: number): Promise<any> {
         return await this.api.transact(
             {
@@ -335,6 +380,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Withdraw from user balance
+     */
     public async withdraw(user: string, quantity: string): Promise<any> {
         return await this.api.transact(
             {
@@ -355,6 +403,9 @@ export class Prediqt {
         );
     }
 
+    /**
+     * Get fees related to the contract
+     */
     public async getFees(limit: number = 100, offset: number = 0): Promise<[Fee]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: this.contractName, table: "fees", json: true,
@@ -364,6 +415,9 @@ export class Prediqt {
         return table.rows;
     }
 
+    /**
+     * Get shares related to a market
+     */
     public async getShares(marketId: number, limit: number = 100, offset: number = 0): Promise<[Share]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "shares", json: true,
@@ -373,6 +427,9 @@ export class Prediqt {
         return table.rows;
     }
 
+    /**
+     * Get referral shares related to a market
+     */
     public async getReferrals(marketId: number, limit: number = 100, offset: number = 0): Promise<[Share]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "referrals", json: true,
@@ -382,6 +439,9 @@ export class Prediqt {
         return table.rows;
     }
 
+    /**
+     * Get markets
+     */
     public async getMarkets(limit: number = 100, offset: number = 0): Promise<[Market]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: this.contractName, table: "markets", json: true,
@@ -391,6 +451,9 @@ export class Prediqt {
         return table.rows;
     }
 
+    /**
+     * Get a single market
+     */
     public async getMarket(marketId: number): Promise<Market> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: this.contractName, table: "markets", json: true,
@@ -400,6 +463,9 @@ export class Prediqt {
         return table.rows[0];
     }
 
+    /**
+     * Get order of type Yes for a market
+     */
     public async getOrdersYes(marketId: number, limit: number = 100, offset: number = 0): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "lmtorderyes", json: true,
@@ -409,6 +475,9 @@ export class Prediqt {
         return table.rows;
     }
 
+    /**
+     * Get order of type No for a market
+     */
     public async getOrdersNo(marketId: number, limit: number = 100, offset: number = 0): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "lmtorderno", json: true,
@@ -418,6 +487,9 @@ export class Prediqt {
         return table.rows;
     }
 
+    /**
+     * Get balance of an user
+     */
     public async getBalance(holder: string, symbol: string, limit: number = 1): Promise<Balance> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: symbol, table: "balances", json: true,
