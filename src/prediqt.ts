@@ -404,6 +404,26 @@ export class Prediqt {
     }
 
     /**
+     * Sync Bank
+     */
+    public async syncBank(): Promise<any> {
+        return await this.api.transact(
+            {
+                actions: [{
+                    account: "prediqtbankk",
+                    name: "sync",
+                    authorization: this.auth,
+                    data: {},
+                }],
+            },
+            {
+                blocksBehind: 3,
+                expireSeconds: 60,
+            },
+        );
+    }
+
+    /**
      * Get fees related to the contract
      */
     public async getFees(limit: number = 100, offset: number = 0): Promise<[Fee]> {

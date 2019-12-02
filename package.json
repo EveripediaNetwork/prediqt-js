@@ -1,5 +1,5 @@
 {
-  "name": "prediqt-js",
+  "name": "@everipedia/prediqt-js",
   "version": "0.0.1",
   "description": "PredIQt JavaScript/TypeScript Client Library",
   "license": "MIT",
