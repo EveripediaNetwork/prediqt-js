@@ -80,6 +80,7 @@ const client = new Prediqt(endpoint, { fetch })
     -   [Parameters](#parameters-14)
 -   [withdraw](#withdraw)
     -   [Parameters](#parameters-15)
+-   [syncBank](#syncbank)
 -   [getFees](#getfees)
     -   [Parameters](#parameters-16)
 -   [getShares](#getshares)
@@ -257,6 +258,10 @@ Withdraw from user balance
 
 -   `user`  
 -   `quantity`  
+
+### syncBank
+
+Sync Bank
 
 ### getFees
 
