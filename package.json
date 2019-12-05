@@ -20,20 +20,21 @@
     "url": "git+https://github.com/everipedianetwork/prediqt-js.git"
   },
   "devDependencies": {
-    "@types/node-fetch": "*",
-    "@types/text-encoding": "*",
-    "@types/debug": "*",
-    "@types/isomorphic-fetch": "*",
-    "@types/jest": "*",
-    "@types/node": "*",
-    "documentation": "*",
-    "jest": "*",
-    "ts-jest": "*",
-    "ts-node": "*",
-    "tslint": "*",
-    "typescript": "*"
+    "@types/debug": "^4.1.5",
+    "@types/isomorphic-fetch": "^0.0.35",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "@types/node-fetch": "^2.5.4",
+    "@types/text-encoding": "^0.0.35",
+    "documentation": "12.1.4",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
   },
   "dependencies": {
+    "bignumber.js": "^9.0.0",
     "eosjs": "^20.0.0",
     "isomorphic-fetch": "^2.2.1"
   }

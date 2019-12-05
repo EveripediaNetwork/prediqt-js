@@ -10,3 +10,7 @@ export function toBigNumber(number: BigNumber | string | number): BigNumber {
     }
     return number;
 }
+
+export function isObject(item: any): boolean {
+    return  Object.prototype.toString.call(item) === "[object Object]";
+}

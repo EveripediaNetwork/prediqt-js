@@ -1,7 +1,9 @@
 import Fetch from "isomorphic-fetch";
 import {Api, JsonRpc} from "eosjs";
+
 import {Authorization, Balance, Fee, Market, Order, Share} from "./interfaces/prediqt";
 import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
+import {isObject} from "./utils";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
@@ -51,7 +53,7 @@ export class Prediqt {
                     name: "acceptmarket",
                     authorization: this.auth,
                     data: {
-                        resolver: resolver,
+                        resolver,
                         market_id: marketId,
                     },
                 }],
@@ -74,7 +76,7 @@ export class Prediqt {
                     name: "claimshares",
                     authorization: this.auth,
                     data: {
-                        user: user,
+                        user,
                         market_id: marketId,
                     },
                 }],
@@ -97,9 +99,9 @@ export class Prediqt {
                     name: "cnclorderno",
                     authorization: this.auth,
                     data: {
-                        user: user,
+                        user,
                         market_id: marketId,
-                        id: id,
+                        id,
                     },
                 }],
             },
@@ -121,9 +123,9 @@ export class Prediqt {
                     name: "cnclorderyes",
                     authorization: this.auth,
                     data: {
-                        user: user,
+                        user,
                         market_id: marketId,
-                        id: id,
+                        id,
                     },
                 }],
             },
@@ -137,7 +139,7 @@ export class Prediqt {
     /**
      * Create a Market
      */
-    public async createMarket(creator: string, resolver: string, ipfs: string, time_in: number): Promise<any> {
+    public async createMarket(creator: string, resolver: string, ipfs: string, timeIn: number): Promise<any> {
         return await this.api.transact(
             {
                 actions: [{
@@ -145,10 +147,10 @@ export class Prediqt {
                     name: "createmarket",
                     authorization: this.auth,
                     data: {
-                        creator: creator,
-                        resolver: resolver,
-                        ipfs: ipfs,
-                        time_in: time_in,
+                        creator,
+                        resolver,
+                        ipfs,
+                        time_in: timeIn,
                     },
                 }],
             },
@@ -192,12 +194,12 @@ export class Prediqt {
                     name: "lmtorderno",
                     authorization: this.auth,
                     data: {
-                        user: user,
+                        user,
                         market_id: marketId,
-                        shares: shares,
-                        limit: limit,
-                        referral: referral,
-                        buy: buy,
+                        shares,
+                        limit,
+                        referral,
+                        buy,
                     },
                 }],
             },
@@ -219,12 +221,12 @@ export class Prediqt {
                     name: "lmtorderyes",
                     authorization: this.auth,
                     data: {
-                        user: user,
+                        user,
                         market_id: marketId,
-                        shares: shares,
-                        limit: limit,
-                        referral: referral,
-                        buy: buy,
+                        shares,
+                        limit,
+                        referral,
+                        buy,
                     },
                 }],
             },
@@ -247,7 +249,7 @@ export class Prediqt {
                     authorization: this.auth,
                     data: {
                         market_id: marketId,
-                        memo: memo,
+                        memo,
                     },
                 }],
             },
@@ -269,10 +271,10 @@ export class Prediqt {
                     name: "mktresolve",
                     authorization: this.auth,
                     data: {
-                        resolver: resolver,
+                        resolver,
                         market_id: marketId,
-                        sharetype: sharetype,
-                        memo: memo,
+                        sharetype,
+                        memo,
                     },
                 }],
             },
@@ -286,7 +288,7 @@ export class Prediqt {
     /**
      * Propose a market to be part of the active markets
      */
-    public async proposeMarket(creator: string, resolver: string, ipfs: string, time_in: number): Promise<any> {
+    public async proposeMarket(creator: string, resolver: string, ipfs: string, timeIn: number): Promise<any> {
         return await this.api.transact(
             {
                 actions: [{
@@ -294,10 +296,10 @@ export class Prediqt {
                     name: "propmarket",
                     authorization: this.auth,
                     data: {
-                        creator: creator,
-                        resolver: resolver,
-                        ipfs: ipfs,
-                        time_in: time_in,
+                        creator,
+                        resolver,
+                        ipfs,
+                        time_in: timeIn,
                     },
                 }],
             },
@@ -319,7 +321,7 @@ export class Prediqt {
                     name: "rejectmarket",
                     authorization: this.auth,
                     data: {
-                        resolver: resolver,
+                        resolver,
                         market_id: marketId,
                     },
                 }],
@@ -342,7 +344,7 @@ export class Prediqt {
                     name: "setresolver",
                     authorization: this.auth,
                     data: {
-                        resolver: resolver,
+                        resolver,
                         market_id: marketId,
                     },
                 }],
@@ -365,10 +367,10 @@ export class Prediqt {
                     name: "trnsfrshares",
                     authorization: this.auth,
                     data: {
-                        from: from,
-                        to: to,
-                        shares: shares,
-                        sharetype: sharetype,
+                        from,
+                        to,
+                        shares,
+                        sharetype,
                         market_id: marketId,
                     },
                 }],
@@ -391,8 +393,8 @@ export class Prediqt {
                     name: "withdraw",
                     authorization: this.auth,
                     data: {
-                        user: user,
-                        quantity: quantity,
+                        user,
+                        quantity,
                     },
                 }],
             },
@@ -429,7 +431,7 @@ export class Prediqt {
     public async getFees(limit: number = 100, offset: number = 0): Promise<[Fee]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: this.contractName, table: "fees", json: true,
-            limit: limit,
+            limit,
             lower_bound: offset,
         });
         return table.rows;
@@ -441,7 +443,7 @@ export class Prediqt {
     public async getShares(marketId: number, limit: number = 100, offset: number = 0): Promise<[Share]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "shares", json: true,
-            limit: limit,
+            limit,
             lower_bound: offset,
         });
         return table.rows;
@@ -453,7 +455,7 @@ export class Prediqt {
     public async getReferrals(marketId: number, limit: number = 100, offset: number = 0): Promise<[Share]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "referrals", json: true,
-            limit: limit,
+            limit,
             lower_bound: offset,
         });
         return table.rows;
@@ -465,7 +467,7 @@ export class Prediqt {
     public async getMarkets(limit: number = 100, offset: number = 0): Promise<[Market]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: this.contractName, table: "markets", json: true,
-            limit: limit,
+            limit,
             lower_bound: offset,
         });
         return table.rows;
@@ -489,7 +491,7 @@ export class Prediqt {
     public async getOrdersYes(marketId: number, limit: number = 100, offset: number = 0): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "lmtorderyes", json: true,
-            limit: limit,
+            limit,
             lower_bound: offset,
         });
         return table.rows;
@@ -501,7 +503,7 @@ export class Prediqt {
     public async getOrdersNo(marketId: number, limit: number = 100, offset: number = 0): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "lmtorderno", json: true,
-            limit: limit,
+            limit,
             lower_bound: offset,
         });
         return table.rows;
@@ -513,7 +515,7 @@ export class Prediqt {
     public async getBalance(holder: string, symbol: string, limit: number = 1): Promise<Balance> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: symbol, table: "balances", json: true,
-            limit: limit,
+            limit,
             lower_bound: holder,
             upper_bound: holder,
         });
@@ -521,6 +523,14 @@ export class Prediqt {
     }
 
     public setAuth(auth: Authorization[]) {
-        this.auth = auth;
+        if (Array.isArray(auth)) {
+            if (auth.every((item) => isObject(item))) {
+                this.auth = auth;
+            } else {
+                throw new Error("Auth items must be instances of Object.");
+            }
+        } else {
+            throw new Error("Auth must be an instance of Array.");
+        }
     }
 }
