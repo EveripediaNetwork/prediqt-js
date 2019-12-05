@@ -1,7 +1,7 @@
 import Fetch from "isomorphic-fetch";
 import {Api, JsonRpc} from "eosjs";
 
-import {Authorization, Balance, Fee, Market, Order, Share} from "./interfaces/prediqt";
+import {TransactParams, Authorization, Balance, Fee, Market, Order, Share} from "./interfaces/prediqt";
 import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
 import {isObject} from "./utils";
 
@@ -10,6 +10,11 @@ export class Prediqt {
     private readonly api: Api;
     private readonly contractName: string;
     private auth: any;
+
+    private transactParams: TransactParams = {
+        blocksBehind: 3,
+        expireSeconds: 60,
+    };
 
     constructor(nodeAddress: string, signatureProvider: SignatureProvider, contractName: string, auth: Authorization[]) {
         const fetch: any = Fetch;
@@ -35,10 +40,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -58,10 +60,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -81,10 +80,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -105,10 +101,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -129,10 +122,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -154,10 +144,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -176,10 +163,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -203,10 +187,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -230,10 +211,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -253,10 +231,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -278,10 +253,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -303,10 +275,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -326,10 +295,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -349,10 +315,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -375,10 +338,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -398,10 +358,7 @@ export class Prediqt {
                     },
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 
@@ -418,10 +375,7 @@ export class Prediqt {
                     data: {},
                 }],
             },
-            {
-                blocksBehind: 3,
-                expireSeconds: 60,
-            },
+            this.transactParams,
         );
     }
 

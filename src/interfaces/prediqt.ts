@@ -38,3 +38,8 @@ export interface Balance {
     holder: string;
     balance: string;
 }
+
+export interface TransactParams {
+    blocksBehind: number;
+    expireSeconds: number;
+}
