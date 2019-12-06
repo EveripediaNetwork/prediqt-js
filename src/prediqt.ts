@@ -475,7 +475,7 @@ export class Prediqt {
         return table.rows[0];
     }
 
-    public setAuth(auth: Authorization[]) {
+    public setAuth(auth: Authorization[]): void {
         if (Array.isArray(auth)) {
             if (auth.every((item) => isObject(item))) {
                 this.auth = auth;
@@ -485,5 +485,9 @@ export class Prediqt {
         } else {
             throw new Error("Auth must be an instance of Array.");
         }
+    }
+
+    public resetAuth(): void {
+        this.auth = [];
     }
 }
