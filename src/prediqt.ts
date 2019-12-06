@@ -1,8 +1,8 @@
-import fetch from "isomorphic-fetch";
 import {Api, JsonRpc} from "eosjs";
+import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
+const fetch = require("isomorphic-fetch");
 
 import {TransactParams, Authorization, Balance, Fee, Market, Order, Share} from "./interfaces/prediqt";
-import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
 import {isObject} from "./utils";
 
 export class Prediqt {
@@ -84,35 +84,17 @@ export class Prediqt {
     }
 
     /**
-     * Cancel an order of type No
+     * Cancel an order
      */
-    public async cancelOrderNo(user: string, marketId: number, id: number): Promise<any> {
+    public async cancelOrder(nameId: string, user: string, marketId: number, id: number): Promise<any> {
+        if (!/^(yes|no)$/.test(nameId)) {
+            throw new Error("nameId can be \"yes\" or \"no\".");
+        }
         return await this.api.transact(
             {
                 actions: [{
                     account: this.contractName,
-                    name: "cnclorderno",
-                    authorization: this.auth,
-                    data: {
-                        user,
-                        market_id: marketId,
-                        id,
-                    },
-                }],
-            },
-            this.transactParams,
-        );
-    }
-
-    /**
-     * Cancel an order of type Yes
-     */
-    public async cancelOrderYes(user: string, marketId: number, id: number): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [{
-                    account: this.contractName,
-                    name: "cnclorderyes",
+                    name: `cnclorder${nameId}`,
                     authorization: this.auth,
                     data: {
                         user,
