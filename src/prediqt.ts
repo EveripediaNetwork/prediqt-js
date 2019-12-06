@@ -1,4 +1,4 @@
-import Fetch from "isomorphic-fetch";
+const fetch = require("isomorphic-fetch");
 import {Api, JsonRpc} from "eosjs";
 
 import {TransactParams, Authorization, Balance, Fee, Market, Order, Share} from "./interfaces/prediqt";
@@ -17,7 +17,6 @@ export class Prediqt {
     };
 
     constructor(nodeAddress: string, signatureProvider: SignatureProvider, contractName: string, auth: Authorization[]) {
-        const fetch: any = Fetch;
         this.contractName = contractName;
         this.rpc = new JsonRpc(nodeAddress, {fetch});
         this.api = new Api({rpc: this.rpc, signatureProvider});
