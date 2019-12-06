@@ -1,4 +1,4 @@
-const fetch = require("isomorphic-fetch");
+import fetch from "isomorphic-fetch";
 import {Api, JsonRpc} from "eosjs";
 
 import {TransactParams, Authorization, Balance, Fee, Market, Order, Share} from "./interfaces/prediqt";
@@ -18,7 +18,7 @@ export class Prediqt {
 
     constructor(nodeAddress: string, signatureProvider: SignatureProvider, contractName: string, auth: Authorization[]) {
         this.contractName = contractName;
-        this.rpc = new JsonRpc(nodeAddress, {fetch});
+        this.rpc = new JsonRpc(nodeAddress, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
     }
@@ -150,7 +150,7 @@ export class Prediqt {
     /**
      * Delete an existing Market
      */
-    public async delMarket(marketId: number): Promise<any> {
+    public async deleteMarket(marketId: number): Promise<any> {
         return await this.api.transact(
             {
                 actions: [{
@@ -417,10 +417,11 @@ export class Prediqt {
     /**
      * Get markets
      */
-    public async getMarkets(limit: number = 100, offset: number = 0): Promise<[Market]> {
+    public async getMarkets(limit: number = 100, offset: number = 0, tableKey: string = ""): Promise<[Market]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: this.contractName, table: "markets", json: true,
             limit,
+            table_key: tableKey,
             lower_bound: offset,
         });
         return table.rows;
@@ -441,10 +442,11 @@ export class Prediqt {
     /**
      * Get order of type Yes for a market
      */
-    public async getOrdersYes(marketId: number, limit: number = 100, offset: number = 0): Promise<[Order]> {
+    public async getOrdersYes(marketId: number, limit: number = 100, offset: number = 0, tableKey: string = ""): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "lmtorderyes", json: true,
             limit,
+            table_key: tableKey,
             lower_bound: offset,
         });
         return table.rows;
@@ -453,10 +455,11 @@ export class Prediqt {
     /**
      * Get order of type No for a market
      */
-    public async getOrdersNo(marketId: number, limit: number = 100, offset: number = 0): Promise<[Order]> {
+    public async getOrdersNo(marketId: number, limit: number = 100, offset: number = 0, tableKey: string = ""): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: marketId, table: "lmtorderno", json: true,
             limit,
+            table_key: tableKey,
             lower_bound: offset,
         });
         return table.rows;
