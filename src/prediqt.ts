@@ -2,7 +2,7 @@ import {Api, JsonRpc} from "eosjs";
 import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
 const fetch = require("isomorphic-fetch");
 
-import {TransactParams, Authorization, Balance, Fee, Market, Order, Share} from "./interfaces/prediqt";
+import {TransactParams, Authorization, Balance, Fee, Market, Order, Share, TransferShares} from "./interfaces/prediqt";
 import {isObject} from "./utils";
 
 export class Prediqt {
@@ -88,7 +88,7 @@ export class Prediqt {
      */
     public async cancelOrder(nameId: string, user: string, marketId: number, id: number): Promise<any> {
         if (!/^(yes|no)$/.test(nameId)) {
-            throw new Error("nameId can be \"yes\" or \"no\".");
+            throw new Error("nameId must be \"yes\" or \"no\".");
         }
         return await this.api.transact(
             {
@@ -303,20 +303,14 @@ export class Prediqt {
     /**
      * Transfer shares between users
      */
-    public async transferShares(from: string, to: string, shares: number, sharetype: boolean, marketId: number): Promise<any> {
+    public async transferShares(data: TransferShares): Promise<any> {
         return await this.api.transact(
             {
                 actions: [{
                     account: this.contractName,
                     name: "trnsfrshares",
                     authorization: this.auth,
-                    data: {
-                        from,
-                        to,
-                        shares,
-                        sharetype,
-                        market_id: marketId,
-                    },
+                    data,
                 }],
             },
             this.transactParams,
