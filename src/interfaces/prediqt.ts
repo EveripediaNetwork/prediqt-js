@@ -13,11 +13,21 @@ export interface Fee {
     fee: number;
 }
 
+export interface MarketIpfs {
+    hash: string;
+    title: string;
+    description: string;
+    image_url: string;
+    category: string;
+    tags: string[];
+    resolution_description: string;
+}
+
 export interface Market {
     id: number;
     creator: string;
     resolver: string;
-    ipfs: string;
+    ipfs: MarketIpfs;
     endofmarkettime: number;
     active: boolean;
     resolved: boolean;

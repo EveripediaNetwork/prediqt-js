@@ -16,7 +16,7 @@ export class PrediqtGraph {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                query: `query { markets { id } }`,
+                query: `query { markets { id, ipfs { title, tags } } }`,
             }),
         });
 
