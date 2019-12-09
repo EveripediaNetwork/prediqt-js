@@ -1,3 +1,8 @@
+export interface TransactParams {
+    blocksBehind: number;
+    expireSeconds: number;
+}
+
 export interface Authorization {
     actor: string;
     permission: string;
@@ -39,7 +44,21 @@ export interface Balance {
     balance: string;
 }
 
-export interface TransactParams {
-    blocksBehind: number;
-    expireSeconds: number;
+export interface TransferShares {
+    from: string;
+    to: string;
+    shares: number;
+    shareType: boolean;
+    marketId: number;
+}
+
+export interface MarketResolve {
+    resolver: string;
+    marketId: number;
+    shareType: boolean;
+    memo: string;
+}
+
+export interface ObjectKeys {
+    [key: string]: any;
 }

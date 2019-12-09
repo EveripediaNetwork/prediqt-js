@@ -206,7 +206,7 @@ Set the outcome of a market (only resolver)
 
 -   `resolver`  
 -   `marketId`  
--   `sharetype`  
+-   `shareType`  
 -   `memo`  
 
 ### proposeMarket
@@ -247,7 +247,7 @@ Transfer shares between users
 -   `from`  
 -   `to`  
 -   `shares`  
--   `sharetype`  
+-   `shareType`  
 -   `marketId`  
 
 ### withdraw
