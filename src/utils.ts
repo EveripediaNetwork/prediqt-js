@@ -18,9 +18,11 @@ export function isObject(item: any): boolean {
 }
 
 export function processData(data: ObjectKeys): ObjectKeys  {
+    const dataExceptions = ["shareType"];
     const processedData: ObjectKeys = {};
+
     Object.keys(data).forEach((key) => {
-        const processedKey = camelToSnakeCase(key);
+        const processedKey = dataExceptions.includes(key) ? key.toLowerCase() : camelToSnakeCase(key);
         processedData[processedKey] = data[key];
     });
     return processedData;

@@ -48,8 +48,15 @@ export interface TransferShares {
     from: string;
     to: string;
     shares: number;
-    sharetype: boolean;
+    shareType: boolean;
     marketId: number;
+}
+
+export interface MarketResolve {
+    resolver: string;
+    marketId: number;
+    shareType: boolean;
+    memo: string;
 }
 
 export interface ObjectKeys {

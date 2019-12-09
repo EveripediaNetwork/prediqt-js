@@ -2,7 +2,7 @@ import {Api, JsonRpc} from "eosjs";
 import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
 const fetch = require("isomorphic-fetch");
 
-import {TransactParams, Authorization, Balance, Fee, Market, Order, Share, TransferShares} from "./interfaces/prediqt";
+import {TransactParams, Authorization, Balance, Fee, Market, Order, Share, TransferShares, MarketResolve} from "./interfaces/prediqt";
 import {isObject, processData} from "./utils";
 
 enum  OrderTypes  {
@@ -224,19 +224,14 @@ export class Prediqt {
     /**
      * Set the outcome of a market (only resolver)
      */
-    public async marketResolve(resolver: string, marketId: number, sharetype: boolean, memo: string): Promise<any> {
+    public async marketResolve(data: MarketResolve): Promise<any> {
         return await this.api.transact(
             {
                 actions: [{
                     account: this.contractName,
                     name: "mktresolve",
                     authorization: this.auth,
-                    data: {
-                        resolver,
-                        market_id: marketId,
-                        sharetype,
-                        memo,
-                    },
+                    data,
                 }],
             },
             this.transactParams,
