@@ -49,5 +49,9 @@ export interface TransferShares {
     to: string;
     shares: number;
     sharetype: boolean;
-    market_id: number;
+    marketId: number;
+}
+
+export interface ObjectKeys {
+    [key: string]: any;
 }
