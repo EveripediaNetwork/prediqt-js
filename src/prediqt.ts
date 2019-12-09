@@ -5,7 +5,7 @@ const fetch = require("isomorphic-fetch");
 import {TransactParams, Authorization, Balance, Fee, Market, Order, Share, TransferShares} from "./interfaces/prediqt";
 import {isObject, processData} from "./utils";
 
-enum  CancelOrderNameId  {
+enum  OrderTypes  {
     Yes = "yes",
     No = "no",
 }
@@ -91,9 +91,9 @@ export class Prediqt {
     /**
      * Cancel an order
      */
-    public async cancelOrder(nameId: CancelOrderNameId, user: string, marketId: number, id: number): Promise<any> {
-        if (!Object.values(CancelOrderNameId).includes(nameId)) {
-            throw new Error(`nameId must be "${CancelOrderNameId.Yes}" or "${CancelOrderNameId.No}".`);
+    public async cancelOrder(nameId: OrderTypes, user: string, marketId: number, id: number): Promise<any> {
+        if (!Object.values(OrderTypes).includes(nameId)) {
+            throw new Error(`nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`);
         }
         return await this.api.transact(
             {
