@@ -231,7 +231,7 @@ export class Prediqt {
                     account: this.contractName,
                     name: "mktresolve",
                     authorization: this.auth,
-                    data,
+                    data: processData(data),
                 }],
             },
             this.transactParams,
@@ -444,10 +444,9 @@ export class Prediqt {
     /**
      * Get balance of an user
      */
-    public async getBalance(holder: string, symbol: string, limit: number = 1): Promise<Balance> {
+    public async getBalance(holder: string, symbol: string): Promise<Balance> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: symbol, table: "balances", json: true,
-            limit,
             lower_bound: holder,
             upper_bound: holder,
         });
