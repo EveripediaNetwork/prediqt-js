@@ -24,6 +24,8 @@
     "src/index.ts",
     "src/prediqt.ts",
     "src/utils.ts",
-    "src/actions.ts"
+    "src/actions.ts",
+    "src/enums/prediqt.ts",
+    "src/interfaces/prediqt.ts"
   ]
 }
