@@ -94,7 +94,7 @@ export interface TransferTokenOut {
     };
 }
 
-export interface UserRes {
+export interface UserResources {
     owner: string;
     net_weight: string;
     cpu_weight: string;
