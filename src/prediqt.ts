@@ -14,6 +14,7 @@ import {
     TransferShares,
     MarketResolve,
     LimitOrder,
+    UserRes,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 import {isObject, processData} from "./utils";
@@ -445,6 +446,17 @@ export class Prediqt {
             limit,
             table_key: tableKey,
             lower_bound: offset,
+        });
+        return table.rows;
+    }
+
+    /**
+     * Get res of an user
+     */
+    public async getUserRes(user: string): Promise<UserRes[]> {
+        const table = await this.rpc.get_table_rows({
+            code: "eosio", scope: user, table: "userres", json: true,
+            table_key: user,
         });
         return table.rows;
     }

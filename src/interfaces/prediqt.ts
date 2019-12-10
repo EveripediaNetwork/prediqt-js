@@ -94,6 +94,13 @@ export interface TransferTokenOut {
     };
 }
 
+export interface UserRes {
+    owner: string;
+    net_weight: string;
+    cpu_weight: string;
+    ram_bytes: number;
+}
+
 export interface ObjectKeys {
     [key: string]: any;
 }

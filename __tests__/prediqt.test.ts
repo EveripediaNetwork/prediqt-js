@@ -33,3 +33,8 @@ test("Prediqt.getMarket", async () => {
     const response = await client.getMarket(0);
     expect(!!response).toBeTruthy();
 });
+
+test("Prediqt.getUserRes", async () => {
+   const response = await client.getUserRes("kesaritooooo");
+   expect(!!response).toBeTruthy();
+});
