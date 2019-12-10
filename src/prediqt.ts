@@ -1,14 +1,23 @@
 import {Api, JsonRpc} from "eosjs";
 import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
+
 const fetch = require("isomorphic-fetch");
 
-import {TransactParams, Authorization, Balance, Fee, Market, Order, Share, TransferShares, MarketResolve} from "./interfaces/prediqt";
+import {
+    TransactParams,
+    Authorization,
+    Balance,
+    Fee,
+    Market,
+    Order,
+    Share,
+    TransferShares,
+    MarketResolve,
+    LimitOrder,
+} from "./interfaces/prediqt";
+import {OrderTypes} from "./enums/prediqt";
 import {isObject, processData} from "./utils";
-
-enum  OrderTypes  {
-    Yes = "yes",
-    No = "no",
-}
+import {transferEos} from "./actions";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
@@ -154,48 +163,47 @@ export class Prediqt {
     }
 
     /**
-     * Open an order for share type No in a market
+     * Open an order for shares in a market
      */
-    public async limitOrderNo(user: string, marketId: number, shares: number, limit: string, referral: string, buy: boolean): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [{
-                    account: this.contractName,
-                    name: "lmtorderno",
-                    authorization: this.auth,
-                    data: {
-                        user,
-                        market_id: marketId,
-                        shares,
-                        limit,
-                        referral,
-                        buy,
-                    },
-                }],
-            },
-            this.transactParams,
-        );
-    }
+    public async limitOrder(data: LimitOrder): Promise<any> {
+        const {
+            nameId,
+            user,
+            marketId,
+            shares,
+            limit,
+            eosQuantity,
+            referral,
+            buy,
+        } = data;
+        if (!Object.values(OrderTypes).includes(nameId)) {
+            throw new Error(`nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`);
+        }
 
-    /**
-     * Open an order for share type Yes in a market
-     */
-    public async limitOrderYes(user: string, marketId: number, shares: number, limit: string, referral: string, buy: boolean): Promise<any> {
         return await this.api.transact(
             {
-                actions: [{
-                    account: this.contractName,
-                    name: "lmtorderyes",
-                    authorization: this.auth,
-                    data: {
+                actions: [
+                    transferEos(
+                        this.auth,
                         user,
-                        market_id: marketId,
-                        shares,
-                        limit,
-                        referral,
-                        buy,
+                        this.contractName,
+                        eosQuantity,
+                        `create order for market ${marketId}`,
+                    ),
+                    {
+                        account: this.contractName,
+                        name: `lmtorder${nameId}`,
+                        authorization: this.auth,
+                        data: {
+                            user,
+                            market_id: marketId,
+                            shares,
+                            limit,
+                            referral,
+                            buy,
+                        },
                     },
-                }],
+                ],
             },
             this.transactParams,
         );
