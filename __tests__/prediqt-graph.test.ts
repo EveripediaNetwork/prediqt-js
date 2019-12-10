@@ -5,6 +5,5 @@ jest.setTimeout(10000);
 
 test("Prediqt.getMarkets", async () => {
     const response = await client.getMarkets();
-    console.log(response);
     expect(!!response).toBeTruthy();
 });
