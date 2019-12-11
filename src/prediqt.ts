@@ -23,7 +23,7 @@ import {transfer} from "./actions";
 export class Prediqt {
     private readonly rpc: JsonRpc;
     private readonly api: Api;
-    private readonly contractName: string;
+    private readonly prediqtContract: string;
     private auth: any;
 
     private transactParams: TransactParams = {
@@ -32,7 +32,7 @@ export class Prediqt {
     };
 
     constructor(nodeEndpoint: string, signatureProvider: SignatureProvider, auth: Authorization[]) {
-        this.contractName = process.env.PREDIQT_CONTRACT as string;
+        this.prediqtContract = process.env.PREDIQT_CONTRACT as string;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
@@ -65,7 +65,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "fee_id",
                     authorization: this.auth,
                     data: {
@@ -85,7 +85,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "acceptmarket",
                     authorization: this.auth,
                     data: {
@@ -105,7 +105,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "claimshares",
                     authorization: this.auth,
                     data: {
@@ -128,7 +128,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: `cnclorder${nameId}`,
                     authorization: this.auth,
                     data: {
@@ -149,7 +149,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "createmarket",
                     authorization: this.auth,
                     data: {
@@ -171,7 +171,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "delmarket",
                     authorization: this.auth,
                     data: {
@@ -208,12 +208,12 @@ export class Prediqt {
                         "eosio.token",
                         this.auth,
                         user,
-                        this.contractName,
+                        this.prediqtContract,
                         eosQuantity,
                         `create order for market ${marketId}`,
                     ),
                     {
-                        account: this.contractName,
+                        account: this.prediqtContract,
                         name: `lmtorder${nameId}`,
                         authorization: this.auth,
                         data: {
@@ -238,7 +238,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "mktinvalid",
                     authorization: this.auth,
                     data: {
@@ -258,7 +258,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "mktresolve",
                     authorization: this.auth,
                     data: processData(data),
@@ -275,7 +275,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "propmarket",
                     authorization: this.auth,
                     data: {
@@ -297,7 +297,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "rejectmarket",
                     authorization: this.auth,
                     data: {
@@ -317,7 +317,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "setresolver",
                     authorization: this.auth,
                     data: {
@@ -337,7 +337,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "trnsfrshares",
                     authorization: this.auth,
                     data: processData(data),
@@ -354,7 +354,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [{
-                    account: this.contractName,
+                    account: this.prediqtContract,
                     name: "withdraw",
                     authorization: this.auth,
                     data: {
@@ -389,7 +389,7 @@ export class Prediqt {
      */
     public async getFees(limit: number = 100, offset: number = 0): Promise<[Fee]> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: this.contractName, table: "fees", json: true,
+            code: this.prediqtContract, scope: this.prediqtContract, table: "fees", json: true,
             limit,
             lower_bound: offset,
         });
@@ -401,7 +401,7 @@ export class Prediqt {
      */
     public async getShares(marketId: number, limit: number = 100, offset: number = 0): Promise<[Share]> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: marketId, table: "shares", json: true,
+            code: this.prediqtContract, scope: marketId, table: "shares", json: true,
             limit,
             lower_bound: offset,
         });
@@ -413,7 +413,7 @@ export class Prediqt {
      */
     public async getReferrals(marketId: number, limit: number = 100, offset: number = 0): Promise<[Share]> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: marketId, table: "referrals", json: true,
+            code: this.prediqtContract, scope: marketId, table: "referrals", json: true,
             limit,
             lower_bound: offset,
         });
@@ -425,7 +425,7 @@ export class Prediqt {
      */
     public async getMarkets(limit: number = 100, offset: number = 0, tableKey: string = ""): Promise<[Market]> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: this.contractName, table: "markets", json: true,
+            code: this.prediqtContract, scope: this.prediqtContract, table: "markets", json: true,
             limit,
             table_key: tableKey,
             lower_bound: offset,
@@ -438,7 +438,7 @@ export class Prediqt {
      */
     public async getMarket(marketId: number): Promise<Market> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: this.contractName, table: "markets", json: true,
+            code: this.prediqtContract, scope: this.prediqtContract, table: "markets", json: true,
             upper_bould: marketId,
             lower_bound: marketId,
         });
@@ -450,7 +450,7 @@ export class Prediqt {
      */
     public async getOrdersYes(marketId: number, limit: number = 100, offset: number = 0, tableKey: string = ""): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: marketId, table: "lmtorderyes", json: true,
+            code: this.prediqtContract, scope: marketId, table: "lmtorderyes", json: true,
             limit,
             table_key: tableKey,
             lower_bound: offset,
@@ -463,7 +463,7 @@ export class Prediqt {
      */
     public async getOrdersNo(marketId: number, limit: number = 100, offset: number = 0, tableKey: string = ""): Promise<[Order]> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: marketId, table: "lmtorderno", json: true,
+            code: this.prediqtContract, scope: marketId, table: "lmtorderno", json: true,
             limit,
             table_key: tableKey,
             lower_bound: offset,
@@ -476,7 +476,7 @@ export class Prediqt {
      */
     public async getBalance(user: string, symbol: string): Promise<Balance> {
         const table = await this.rpc.get_table_rows({
-            code: this.contractName, scope: symbol, table: "balances", json: true,
+            code: this.prediqtContract, scope: symbol, table: "balances", json: true,
             lower_bound: user,
             upper_bound: user,
         });

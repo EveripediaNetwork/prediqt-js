@@ -1,7 +1,7 @@
 import { TransferAction } from "./interfaces/prediqt";
 
 export function transfer(
-    contractName: string,
+    contract: string,
     authorization: object,
     from: string,
     to: string,
@@ -9,7 +9,7 @@ export function transfer(
     memo: string,
 ): TransferAction {
     return {
-        account: contractName,
+        account: contract,
         name: "transfer",
         authorization,
         data: {
