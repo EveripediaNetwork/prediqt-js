@@ -31,9 +31,9 @@ export class Prediqt {
         expireSeconds: 60,
     };
 
-    constructor(nodeAddress: string, signatureProvider: SignatureProvider, contractName: string, auth: Authorization[]) {
-        this.contractName = contractName;
-        this.rpc = new JsonRpc(nodeAddress, {fetch: fetch as any});
+    constructor(nodeEndpoint: string, signatureProvider: SignatureProvider, auth: Authorization[]) {
+        this.contractName = process.env.PREDIQT_CONTRACT as string;
+        this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
     }
@@ -474,11 +474,11 @@ export class Prediqt {
     /**
      * Get balance of an user
      */
-    public async getBalance(holder: string, symbol: string): Promise<Balance> {
+    public async getBalance(user: string, symbol: string): Promise<Balance> {
         const table = await this.rpc.get_table_rows({
             code: this.contractName, scope: symbol, table: "balances", json: true,
-            lower_bound: holder,
-            upper_bound: holder,
+            lower_bound: user,
+            upper_bound: user,
         });
         return table.rows[0];
     }
