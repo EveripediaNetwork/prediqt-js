@@ -18,7 +18,7 @@ import {
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 import {isObject, processData} from "./utils";
-import {transferEos} from "./actions";
+import {transfer} from "./actions";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
@@ -204,7 +204,8 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [
-                    transferEos(
+                    transfer(
+                        "eosio.token",
                         this.auth,
                         user,
                         this.contractName,

@@ -82,7 +82,7 @@ export interface LimitOrder {
     buy: boolean;
 }
 
-export interface TransferTokenOut {
+export interface TransferAction {
     account: string;
     name: string;
     authorization: object;
