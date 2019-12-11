@@ -1,3 +1,5 @@
+import {OrderTypes} from "../enums/prediqt";
+
 export interface TransactParams {
     blocksBehind: number;
     expireSeconds: number;
@@ -67,6 +69,36 @@ export interface MarketResolve {
     marketId: number;
     shareType: boolean;
     memo: string;
+}
+
+export interface LimitOrder {
+    nameId: OrderTypes;
+    user: string;
+    marketId: number;
+    shares: number;
+    limit: string;
+    eosQuantity: string;
+    referral: string;
+    buy: boolean;
+}
+
+export interface TransferTokenOut {
+    account: string;
+    name: string;
+    authorization: object;
+    data: {
+        from: string;
+        to: string;
+        quantity: string;
+        memo: string;
+    };
+}
+
+export interface UserResources {
+    owner: string;
+    net_weight: string;
+    cpu_weight: string;
+    ram_bytes: number;
 }
 
 export interface ObjectKeys {

@@ -11,9 +11,9 @@ export class PrediqtGraph {
 
     public async getMarkets(): Promise<Market[]> {
         const result = await fetch(this.url, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
             body: JSON.stringify({
                 query: `query { markets { id, ipfs { title, tags } } }`,
