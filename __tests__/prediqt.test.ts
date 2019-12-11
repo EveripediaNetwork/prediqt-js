@@ -4,7 +4,7 @@ import {JsSignatureProvider} from "eosjs/dist/eosjs-jssig";
 const nodeEndpoint = process.env.NODE_ENDPOINT as string;
 const from = process.env.PREDIQT_FROM as string;
 const keys = process.env.PREDIQT_KEY as string;
-const user = process.env.PREDIQT_UESR as string;
+const username = process.env.PREDIQT_USERNAME as string;
 const signatureProvider = new JsSignatureProvider([keys]);
 const auth = [
 {
@@ -20,7 +20,7 @@ test("Prediqt.getFees", async () => {
 });
 
 test("Prediqt.getBalance", async () => {
-    const response = await client.getBalance(user, "EOS");
+    const response = await client.getBalance(username, "EOS");
     expect(!!response).toBeTruthy();
 });
 
@@ -35,11 +35,16 @@ test("Prediqt.getMarket", async () => {
 });
 
 test("Prediqt.getUserResources", async () => {
-   const response = await client.getUserResources(user);
+   const response = await client.getUserResources("kesaritooo");
    expect(!!response).toBeTruthy();
 });
 
 test("Prediqt.getAccount", async () => {
-    const response = await client.getAccount(user);
+    const response = await client.getAccount(username);
+    expect(!!response).toBeTruthy();
+});
+
+test("Prediqt.getIqBalance", async () => {
+    const response = await client.getIqBalance(username);
     expect(!!response).toBeTruthy();
 });
