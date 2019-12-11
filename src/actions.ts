@@ -1,14 +1,15 @@
-import { TransferTokenOut } from "./interfaces/prediqt";
+import { TransferAction } from "./interfaces/prediqt";
 
-export function transferEos(
+export function transfer(
+    contractName: string,
     authorization: object,
     from: string,
     to: string,
     eosQuantity: string,
     memo: string,
-): TransferTokenOut {
+): TransferAction {
     return {
-        account: "eosio.token",
+        account: contractName,
         name: "transfer",
         authorization,
         data: {

@@ -18,7 +18,7 @@ import {
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 import {isObject, processData} from "./utils";
-import {transferEos} from "./actions";
+import {transfer} from "./actions";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
@@ -36,6 +36,26 @@ export class Prediqt {
         this.rpc = new JsonRpc(nodeAddress, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
+    }
+
+    /**
+     * Utility methods
+     */
+
+    public setAuth(auth: Authorization[]): void {
+        if (Array.isArray(auth)) {
+            if (auth.every((item) => isObject(item))) {
+                this.auth = auth;
+            } else {
+                throw new Error("Auth items must be instances of Object.");
+            }
+        } else {
+            throw new Error("Auth must be an instance of Array.");
+        }
+    }
+
+    public resetAuth(): void {
+        this.auth = [];
     }
 
     /**
@@ -184,7 +204,8 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [
-                    transferEos(
+                    transfer(
+                        "eosio.token",
                         this.auth,
                         user,
                         this.contractName,
@@ -451,17 +472,6 @@ export class Prediqt {
     }
 
     /**
-     * Get resources of an user
-     */
-    public async getUserResources(user: string): Promise<UserResources[]> {
-        const table = await this.rpc.get_table_rows({
-            code: "eosio", scope: user, table: "userres", json: true,
-            table_key: user,
-        });
-        return table.rows;
-    }
-
-    /**
      * Get balance of an user
      */
     public async getBalance(holder: string, symbol: string): Promise<Balance> {
@@ -473,19 +483,21 @@ export class Prediqt {
         return table.rows[0];
     }
 
-    public setAuth(auth: Authorization[]): void {
-        if (Array.isArray(auth)) {
-            if (auth.every((item) => isObject(item))) {
-                this.auth = auth;
-            } else {
-                throw new Error("Auth items must be instances of Object.");
-            }
-        } else {
-            throw new Error("Auth must be an instance of Array.");
-        }
+    /**
+     * Get resources of an user
+     */
+    public async getUserResources(user: string): Promise<UserResources[]> {
+        const table = await this.rpc.get_table_rows({
+            code: "eosio", scope: user, table: "userres", json: true,
+            table_key: user,
+        });
+        return table.rows;
     }
 
-    public resetAuth(): void {
-        this.auth = [];
+    /**
+     * Get account data of an user
+     */
+    public async getAccount(user: string): Promise<any> {
+        return await this.rpc.get_account(user);
     }
 }
