@@ -39,6 +39,26 @@ export class Prediqt {
     }
 
     /**
+     * Utility methods
+     */
+
+    public setAuth(auth: Authorization[]): void {
+        if (Array.isArray(auth)) {
+            if (auth.every((item) => isObject(item))) {
+                this.auth = auth;
+            } else {
+                throw new Error("Auth items must be instances of Object.");
+            }
+        } else {
+            throw new Error("Auth must be an instance of Array.");
+        }
+    }
+
+    public resetAuth(): void {
+        this.auth = [];
+    }
+
+    /**
      * Set a fee for the platform (admin only)
      */
     public async setFee(fee: Fee): Promise<any> {
@@ -451,17 +471,6 @@ export class Prediqt {
     }
 
     /**
-     * Get resources of an user
-     */
-    public async getUserResources(user: string): Promise<UserResources[]> {
-        const table = await this.rpc.get_table_rows({
-            code: "eosio", scope: user, table: "userres", json: true,
-            table_key: user,
-        });
-        return table.rows;
-    }
-
-    /**
      * Get balance of an user
      */
     public async getBalance(holder: string, symbol: string): Promise<Balance> {
@@ -473,19 +482,21 @@ export class Prediqt {
         return table.rows[0];
     }
 
-    public setAuth(auth: Authorization[]): void {
-        if (Array.isArray(auth)) {
-            if (auth.every((item) => isObject(item))) {
-                this.auth = auth;
-            } else {
-                throw new Error("Auth items must be instances of Object.");
-            }
-        } else {
-            throw new Error("Auth must be an instance of Array.");
-        }
+    /**
+     * Get resources of an user
+     */
+    public async getUserResources(user: string): Promise<UserResources[]> {
+        const table = await this.rpc.get_table_rows({
+            code: "eosio", scope: user, table: "userres", json: true,
+            table_key: user,
+        });
+        return table.rows;
     }
 
-    public resetAuth(): void {
-        this.auth = [];
+    /**
+     * Get account data of an user
+     */
+    public async getAccount(user: string): Promise<any> {
+        return await this.rpc.get_account(user);
     }
 }

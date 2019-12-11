@@ -38,3 +38,8 @@ test("Prediqt.getUserResources", async () => {
    const response = await client.getUserResources("kesaritooooo");
    expect(!!response).toBeTruthy();
 });
+
+test("Prediqt.getAccount", async () => {
+    const response = await client.getAccount("kesaritooooo");
+    expect(!!response).toBeTruthy();
+});
