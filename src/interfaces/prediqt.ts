@@ -101,6 +101,10 @@ export interface UserResources {
     ram_bytes: number;
 }
 
+export interface IqBalance {
+    balance: string;
+}
+
 export interface ObjectKeys {
     [key: string]: any;
 }

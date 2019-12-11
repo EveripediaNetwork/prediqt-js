@@ -15,6 +15,7 @@ import {
     MarketResolve,
     LimitOrder,
     UserResources,
+    IqBalance,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 import {isObject, processData} from "./utils";
@@ -24,6 +25,8 @@ export class Prediqt {
     private readonly rpc: JsonRpc;
     private readonly api: Api;
     private readonly prediqtContract: string;
+    private readonly prediqtMarketContract: string;
+    private readonly everipediaContract: string;
     private auth: any;
 
     private transactParams: TransactParams = {
@@ -33,6 +36,8 @@ export class Prediqt {
 
     constructor(nodeEndpoint: string, signatureProvider: SignatureProvider, auth: Authorization[]) {
         this.prediqtContract = process.env.PREDIQT_CONTRACT as string;
+        this.prediqtMarketContract = process.env.PREDIQT_MARKET_CONTRACT as string;
+        this.everipediaContract = process.env.EVERIPEDIA_CONTRACT as string;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
@@ -474,11 +479,22 @@ export class Prediqt {
     /**
      * Get balance of an user
      */
-    public async getBalance(user: string, symbol: string): Promise<Balance> {
+    public async getBalance(username: string, symbol: string): Promise<Balance> {
         const table = await this.rpc.get_table_rows({
             code: this.prediqtContract, scope: symbol, table: "balances", json: true,
-            lower_bound: user,
-            upper_bound: user,
+            lower_bound: username,
+            upper_bound: username,
+        });
+        return table.rows[0];
+    }
+
+    /**
+     * Get IQ balance of an user
+     */
+    public async getIqBalance(username: string): Promise<IqBalance> {
+        const table = await this.rpc.get_table_rows({
+            code: this.everipediaContract, scope: username, table: "accounts", json: true,
+            table_key: username,
         });
         return table.rows[0];
     }
@@ -486,18 +502,18 @@ export class Prediqt {
     /**
      * Get resources of an user
      */
-    public async getUserResources(user: string): Promise<UserResources[]> {
+    public async getUserResources(username: string): Promise<UserResources> {
         const table = await this.rpc.get_table_rows({
-            code: "eosio", scope: user, table: "userres", json: true,
-            table_key: user,
+            code: "eosio", scope: username, table: "userres", json: true,
+            table_key: username,
         });
-        return table.rows;
+        return table.rows[0];
     }
 
     /**
      * Get account data of an user
      */
-    public async getAccount(user: string): Promise<any> {
-        return await this.rpc.get_account(user);
+    public async getAccount(username: string): Promise<any> {
+        return await this.rpc.get_account(username);
     }
 }
