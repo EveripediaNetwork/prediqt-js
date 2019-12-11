@@ -1,21 +1,21 @@
 import { TransferAction } from "./interfaces/prediqt";
 
 export function transfer(
-    contractName: string,
+    contract: string,
     authorization: object,
     from: string,
     to: string,
-    eosQuantity: string,
+    quantity: string,
     memo: string,
 ): TransferAction {
     return {
-        account: contractName,
+        account: contract,
         name: "transfer",
         authorization,
         data: {
             from,
             to,
-            quantity: eosQuantity,
+            quantity,
             memo,
         },
     };

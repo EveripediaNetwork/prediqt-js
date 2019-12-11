@@ -77,7 +77,7 @@ export interface LimitOrder {
     marketId: number;
     shares: number;
     limit: string;
-    eosQuantity: string;
+    transferToken: string;
     referral: string;
     buy: boolean;
 }
@@ -99,6 +99,10 @@ export interface UserResources {
     net_weight: string;
     cpu_weight: string;
     ram_bytes: number;
+}
+
+export interface IqBalance {
+    balance: string;
 }
 
 export interface ObjectKeys {

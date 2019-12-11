@@ -1,17 +1,17 @@
 import {Prediqt} from "../src";
 import {JsSignatureProvider} from "eosjs/dist/eosjs-jssig";
 
-const endpoint = process.env.EOSIO_ENDPOINT || "https://api.kylin.alohaeos.com";
-const contract = process.env.PREDIQT_CONTRACT || "prediqtpedia";
-const from = process.env.PREDIQT_FROM || "prediqtpedia";
-const keys = process.env.PREDIQT_KEYS || "-";
+const nodeEndpoint = process.env.NODE_ENDPOINT as string;
+const from = process.env.PREDIQT_FROM as string;
+const keys = process.env.PREDIQT_KEY as string;
+const username = process.env.PREDIQT_USERNAME as string;
 const signatureProvider = new JsSignatureProvider([keys]);
 const auth = [
 {
     actor: from,
     permission: "active",
 }];
-const client = new Prediqt(endpoint, signatureProvider, contract, auth);
+const client = new Prediqt(nodeEndpoint, signatureProvider, auth);
 jest.setTimeout(10000);
 
 test("Prediqt.getFees", async () => {
@@ -20,7 +20,7 @@ test("Prediqt.getFees", async () => {
 });
 
 test("Prediqt.getBalance", async () => {
-    const response = await client.getBalance("kesaritooooo", "EOS");
+    const response = await client.getBalance(username, "EOS");
     expect(!!response).toBeTruthy();
 });
 
@@ -35,11 +35,16 @@ test("Prediqt.getMarket", async () => {
 });
 
 test("Prediqt.getUserResources", async () => {
-   const response = await client.getUserResources("kesaritooooo");
+   const response = await client.getUserResources(username);
    expect(!!response).toBeTruthy();
 });
 
 test("Prediqt.getAccount", async () => {
-    const response = await client.getAccount("kesaritooooo");
+    const response = await client.getAccount(username);
+    expect(!!response).toBeTruthy();
+});
+
+test("Prediqt.getIqBalance", async () => {
+    const response = await client.getIqBalance(username);
     expect(!!response).toBeTruthy();
 });
