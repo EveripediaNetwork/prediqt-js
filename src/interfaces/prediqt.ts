@@ -77,7 +77,7 @@ export interface LimitOrder {
     marketId: number;
     shares: number;
     limit: string;
-    eosQuantity: string;
+    transferToken: string;
     referral: string;
     buy: boolean;
 }

@@ -198,7 +198,7 @@ export class Prediqt {
             marketId,
             shares,
             limit,
-            eosQuantity,
+            transferToken,
             referral,
             buy,
         } = data;
@@ -210,11 +210,11 @@ export class Prediqt {
             {
                 actions: [
                     transfer(
-                        "eosio.token",
+                        process.env.EOSIO_TOKEN_CONTRACT as string,
                         this.auth,
                         user,
                         this.prediqtContract,
-                        eosQuantity,
+                        transferToken,
                         `create order for market ${marketId}`,
                     ),
                     {
@@ -504,7 +504,7 @@ export class Prediqt {
      */
     public async getUserResources(username: string): Promise<UserResources> {
         const table = await this.rpc.get_table_rows({
-            code: "eosio", scope: username, table: "userres", json: true,
+            code: process.env.EOSIO_CONTRACT as string, scope: username, table: "userres", json: true,
             table_key: username,
         });
         return table.rows[0];

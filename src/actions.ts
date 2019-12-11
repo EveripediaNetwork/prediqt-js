@@ -5,7 +5,7 @@ export function transfer(
     authorization: object,
     from: string,
     to: string,
-    eosQuantity: string,
+    quantity: string,
     memo: string,
 ): TransferAction {
     return {
@@ -15,7 +15,7 @@ export function transfer(
         data: {
             from,
             to,
-            quantity: eosQuantity,
+            quantity,
             memo,
         },
     };
