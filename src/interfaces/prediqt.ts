@@ -72,6 +72,21 @@ export interface TransferShares {
     marketId: number;
 }
 
+export interface TransferSharesAction {
+    account: string;
+    name: string;
+    authorization: Authorization[];
+    data: ObjectKeys;
+}
+
+export interface SellShares {
+    from: string;
+    shares: number;
+    shareType: boolean;
+    marketId: number;
+    price: string;
+}
+
 export interface MarketResolve {
     resolver: string;
     marketId: number;
@@ -93,7 +108,7 @@ export interface LimitOrder {
 export interface TransferAction {
     account: string;
     name: string;
-    authorization: object;
+    authorization: Authorization[];
     data: {
         from: string;
         to: string;
@@ -109,7 +124,7 @@ export interface CancelShares {
 }
 export interface BuyShares {
     from: string;
-    price: number;
+    price: string;
     shares: number;
     shareType: boolean;
     marketId: number;

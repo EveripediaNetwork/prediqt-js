@@ -19,10 +19,11 @@ import {
     CancelShares,
     BuyShares,
     CreateMarket,
+    SellShares,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 
-import {transfer} from "./actions";
+import {transferAction, transferSharesAction} from "./actions";
 import {isObject, processData} from "./tools/utils";
 import {
     PREDIQT_CONTRACT,
@@ -40,7 +41,7 @@ export class Prediqt {
     private readonly everipediaContract: string;
     private readonly eosioTokenContract: string;
     private readonly eosioContract: string;
-    private auth: any;
+    private auth: Authorization[];
 
     private transactParams: TransactParams = {
         blocksBehind: 3,
@@ -176,7 +177,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [
-                    transfer(
+                    transferAction(
                         this.everipediaContract,
                         this.auth,
                         creator,
@@ -240,7 +241,7 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [
-                    transfer(
+                    transferAction(
                         this.eosioTokenContract,
                         this.auth,
                         user,
@@ -367,23 +368,6 @@ export class Prediqt {
     }
 
     /**
-     * Transfer shares between users
-     */
-    public async transferShares(data: TransferShares): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [{
-                    account: this.prediqtContract,
-                    name: "trnsfrshares",
-                    authorization: this.auth,
-                    data: processData(data),
-                }],
-            },
-            this.transactParams,
-        );
-    }
-
-    /**
      * Withdraw from user balance
      */
     public async withdraw(user: string, quantity: string): Promise<any> {
@@ -421,6 +405,18 @@ export class Prediqt {
     }
 
     /**
+     * Transfer shares between users
+     */
+    public async transferShares(data: TransferShares): Promise<any> {
+        return await this.api.transact(
+            {
+                actions: [transferSharesAction(this.prediqtContract, this.auth, data)],
+            },
+            this.transactParams,
+        );
+    }
+
+    /**
      * Cancel user's shares
      */
     public async cancelShares(data: CancelShares): Promise<any> {
@@ -450,7 +446,7 @@ export class Prediqt {
         } = data;
         return await this.api.transact({
             actions: [
-                transfer(
+                transferAction(
                     this.eosioTokenContract,
                     this.auth,
                     from,
@@ -459,7 +455,7 @@ export class Prediqt {
                     `create order for secondary market ${marketId}`,
                 ),
                 {
-                    account: process.env.REACT_APP_PREDIQT_SECONDARY_MARKET_CONTRACT,
+                    account: this.prediqtMarketContract,
                     name: "buyshares",
                     authorization: this.auth,
                     data: {
@@ -472,6 +468,25 @@ export class Prediqt {
                 }],
         });
 
+    }
+
+    public async sellShares(data: SellShares): Promise<any> {
+        return await this.api.transact({
+            actions: [
+                transferSharesAction(this.prediqtContract, this.auth, {
+                    from: data.from,
+                    to: this.prediqtMarketContract,
+                    shares: data.shares,
+                    shareType: data.shareType,
+                    marketId: data.marketId,
+                }),
+                {
+                    account: this.prediqtMarketContract,
+                    name: "sellshares",
+                    authorization: this.auth,
+                    data: processData(data),
+                }],
+        });
     }
 
     /**
