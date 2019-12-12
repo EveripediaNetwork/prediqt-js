@@ -1,5 +1,6 @@
 import {Api, JsonRpc} from "eosjs";
 import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
+
 const fetch = require("isomorphic-fetch");
 
 import {
@@ -15,18 +16,19 @@ import {
     LimitOrder,
     UserResources,
     IqBalance,
+    CancelShares,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
-import {isObject, processData} from "./utils";
-import {transfer} from "./actions";
 
+import {transfer} from "./actions";
+import {isObject, processData} from "./tools/utils";
 import {
     PREDIQT_CONTRACT,
     PREDIQT_MARKET_CONTRACT,
     EVERIPEDIA_CONTRACT,
-    EOSIO_CONTRACT,
     EOSIO_TOKEN_CONTRACT,
-} from "./constants";
+    EOSIO_CONTRACT,
+} from "./tools/constants";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
@@ -34,6 +36,8 @@ export class Prediqt {
     private readonly prediqtContract: string;
     private readonly prediqtMarketContract: string;
     private readonly everipediaContract: string;
+    private readonly eosioTokenContract: string;
+    private readonly eosioContract: string;
     private auth: any;
 
     private transactParams: TransactParams = {
@@ -45,6 +49,8 @@ export class Prediqt {
         this.prediqtContract = PREDIQT_CONTRACT as string;
         this.prediqtMarketContract = PREDIQT_MARKET_CONTRACT as string;
         this.everipediaContract = EVERIPEDIA_CONTRACT as string;
+        this.eosioTokenContract = EOSIO_TOKEN_CONTRACT as string;
+        this.eosioContract = EOSIO_CONTRACT as string;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
@@ -217,7 +223,7 @@ export class Prediqt {
             {
                 actions: [
                     transfer(
-                        EOSIO_TOKEN_CONTRACT as string,
+                        this.eosioTokenContract,
                         this.auth,
                         user,
                         this.prediqtContract,
@@ -397,6 +403,22 @@ export class Prediqt {
     }
 
     /**
+     * Cancel user's shares
+     */
+    public async cancelShares(data: CancelShares): Promise<any> {
+        return await this.api.transact({
+            actions: [
+                {
+                    account: this.prediqtMarketContract,
+                    name: "cancelshares",
+                    authorization: this.auth,
+                    data: processData(data),
+                }],
+        });
+
+    }
+
+    /**
      * Get fees related to the contract
      */
     public async getFees(limit: number = 100, offset: number = 0): Promise<[Fee]> {
@@ -511,7 +533,7 @@ export class Prediqt {
      */
     public async getUserResources(username: string): Promise<UserResources> {
         const table = await this.rpc.get_table_rows({
-            code: EOSIO_CONTRACT as string, scope: username, table: "userres", json: true,
+            code: this.eosioContract, scope: username, table: "userres", json: true,
             table_key: username,
         });
         return table.rows[0];

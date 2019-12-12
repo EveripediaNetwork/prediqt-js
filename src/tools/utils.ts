@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 
-import {ObjectKeys} from "./interfaces/prediqt";
+import {ObjectKeys} from "../interfaces/prediqt";
 
 export function toEosDate(date: Date): string {
     return date.toISOString().slice(0, -5);

@@ -94,6 +94,12 @@ export interface TransferAction {
     };
 }
 
+export interface CancelShares {
+    from: string;
+    shareId: string;
+    marketId: string;
+}
+
 export interface UserResources {
     owner: string;
     net_weight: string;
