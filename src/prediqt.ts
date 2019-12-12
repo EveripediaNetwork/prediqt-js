@@ -1,6 +1,5 @@
 import {Api, JsonRpc} from "eosjs";
 import {SignatureProvider} from "eosjs/dist/eosjs-api-interfaces";
-
 const fetch = require("isomorphic-fetch");
 
 import {
@@ -21,6 +20,14 @@ import {OrderTypes} from "./enums/prediqt";
 import {isObject, processData} from "./utils";
 import {transfer} from "./actions";
 
+import {
+    PREDIQT_CONTRACT,
+    PREDIQT_MARKET_CONTRACT,
+    EVERIPEDIA_CONTRACT,
+    EOSIO_CONTRACT,
+    EOSIO_TOKEN_CONTRACT,
+} from "./constants";
+
 export class Prediqt {
     private readonly rpc: JsonRpc;
     private readonly api: Api;
@@ -35,9 +42,9 @@ export class Prediqt {
     };
 
     constructor(nodeEndpoint: string, signatureProvider: SignatureProvider, auth: Authorization[]) {
-        this.prediqtContract = process.env.PREDIQT_CONTRACT as string;
-        this.prediqtMarketContract = process.env.PREDIQT_MARKET_CONTRACT as string;
-        this.everipediaContract = process.env.EVERIPEDIA_CONTRACT as string;
+        this.prediqtContract = PREDIQT_CONTRACT as string;
+        this.prediqtMarketContract = PREDIQT_MARKET_CONTRACT as string;
+        this.everipediaContract = EVERIPEDIA_CONTRACT as string;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
@@ -210,7 +217,7 @@ export class Prediqt {
             {
                 actions: [
                     transfer(
-                        process.env.EOSIO_TOKEN_CONTRACT as string,
+                        EOSIO_TOKEN_CONTRACT as string,
                         this.auth,
                         user,
                         this.prediqtContract,
@@ -504,7 +511,7 @@ export class Prediqt {
      */
     public async getUserResources(username: string): Promise<UserResources> {
         const table = await this.rpc.get_table_rows({
-            code: process.env.EOSIO_CONTRACT as string, scope: username, table: "userres", json: true,
+            code: EOSIO_CONTRACT as string, scope: username, table: "userres", json: true,
             table_key: username,
         });
         return table.rows[0];
