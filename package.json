@@ -14,10 +14,10 @@
     "posttest": "tslint -p .",
     "docs": "tsc && documentation readme dist/index.js -s API"
   },
-  "homepage": "https://github.com/everipedianetwork/prediqt-js",
+  "homepage": "https://github.com/EveripediaNetwork/prediqt-js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/everipedianetwork/prediqt-js.git"
+    "url": "git+https://github.com/EveripediaNetwork/prediqt-js.git"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
