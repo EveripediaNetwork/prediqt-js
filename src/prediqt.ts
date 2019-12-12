@@ -18,6 +18,7 @@ import {
     IqBalance,
     CancelShares,
     BuyShares,
+    CreateMarket,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 
@@ -164,20 +165,36 @@ export class Prediqt {
     /**
      * Create a Market
      */
-    public async createMarket(creator: string, resolver: string, ipfs: string, timeIn: number): Promise<any> {
+    public async createMarket(data: CreateMarket): Promise<any> {
+        const {
+            creator,
+            resolver,
+            ipfs,
+            timeIn,
+            transferToken,
+        } = data;
         return await this.api.transact(
             {
-                actions: [{
-                    account: this.prediqtContract,
-                    name: "createmarket",
-                    authorization: this.auth,
-                    data: {
+                actions: [
+                    transfer(
+                        this.everipediaContract,
+                        this.auth,
                         creator,
-                        resolver,
-                        ipfs,
-                        time_in: timeIn,
-                    },
-                }],
+                        this.prediqtContract,
+                        transferToken,
+                        "createmarket 5 IQ",
+                    ),
+                    {
+                        account: this.prediqtContract,
+                        name: "createmarket",
+                        authorization: this.auth,
+                        data: {
+                            creator,
+                            resolver,
+                            ipfs,
+                            time_in: timeIn,
+                        },
+                    }],
             },
             this.transactParams,
         );

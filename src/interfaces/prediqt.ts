@@ -15,6 +15,14 @@ export interface Fee {
     fee: number;
 }
 
+export interface CreateMarket {
+    creator: string;
+    resolver: string;
+    ipfs: string;
+    timeIn: number;
+    transferToken: string;
+}
+
 export interface MarketIpfs {
     hash: string;
     title: string;
