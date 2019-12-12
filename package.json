@@ -1,6 +1,6 @@
 {
   "name": "@everipedia/prediqt-js",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "PredIQt JavaScript/TypeScript Client Library",
   "license": "MIT",
   "main": "dist/index.js",
@@ -9,10 +9,10 @@
     "dist"
   ],
   "scripts": {
-    "prepublishOnly": "./node_modules/typescript/bin/tsc",
+    "prepublishOnly": "tsc",
     "test": "jest --coverage",
     "posttest": "tslint -p .",
-    "docs": "./node_modules/typescript/bin/tsc && documentation readme dist/index.js -s API"
+    "docs": "tsc && documentation readme dist/index.js -s API"
   },
   "homepage": "https://github.com/EveripediaNetwork/prediqt-js",
   "repository": {
