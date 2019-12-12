@@ -9,10 +9,10 @@
     "dist"
   ],
   "scripts": {
-    "prepublishOnly": "tsc",
+    "prepublishOnly": "./node_modules/typescript/bin/tsc",
     "test": "jest --coverage",
     "posttest": "tslint -p .",
-    "docs": "tsc && documentation readme dist/index.js -s API"
+    "docs": "./node_modules/typescript/bin/tsc && documentation readme dist/index.js -s API"
   },
   "homepage": "https://github.com/EveripediaNetwork/prediqt-js",
   "repository": {
