@@ -97,7 +97,15 @@ export interface TransferAction {
 export interface CancelShares {
     from: string;
     shareId: string;
-    marketId: string;
+    marketId: number;
+}
+export interface BuyShares {
+    from: string;
+    price: number;
+    shares: number;
+    shareType: boolean;
+    marketId: number;
+    transferToken: string;
 }
 
 export interface UserResources {

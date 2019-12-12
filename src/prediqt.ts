@@ -17,6 +17,7 @@ import {
     UserResources,
     IqBalance,
     CancelShares,
+    BuyShares,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 
@@ -211,9 +212,9 @@ export class Prediqt {
             marketId,
             shares,
             limit,
-            transferToken,
             referral,
             buy,
+            transferToken,
         } = data;
         if (!Object.values(OrderTypes).includes(nameId)) {
             throw new Error(`nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`);
@@ -413,6 +414,44 @@ export class Prediqt {
                     name: "cancelshares",
                     authorization: this.auth,
                     data: processData(data),
+                }],
+        });
+
+    }
+
+    /**
+     * Buy shares
+     */
+    public async buyShares(data: BuyShares): Promise<any> {
+        const {
+            from,
+            price,
+            shares,
+            shareType,
+            marketId,
+            transferToken,
+        } = data;
+        return await this.api.transact({
+            actions: [
+                transfer(
+                    this.eosioTokenContract,
+                    this.auth,
+                    from,
+                    this.prediqtContract,
+                    transferToken,
+                    `create order for secondary market ${marketId}`,
+                ),
+                {
+                    account: process.env.REACT_APP_PREDIQT_SECONDARY_MARKET_CONTRACT,
+                    name: "buyshares",
+                    authorization: this.auth,
+                    data: {
+                        from,
+                        price,
+                        shares,
+                        sharetype: shareType,
+                        market_id: marketId,
+                    },
                 }],
         });
 
