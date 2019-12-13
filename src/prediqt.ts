@@ -54,8 +54,8 @@ export class Prediqt {
 
     constructor(nodeEndpoint: string,
                 signatureProvider: SignatureProvider,
-                contracts: Contracts = {},
-                auth: Authorization[] = []) {
+                auth: Authorization[] = [],
+                contracts: Contracts = {}) {
         this.prediqtContract = contracts.prediqt || PREDIQT_CONTRACT;
         this.prediqtMarketContract = contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
         this.everipediaContract = contracts.everipedia || EVERIPEDIA_CONTRACT;
