@@ -21,6 +21,12 @@
     /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
   },
   "files": [
-    "src/index.ts"
+    "src/index.ts",
+    "src/actions.ts",
+    "src/prediqt.ts",
+    "src/enums/prediqt.ts",
+    "src/interfaces/prediqt.ts",
+    "src/tools/constants.ts",
+    "src/tools/utils.ts"
   ]
 }
