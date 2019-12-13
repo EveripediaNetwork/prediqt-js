@@ -54,8 +54,8 @@ export class Prediqt {
 
     constructor(nodeEndpoint: string,
                 signatureProvider: SignatureProvider,
-                contracts: Contracts,
-                auth?: Authorization[]) {
+                contracts: Contracts = {},
+                auth: Authorization[] = []) {
         this.prediqtContract = contracts.prediqt || PREDIQT_CONTRACT;
         this.prediqtMarketContract = contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
         this.everipediaContract = contracts.everipedia || EVERIPEDIA_CONTRACT;
@@ -64,7 +64,7 @@ export class Prediqt {
         this.eosioContract = EOSIO_CONTRACT as string;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
-        this.auth = auth || [];
+        this.auth = auth;
     }
 
     /**
