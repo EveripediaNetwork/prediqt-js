@@ -20,18 +20,21 @@ import {
     BuyShares,
     CreateMarket,
     SellShares,
+    Contracts,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 
 import {transferAction, transferSharesAction} from "./actions";
 import {isObject, processData} from "./tools/utils";
-/*import {
+
+import {
+    EOSIO_TOKEN_CONTRACT,
+    EOSIO_CONTRACT,
     PREDIQT_CONTRACT,
     PREDIQT_MARKET_CONTRACT,
     EVERIPEDIA_CONTRACT,
-    EOSIO_TOKEN_CONTRACT,
-    EOSIO_CONTRACT,
-} from "./tools/constants";*/
+    PREDIQT_BANK_CONTRACT,
+} from "./tools/constants";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
@@ -39,6 +42,7 @@ export class Prediqt {
     private readonly prediqtContract: string;
     private readonly prediqtMarketContract: string;
     private readonly everipediaContract: string;
+    private readonly prediqtBankContract: string;
     private readonly eosioTokenContract: string;
     private readonly eosioContract: string;
     private auth: Authorization[];
@@ -48,15 +52,19 @@ export class Prediqt {
         expireSeconds: 60,
     };
 
-    constructor(nodeEndpoint: string, signatureProvider: SignatureProvider, auth: Authorization[]) {
-        this.prediqtContract = process.env.REACT_APP_PREDIQT_CONTRACT as string;
-        this.prediqtMarketContract = process.env.REACT_APP_PREDIQT_MARKET_CONTRACT as string;
-        this.everipediaContract = process.env.REACT_APP_EVERIPEDIA_CONTRACT as string;
-        this.eosioTokenContract = process.env.REACT_APP_EOSIO_TOKEN_CONTRACT as string;
-        this.eosioContract = process.env.REACT_APP_EOSIO_CONTRACT as string;
+    constructor(nodeEndpoint: string,
+                signatureProvider: SignatureProvider,
+                contracts: Contracts,
+                auth?: Authorization[]) {
+        this.prediqtContract = contracts.prediqt || PREDIQT_CONTRACT;
+        this.prediqtMarketContract = contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
+        this.everipediaContract = contracts.everipedia || EVERIPEDIA_CONTRACT;
+        this.prediqtBankContract = contracts.prediqtBank || PREDIQT_BANK_CONTRACT;
+        this.eosioTokenContract = EOSIO_TOKEN_CONTRACT as string;
+        this.eosioContract = EOSIO_CONTRACT as string;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
-        this.auth = auth;
+        this.auth = auth || [];
     }
 
     /**
@@ -471,14 +479,15 @@ export class Prediqt {
     }
 
     public async sellShares(data: SellShares): Promise<any> {
+        const {from, shares, shareType, marketId} = data;
         return await this.api.transact({
             actions: [
                 transferSharesAction(this.prediqtContract, this.auth, {
-                    from: data.from,
+                    from,
                     to: this.prediqtMarketContract,
-                    shares: data.shares,
-                    shareType: data.shareType,
-                    marketId: data.marketId,
+                    shares,
+                    shareType,
+                    marketId,
                 }),
                 {
                     account: this.prediqtMarketContract,

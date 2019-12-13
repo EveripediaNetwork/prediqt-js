@@ -10,6 +10,13 @@ export interface Authorization {
     permission: string;
 }
 
+export interface Contracts {
+    prediqt?: string;
+    prediqtMarket?: string;
+    everipedia?: string;
+    prediqtBank?: string;
+}
+
 export interface Fee {
     id: number;
     fee: number;
