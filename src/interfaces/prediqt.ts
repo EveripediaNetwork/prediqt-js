@@ -10,9 +10,24 @@ export interface Authorization {
     permission: string;
 }
 
+export interface Contracts {
+    prediqt?: string;
+    prediqtMarket?: string;
+    iqToken?: string;
+    prediqtBank?: string;
+}
+
 export interface Fee {
     id: number;
     fee: number;
+}
+
+export interface CreateMarket {
+    creator: string;
+    resolver: string;
+    ipfs: string;
+    timeIn: number;
+    transferToken: string;
 }
 
 export interface MarketIpfs {
@@ -64,6 +79,28 @@ export interface TransferShares {
     marketId: number;
 }
 
+export interface TransferSharesAction {
+    account: string;
+    name: string;
+    authorization: Authorization[];
+    data: ObjectKeys;
+}
+
+export interface SellShares {
+    from: string;
+    shares: number;
+    shareType: boolean;
+    marketId: number;
+    price: string;
+}
+
+export interface ProposeMultiSig {
+    proposalName: string;
+    proposer: string;
+    requested: string[];
+    trx: ObjectKeys;
+}
+
 export interface MarketResolve {
     resolver: string;
     marketId: number;
@@ -85,13 +122,27 @@ export interface LimitOrder {
 export interface TransferAction {
     account: string;
     name: string;
-    authorization: object;
+    authorization: Authorization[];
     data: {
         from: string;
         to: string;
         quantity: string;
         memo: string;
     };
+}
+
+export interface CancelShares {
+    from: string;
+    shareId: string;
+    marketId: number;
+}
+export interface BuyShares {
+    from: string;
+    price: string;
+    shares: number;
+    shareType: boolean;
+    marketId: number;
+    transferToken: string;
 }
 
 export interface UserResources {

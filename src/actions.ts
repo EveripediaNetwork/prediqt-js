@@ -1,8 +1,9 @@
-import { TransferAction } from "./interfaces/prediqt";
+import {Authorization, TransferAction, TransferShares, TransferSharesAction} from "./interfaces/prediqt";
+import {processData} from "./tools/utils";
 
-export function transfer(
+export function transferAction(
     contract: string,
-    authorization: object,
+    authorization: Authorization[],
     from: string,
     to: string,
     quantity: string,
@@ -18,5 +19,18 @@ export function transfer(
             quantity,
             memo,
         },
+    };
+}
+
+export function transferSharesAction(
+    account: string,
+    authorization: Authorization[],
+    data: TransferShares,
+): TransferSharesAction {
+    return {
+        account,
+        name: "trnsfrshares",
+        authorization,
+        data: processData(data),
     };
 }

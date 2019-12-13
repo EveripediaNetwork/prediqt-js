@@ -16,28 +16,56 @@ import {
     LimitOrder,
     UserResources,
     IqBalance,
+    CancelShares,
+    BuyShares,
+    CreateMarket,
+    SellShares,
+    Contracts,
+    ProposeMultiSig,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
-import {isObject, processData} from "./utils";
-import {transfer} from "./actions";
+
+import {transferAction, transferSharesAction} from "./actions";
+import {isObject, processData} from "./tools/utils";
+
+import {
+    EOSIO_TOKEN_CONTRACT,
+    EOSIO_CONTRACT,
+    PREDIQT_CONTRACT,
+    PREDIQT_MARKET_CONTRACT,
+    EVERIPEDIA_CONTRACT,
+    PREDIQT_BANK_CONTRACT,
+    EOSIO_MULTISIG_CONTRACT,
+} from "./tools/constants";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
     private readonly api: Api;
     private readonly prediqtContract: string;
     private readonly prediqtMarketContract: string;
-    private readonly everipediaContract: string;
-    private auth: any;
+    private readonly iqTokenContract: string;
+    private readonly prediqtBankContract: string;
+    private readonly eosioTokenContract: string;
+    private readonly eosioContract: string;
+    private readonly eosioMultiSigContract: string;
+    private auth: Authorization[];
 
     private transactParams: TransactParams = {
         blocksBehind: 3,
         expireSeconds: 60,
     };
 
-    constructor(nodeEndpoint: string, signatureProvider: SignatureProvider, auth: Authorization[]) {
-        this.prediqtContract = process.env.PREDIQT_CONTRACT as string;
-        this.prediqtMarketContract = process.env.PREDIQT_MARKET_CONTRACT as string;
-        this.everipediaContract = process.env.EVERIPEDIA_CONTRACT as string;
+    constructor(nodeEndpoint: string,
+                signatureProvider: SignatureProvider,
+                auth: Authorization[] = [],
+                contracts: Contracts = {}) {
+        this.prediqtContract = contracts.prediqt || PREDIQT_CONTRACT;
+        this.prediqtMarketContract = contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
+        this.iqTokenContract = contracts.iqToken || EVERIPEDIA_CONTRACT;
+        this.prediqtBankContract = contracts.prediqtBank || PREDIQT_BANK_CONTRACT;
+        this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
+        this.eosioContract = EOSIO_CONTRACT;
+        this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
@@ -150,20 +178,36 @@ export class Prediqt {
     /**
      * Create a Market
      */
-    public async createMarket(creator: string, resolver: string, ipfs: string, timeIn: number): Promise<any> {
+    public async createMarket(data: CreateMarket): Promise<any> {
+        const {
+            creator,
+            resolver,
+            ipfs,
+            timeIn,
+            transferToken,
+        } = data;
         return await this.api.transact(
             {
-                actions: [{
-                    account: this.prediqtContract,
-                    name: "createmarket",
-                    authorization: this.auth,
-                    data: {
+                actions: [
+                    transferAction(
+                        this.iqTokenContract,
+                        this.auth,
                         creator,
-                        resolver,
-                        ipfs,
-                        time_in: timeIn,
-                    },
-                }],
+                        this.prediqtContract,
+                        transferToken,
+                        "createmarket 5 IQ",
+                    ),
+                    {
+                        account: this.prediqtContract,
+                        name: "createmarket",
+                        authorization: this.auth,
+                        data: {
+                            creator,
+                            resolver,
+                            ipfs,
+                            time_in: timeIn,
+                        },
+                    }],
             },
             this.transactParams,
         );
@@ -198,9 +242,9 @@ export class Prediqt {
             marketId,
             shares,
             limit,
-            transferToken,
             referral,
             buy,
+            transferToken,
         } = data;
         if (!Object.values(OrderTypes).includes(nameId)) {
             throw new Error(`nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`);
@@ -209,8 +253,8 @@ export class Prediqt {
         return await this.api.transact(
             {
                 actions: [
-                    transfer(
-                        process.env.EOSIO_TOKEN_CONTRACT as string,
+                    transferAction(
+                        this.eosioTokenContract,
                         this.auth,
                         user,
                         this.prediqtContract,
@@ -336,23 +380,6 @@ export class Prediqt {
     }
 
     /**
-     * Transfer shares between users
-     */
-    public async transferShares(data: TransferShares): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [{
-                    account: this.prediqtContract,
-                    name: "trnsfrshares",
-                    authorization: this.auth,
-                    data: processData(data),
-                }],
-            },
-            this.transactParams,
-        );
-    }
-
-    /**
      * Withdraw from user balance
      */
     public async withdraw(user: string, quantity: string): Promise<any> {
@@ -387,6 +414,107 @@ export class Prediqt {
             },
             this.transactParams,
         );
+    }
+
+    /**
+     * Transfer shares between users
+     */
+    public async transferShares(data: TransferShares): Promise<any> {
+        return await this.api.transact(
+            {
+                actions: [transferSharesAction(this.prediqtContract, this.auth, data)],
+            },
+            this.transactParams,
+        );
+    }
+
+    /**
+     * Cancel user's shares
+     */
+    public async cancelShares(data: CancelShares): Promise<any> {
+        return await this.api.transact({
+            actions: [
+                {
+                    account: this.prediqtMarketContract,
+                    name: "cancelshares",
+                    authorization: this.auth,
+                    data: processData(data),
+                }],
+        });
+
+    }
+
+    /**
+     * Buy shares
+     */
+    public async buyShares(data: BuyShares): Promise<any> {
+        const {
+            from,
+            price,
+            shares,
+            shareType,
+            marketId,
+            transferToken,
+        } = data;
+        return await this.api.transact({
+            actions: [
+                transferAction(
+                    this.eosioTokenContract,
+                    this.auth,
+                    from,
+                    this.prediqtContract,
+                    transferToken,
+                    `create order for secondary market ${marketId}`,
+                ),
+                {
+                    account: this.prediqtMarketContract,
+                    name: "buyshares",
+                    authorization: this.auth,
+                    data: {
+                        from,
+                        price,
+                        shares,
+                        sharetype: shareType,
+                        market_id: marketId,
+                    },
+                }],
+        });
+
+    }
+
+    /**
+     * Sell shares
+     */
+    public async sellShares(data: SellShares): Promise<any> {
+        const {from, shares, shareType, marketId} = data;
+        return await this.api.transact({
+            actions: [
+                transferSharesAction(this.prediqtContract, this.auth, {
+                    from,
+                    to: this.prediqtMarketContract,
+                    shares,
+                    shareType,
+                    marketId,
+                }),
+                {
+                    account: this.prediqtMarketContract,
+                    name: "sellshares",
+                    authorization: this.auth,
+                    data: processData(data),
+                }],
+        });
+    }
+
+    public async proposeMultiSig(data: ProposeMultiSig): Promise<any> {
+        return await this.api.transact({
+            actions: [
+                {
+                    account: this.eosioMultiSigContract,
+                    name: "propose",
+                    authorization: this.auth,
+                    data: processData(data),
+                }],
+        });
     }
 
     /**
@@ -493,7 +621,7 @@ export class Prediqt {
      */
     public async getIqBalance(username: string): Promise<IqBalance> {
         const table = await this.rpc.get_table_rows({
-            code: this.everipediaContract, scope: username, table: "accounts", json: true,
+            code: this.iqTokenContract, scope: username, table: "accounts", json: true,
             table_key: username,
         });
         return table.rows[0];
@@ -504,7 +632,7 @@ export class Prediqt {
      */
     public async getUserResources(username: string): Promise<UserResources> {
         const table = await this.rpc.get_table_rows({
-            code: process.env.EOSIO_CONTRACT as string, scope: username, table: "userres", json: true,
+            code: this.eosioContract, scope: username, table: "userres", json: true,
             table_key: username,
         });
         return table.rows[0];

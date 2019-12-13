@@ -1,3 +1,10 @@
+import dotenv from "dotenv";
+const currentConfig = dotenv.config({ path: `${__dirname}/../.env.test` });
+
+if (currentConfig.error) {
+    throw currentConfig.error;
+}
+
 import {Prediqt} from "../src";
 import {JsSignatureProvider} from "eosjs/dist/eosjs-jssig";
 
