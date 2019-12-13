@@ -21,6 +21,7 @@ import {
     CreateMarket,
     SellShares,
     Contracts,
+    ProposeMultiSig,
 } from "./interfaces/prediqt";
 import {OrderTypes} from "./enums/prediqt";
 
@@ -34,6 +35,7 @@ import {
     PREDIQT_MARKET_CONTRACT,
     EVERIPEDIA_CONTRACT,
     PREDIQT_BANK_CONTRACT,
+    EOSIO_MULTISIG_CONTRACT,
 } from "./tools/constants";
 
 export class Prediqt {
@@ -45,6 +47,7 @@ export class Prediqt {
     private readonly prediqtBankContract: string;
     private readonly eosioTokenContract: string;
     private readonly eosioContract: string;
+    private readonly eosioMultiSigContract: string;
     private auth: Authorization[];
 
     private transactParams: TransactParams = {
@@ -60,8 +63,9 @@ export class Prediqt {
         this.prediqtMarketContract = contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
         this.everipediaContract = contracts.everipedia || EVERIPEDIA_CONTRACT;
         this.prediqtBankContract = contracts.prediqtBank || PREDIQT_BANK_CONTRACT;
-        this.eosioTokenContract = EOSIO_TOKEN_CONTRACT as string;
-        this.eosioContract = EOSIO_CONTRACT as string;
+        this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
+        this.eosioContract = EOSIO_CONTRACT;
+        this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
@@ -478,6 +482,9 @@ export class Prediqt {
 
     }
 
+    /**
+     * Sell shares
+     */
     public async sellShares(data: SellShares): Promise<any> {
         const {from, shares, shareType, marketId} = data;
         return await this.api.transact({
@@ -492,6 +499,18 @@ export class Prediqt {
                 {
                     account: this.prediqtMarketContract,
                     name: "sellshares",
+                    authorization: this.auth,
+                    data: processData(data),
+                }],
+        });
+    }
+
+    public async proposeMultiSig(data: ProposeMultiSig): Promise<any> {
+        return await this.api.transact({
+            actions: [
+                {
+                    account: this.eosioMultiSigContract,
+                    name: "propose",
                     authorization: this.auth,
                     data: processData(data),
                 }],

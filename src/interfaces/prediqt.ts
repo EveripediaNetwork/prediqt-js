@@ -94,6 +94,13 @@ export interface SellShares {
     price: string;
 }
 
+export interface ProposeMultiSig {
+    proposalName: string;
+    proposer: string;
+    requested: string[];
+    trx: ObjectKeys;
+}
+
 export interface MarketResolve {
     resolver: string;
     marketId: number;
