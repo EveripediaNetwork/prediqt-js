@@ -13,7 +13,7 @@ export interface Authorization {
 export interface Contracts {
     prediqt?: string;
     prediqtMarket?: string;
-    everipedia?: string;
+    iqToken?: string;
     prediqtBank?: string;
 }
 

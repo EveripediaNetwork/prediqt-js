@@ -43,7 +43,7 @@ export class Prediqt {
     private readonly api: Api;
     private readonly prediqtContract: string;
     private readonly prediqtMarketContract: string;
-    private readonly everipediaContract: string;
+    private readonly iqTokenContract: string;
     private readonly prediqtBankContract: string;
     private readonly eosioTokenContract: string;
     private readonly eosioContract: string;
@@ -61,7 +61,7 @@ export class Prediqt {
                 contracts: Contracts = {}) {
         this.prediqtContract = contracts.prediqt || PREDIQT_CONTRACT;
         this.prediqtMarketContract = contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
-        this.everipediaContract = contracts.everipedia || EVERIPEDIA_CONTRACT;
+        this.iqTokenContract = contracts.iqToken || EVERIPEDIA_CONTRACT;
         this.prediqtBankContract = contracts.prediqtBank || PREDIQT_BANK_CONTRACT;
         this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
         this.eosioContract = EOSIO_CONTRACT;
@@ -190,7 +190,7 @@ export class Prediqt {
             {
                 actions: [
                     transferAction(
-                        this.everipediaContract,
+                        this.iqTokenContract,
                         this.auth,
                         creator,
                         this.prediqtContract,
@@ -621,7 +621,7 @@ export class Prediqt {
      */
     public async getIqBalance(username: string): Promise<IqBalance> {
         const table = await this.rpc.get_table_rows({
-            code: this.everipediaContract, scope: username, table: "accounts", json: true,
+            code: this.iqTokenContract, scope: username, table: "accounts", json: true,
             table_key: username,
         });
         return table.rows[0];
