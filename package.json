@@ -12,7 +12,8 @@
     "prepublishOnly": "tsc",
     "test": "jest --coverage",
     "posttest": "tslint -p .",
-    "docs": "tsc && documentation readme dist/index.js -s API"
+    "docs": "tsc && documentation readme dist/index.js -s API",
+    "postinstall": "npx tsc"
   },
   "homepage": "https://github.com/everipedianetwork/prediqt-js",
   "repository": {

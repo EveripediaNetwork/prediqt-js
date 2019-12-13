@@ -25,13 +25,13 @@ import {OrderTypes} from "./enums/prediqt";
 
 import {transferAction, transferSharesAction} from "./actions";
 import {isObject, processData} from "./tools/utils";
-import {
+/*import {
     PREDIQT_CONTRACT,
     PREDIQT_MARKET_CONTRACT,
     EVERIPEDIA_CONTRACT,
     EOSIO_TOKEN_CONTRACT,
     EOSIO_CONTRACT,
-} from "./tools/constants";
+} from "./tools/constants";*/
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
@@ -49,11 +49,11 @@ export class Prediqt {
     };
 
     constructor(nodeEndpoint: string, signatureProvider: SignatureProvider, auth: Authorization[]) {
-        this.prediqtContract = PREDIQT_CONTRACT as string;
-        this.prediqtMarketContract = PREDIQT_MARKET_CONTRACT as string;
-        this.everipediaContract = EVERIPEDIA_CONTRACT as string;
-        this.eosioTokenContract = EOSIO_TOKEN_CONTRACT as string;
-        this.eosioContract = EOSIO_CONTRACT as string;
+        this.prediqtContract = process.env.REACT_APP_PREDIQT_CONTRACT as string;
+        this.prediqtMarketContract = process.env.REACT_APP_PREDIQT_MARKET_CONTRACT as string;
+        this.everipediaContract = process.env.REACT_APP_EVERIPEDIA_CONTRACT as string;
+        this.eosioTokenContract = process.env.REACT_APP_EOSIO_TOKEN_CONTRACT as string;
+        this.eosioContract = process.env.REACT_APP_EOSIO_CONTRACT as string;
         this.rpc = new JsonRpc(nodeEndpoint, {fetch: fetch as any});
         this.api = new Api({rpc: this.rpc, signatureProvider});
         this.auth = auth;
