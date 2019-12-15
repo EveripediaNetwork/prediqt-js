@@ -30,21 +30,11 @@ export interface CreateMarket {
     transferToken: string;
 }
 
-export interface MarketIpfs {
-    hash: string;
-    title: string;
-    description: string;
-    image_url: string;
-    category: string;
-    tags: string[];
-    resolution_description: string;
-}
-
 export interface Market {
     id: number;
     creator: string;
     resolver: string;
-    ipfs: MarketIpfs;
+    ipfs: string;
     endofmarkettime: number;
     active: boolean;
     resolved: boolean;
