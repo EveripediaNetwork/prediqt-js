@@ -30,7 +30,7 @@ export class PrediqtGraph {
         return json.data.markets as MarketGQL[];
     }
 
-    public async getMarketPage(marketId: number, loggedInUser: string): Promise<MarketPageGQL> {
+    public async getMarketPage(marketId: number, loggedInUser: Nullable<string>): Promise<MarketPageGQL> {
         const result = await this.query(
             GET_MARKET_PAGE_DATA(marketId, loggedInUser),
         );

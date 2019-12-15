@@ -49,7 +49,7 @@ export const GET_MARKETS_LAZY = (exclude_invalid_ipfs: boolean,
       }
     `;
 
-export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: string) => `
+export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<string>) => `
   {
     market_by_id(id: ${marketId}) {
       id
