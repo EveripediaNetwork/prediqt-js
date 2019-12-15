@@ -48,55 +48,73 @@ const client = new Prediqt(endpoint, { fetch })
 
 #### Table of Contents
 
--   [setFee](#setfee)
+-   [setAuth](#setauth)
     -   [Parameters](#parameters)
--   [acceptMarket](#acceptmarket)
+-   [setFee](#setfee)
     -   [Parameters](#parameters-1)
--   [claimShares](#claimshares)
+-   [acceptMarket](#acceptmarket)
     -   [Parameters](#parameters-2)
--   [cancelOrderNo](#cancelorderno)
+-   [claimShares](#claimshares)
     -   [Parameters](#parameters-3)
--   [cancelOrderYes](#cancelorderyes)
+-   [cancelOrder](#cancelorder)
     -   [Parameters](#parameters-4)
 -   [createMarket](#createmarket)
     -   [Parameters](#parameters-5)
--   [delMarket](#delmarket)
+-   [deleteMarket](#deletemarket)
     -   [Parameters](#parameters-6)
--   [limitOrderNo](#limitorderno)
+-   [limitOrder](#limitorder)
     -   [Parameters](#parameters-7)
--   [limitOrderYes](#limitorderyes)
-    -   [Parameters](#parameters-8)
 -   [marketInvalid](#marketinvalid)
-    -   [Parameters](#parameters-9)
+    -   [Parameters](#parameters-8)
 -   [marketResolve](#marketresolve)
-    -   [Parameters](#parameters-10)
+    -   [Parameters](#parameters-9)
 -   [proposeMarket](#proposemarket)
-    -   [Parameters](#parameters-11)
+    -   [Parameters](#parameters-10)
 -   [rejectMarket](#rejectmarket)
-    -   [Parameters](#parameters-12)
+    -   [Parameters](#parameters-11)
 -   [setResolver](#setresolver)
+    -   [Parameters](#parameters-12)
+-   [withdraw](#withdraw)
     -   [Parameters](#parameters-13)
+-   [syncBank](#syncbank)
 -   [transferShares](#transfershares)
     -   [Parameters](#parameters-14)
--   [withdraw](#withdraw)
+-   [cancelShares](#cancelshares)
     -   [Parameters](#parameters-15)
--   [syncBank](#syncbank)
--   [getFees](#getfees)
+-   [buyShares](#buyshares)
     -   [Parameters](#parameters-16)
--   [getShares](#getshares)
+-   [sellShares](#sellshares)
     -   [Parameters](#parameters-17)
--   [getReferrals](#getreferrals)
+-   [getFees](#getfees)
     -   [Parameters](#parameters-18)
--   [getMarkets](#getmarkets)
+-   [getShares](#getshares)
     -   [Parameters](#parameters-19)
--   [getMarket](#getmarket)
+-   [getReferrals](#getreferrals)
     -   [Parameters](#parameters-20)
--   [getOrdersYes](#getordersyes)
+-   [getMarkets](#getmarkets)
     -   [Parameters](#parameters-21)
--   [getOrdersNo](#getordersno)
+-   [getMarket](#getmarket)
     -   [Parameters](#parameters-22)
--   [getBalance](#getbalance)
+-   [getOrdersYes](#getordersyes)
     -   [Parameters](#parameters-23)
+-   [getOrdersNo](#getordersno)
+    -   [Parameters](#parameters-24)
+-   [getBalance](#getbalance)
+    -   [Parameters](#parameters-25)
+-   [getIqBalance](#getiqbalance)
+    -   [Parameters](#parameters-26)
+-   [getUserResources](#getuserresources)
+    -   [Parameters](#parameters-27)
+-   [getAccount](#getaccount)
+    -   [Parameters](#parameters-28)
+
+### setAuth
+
+Utility methods
+
+#### Parameters
+
+-   `auth`  
 
 ### setFee
 
@@ -124,22 +142,13 @@ Claim shares for a particular market
 -   `user`  
 -   `marketId`  
 
-### cancelOrderNo
+### cancelOrder
 
-Cancel an order of type No
-
-#### Parameters
-
--   `user`  
--   `marketId`  
--   `id`  
-
-### cancelOrderYes
-
-Cancel an order of type Yes
+Cancel an order
 
 #### Parameters
 
+-   `nameId`  
 -   `user`  
 -   `marketId`  
 -   `id`  
@@ -150,12 +159,9 @@ Create a Market
 
 #### Parameters
 
--   `creator`  
--   `resolver`  
--   `ipfs`  
--   `time_in`  
+-   `data`  
 
-### delMarket
+### deleteMarket
 
 Delete an existing Market
 
@@ -163,31 +169,13 @@ Delete an existing Market
 
 -   `marketId`  
 
-### limitOrderNo
+### limitOrder
 
-Open an order for share type No in a market
-
-#### Parameters
-
--   `user`  
--   `marketId`  
--   `shares`  
--   `limit`  
--   `referral`  
--   `buy`  
-
-### limitOrderYes
-
-Open an order for share type Yes in a market
+Open an order for shares in a market
 
 #### Parameters
 
--   `user`  
--   `marketId`  
--   `shares`  
--   `limit`  
--   `referral`  
--   `buy`  
+-   `data`  
 
 ### marketInvalid
 
@@ -204,10 +192,7 @@ Set the outcome of a market (only resolver)
 
 #### Parameters
 
--   `resolver`  
--   `marketId`  
--   `shareType`  
--   `memo`  
+-   `data`  
 
 ### proposeMarket
 
@@ -218,7 +203,7 @@ Propose a market to be part of the active markets
 -   `creator`  
 -   `resolver`  
 -   `ipfs`  
--   `time_in`  
+-   `timeIn`  
 
 ### rejectMarket
 
@@ -238,18 +223,6 @@ Change resolver for a market (admin only)
 -   `resolver`  
 -   `marketId`  
 
-### transferShares
-
-Transfer shares between users
-
-#### Parameters
-
--   `from`  
--   `to`  
--   `shares`  
--   `shareType`  
--   `marketId`  
-
 ### withdraw
 
 Withdraw from user balance
@@ -262,6 +235,38 @@ Withdraw from user balance
 ### syncBank
 
 Sync Bank
+
+### transferShares
+
+Transfer shares between users
+
+#### Parameters
+
+-   `data`  
+
+### cancelShares
+
+Cancel user's shares
+
+#### Parameters
+
+-   `data`  
+
+### buyShares
+
+Buy shares
+
+#### Parameters
+
+-   `data`  
+
+### sellShares
+
+Sell shares
+
+#### Parameters
+
+-   `data`  
 
 ### getFees
 
@@ -300,6 +305,7 @@ Get markets
 
 -   `limit`   (optional, default `100`)
 -   `offset`   (optional, default `0`)
+-   `tableKey`   (optional, default `""`)
 
 ### getMarket
 
@@ -318,6 +324,7 @@ Get order of type Yes for a market
 -   `marketId`  
 -   `limit`   (optional, default `100`)
 -   `offset`   (optional, default `0`)
+-   `tableKey`   (optional, default `""`)
 
 ### getOrdersNo
 
@@ -328,6 +335,7 @@ Get order of type No for a market
 -   `marketId`  
 -   `limit`   (optional, default `100`)
 -   `offset`   (optional, default `0`)
+-   `tableKey`   (optional, default `""`)
 
 ### getBalance
 
@@ -335,6 +343,29 @@ Get balance of an user
 
 #### Parameters
 
--   `holder`  
+-   `username`  
 -   `symbol`  
--   `limit`   (optional, default `1`)
+
+### getIqBalance
+
+Get IQ balance of an user
+
+#### Parameters
+
+-   `username`  
+
+### getUserResources
+
+Get resources of an user
+
+#### Parameters
+
+-   `username`  
+
+### getAccount
+
+Get account data of an user
+
+#### Parameters
+
+-   `username`  
