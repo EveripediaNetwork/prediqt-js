@@ -320,10 +320,18 @@ export class Prediqt {
     /**
      * Propose a market to be part of the active markets
      */
-    public async proposeMarket(creator: string, resolver: string, ipfs: string, timeIn: number): Promise<any> {
+    public async proposeMarket(creator: string, resolver: string, ipfs: string, timeIn: number, transferToken: string, transferMemo: string): Promise<any> {
         return await this.api.transact(
             {
-                actions: [{
+                actions: [
+                    transferAction(
+                    this.iqTokenContract,
+                    this.auth,
+                    creator,
+                    this.prediqtContract,
+                    transferToken,
+                    transferMemo,
+                ), {
                     account: this.prediqtContract,
                     name: "propmarket",
                     authorization: this.auth,
