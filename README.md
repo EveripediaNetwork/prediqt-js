@@ -204,6 +204,8 @@ Propose a market to be part of the active markets
 -   `resolver`  
 -   `ipfs`  
 -   `timeIn`  
+-   `transferToken`  
+-   `transferMemo`  
 
 ### rejectMarket
 
