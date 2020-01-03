@@ -124,6 +124,10 @@ export interface DappInfoGQL {
     support_email: string;
 }
 
+export interface ChainInfoGQL {
+    blocks_behind: number;
+}
+
 export interface  UserProfileOpenOrderGQL {
     market: {
         id: number;

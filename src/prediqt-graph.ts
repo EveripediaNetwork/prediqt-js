@@ -1,5 +1,5 @@
 import {
-    CategoriesGQL,
+    CategoriesGQL, ChainInfoGQL,
     DappInfoGQL,
     MarketGQL,
     MarketPageGQL, MarketUpdateGQL,
@@ -7,6 +7,7 @@ import {
     UserProfileGQL,
 } from "./interfaces/prediqt-graphql";
 import {
+    GET_BLOCKS_BEHIND_INFO,
     GET_CATEGORIES_TAGS, GET_DAPP_INFO, GET_MARKET,
     GET_MARKET_PAGE_DATA,
     GET_MARKETS_LAZY,
@@ -112,7 +113,7 @@ export class PrediqtGraph {
         return json.data.dapp_info as DappInfoGQL[];
     }
 
-    public async getUserProfile(userName: Nullable<string>): Promise<UserProfileGQL>{
+    public async getUserProfile(userName: Nullable<string>): Promise<UserProfileGQL> {
         const result = await this.query(
             GET_USER_PROFILE(userName),
         );
@@ -122,7 +123,7 @@ export class PrediqtGraph {
         return json.data.dapp_info as UserProfileGQL;
     }
 
-    public async getShareHolders(marketId: number, loggedInUser: Nullable<string>): Promise<ShareHolderGQL[]>{
+    public async getShareHolders(marketId: number, loggedInUser: Nullable<string>): Promise<ShareHolderGQL[]> {
         const result = await this.query(
             GET_SHAREHOLDER(marketId, loggedInUser),
         );
@@ -131,6 +132,17 @@ export class PrediqtGraph {
 
         return json.data.market_by_id.shareholders as ShareHolderGQL[];
 
+    }
+
+    public async getChainInfo(): Promise<ChainInfoGQL> {
+
+        const result = await this.query(
+            GET_BLOCKS_BEHIND_INFO,
+        );
+
+        const json = await result.json();
+
+        return json.data.chain_info as ChainInfoGQL;
     }
 
     private async query(query: string): Promise<any> {

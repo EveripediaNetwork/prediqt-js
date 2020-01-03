@@ -305,3 +305,11 @@ export const GET_PLATFORM_FEES = `
     }
   }
 `;
+
+export const GET_BLOCKS_BEHIND_INFO = `
+  {
+    chain_info {
+      blocks_behind
+    }
+  }
+`;
