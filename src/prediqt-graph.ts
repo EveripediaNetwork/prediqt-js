@@ -120,7 +120,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.dapp_info as UserProfileGQL;
+        return json.data.user_profile as UserProfileGQL;
     }
 
     public async getShareHolders(marketId: number, loggedInUser: Nullable<string>): Promise<ShareHolderGQL[]> {
