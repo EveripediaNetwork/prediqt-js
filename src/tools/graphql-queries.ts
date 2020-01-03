@@ -5,9 +5,10 @@ export const GET_MARKETS_LAZY = (exclude_invalid_ipfs: boolean,
                                  count: number,
                                  is_verified: string,
                                  creator: string,
+                                 only_proposed: boolean,
                                  filterURLParam: Nullable<{ paramName: string, paramValue: string }>): string => `
     query {
-        markets(sort_by: "ending_latest", exclude_invalid_ipfs: ${exclude_invalid_ipfs}, skip: ${skip}, count: ${count}, is_verified: "${is_verified}", creator: "${creator}"${filterURLParam ? `, ${filterURLParam.paramName}: "${filterURLParam.paramValue}"` : ""}) {
+        markets(sort_by: "ending_latest", exclude_invalid_ipfs: ${exclude_invalid_ipfs}, skip: ${skip}, count: ${count}, is_verified: "${is_verified}", creator: "${creator}"${filterURLParam ? `, ${filterURLParam.paramName}: "${filterURLParam.paramValue}"` : ""}${only_proposed ? ", is_proposal: true, is_resolved: false" : ""}) {
           id
           creator {
             name

@@ -4,7 +4,7 @@ import {
     MarketGQL,
     MarketPageGQL, MarketUpdateGQL,
     PlatformFeesGQL, ShareHolderGQL,
-    UserProfileGQL
+    UserProfileGQL,
 } from "./interfaces/prediqt-graphql";
 import {
     GET_CATEGORIES_TAGS, GET_DAPP_INFO, GET_MARKET,
@@ -23,6 +23,24 @@ export class PrediqtGraph {
         this.url = url;
     }
 
+    public async getProposedMarkets(skip: number,
+                                    count: number,
+                                    filterURLParam: Nullable<{ paramName: string, paramValue: string }>): Promise<MarketGQL[]>{
+        const result = await this.query(
+            GET_MARKETS_LAZY(true,
+                skip,
+                count,
+                "all",
+                "",
+                true,
+                filterURLParam),
+        );
+
+        const json = await result.json();
+
+        return json.data.markets as MarketGQL[];
+    }
+
     public async getMarkets(exclude_invalid_ipfs: boolean,
                             skip: number,
                             count: number,
@@ -35,6 +53,7 @@ export class PrediqtGraph {
                 count,
                 is_verified,
                 creator,
+                false,
                 filterURLParam),
         );
 
