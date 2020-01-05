@@ -26,13 +26,14 @@ export class PrediqtGraph {
 
     public async getProposedMarkets(skip: number,
                                     count: number,
-                                    filterURLParam: Nullable<{ paramName: string, paramValue: string }>): Promise<MarketGQL[]>{
+                                    filterURLParam: Nullable<{ paramName: string, paramValue: string }>,
+                                    creator: string = ""): Promise<MarketGQL[]> {
         const result = await this.query(
             GET_MARKETS_LAZY(true,
                 skip,
                 count,
                 "all",
-                "",
+                creator,
                 true,
                 filterURLParam),
         );
