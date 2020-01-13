@@ -1,5 +1,5 @@
 import {Authorization, TransferAction, TransferShares, TransferSharesAction} from "./interfaces/prediqt";
-import {processData} from "./tools/utils";
+import {processData} from "./tools";
 
 export function transferAction(
     contract: string,

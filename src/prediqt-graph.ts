@@ -20,7 +20,7 @@ import {
   GET_SHAREHOLDER,
   GET_USER_PROFILE,
   Nullable,
-} from "./tools/graphql-queries";
+} from "./tools";
 
 const fetch = require("isomorphic-fetch");
 

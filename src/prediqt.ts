@@ -26,7 +26,7 @@ import {
 import {OrderTypes} from "./enums/prediqt";
 
 import {transferAction, transferSharesAction} from "./actions";
-import {isObject, processData} from "./tools/utils";
+import {isObject, processData} from "./tools";
 
 import {
     EOSIO_TOKEN_CONTRACT,
