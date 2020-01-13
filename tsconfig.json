@@ -28,6 +28,7 @@
     "src/enums/prediqt.ts",
     "src/interfaces/prediqt.ts",
     "src/interfaces/prediqt-graphql.ts",
-    "src/tools/index.ts"
+    "src/tools/utils.ts",
+    "src/tools/graphql-queries.ts"
   ]
 }
