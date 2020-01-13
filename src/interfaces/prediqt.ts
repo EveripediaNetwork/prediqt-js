@@ -1,4 +1,4 @@
-import {OrderTypes} from "../enums/prediqt";
+import { OrderTypes } from "../enums/prediqt";
 
 export interface TransactParams {
     blocksBehind: number;

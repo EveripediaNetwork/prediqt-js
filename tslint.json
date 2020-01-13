@@ -5,6 +5,7 @@
   ],
   "jsRules": {},
   "rules": {
+    "arrow-parens": false,
     "interface-name": false,
     "max-line-length": false,
     "max-classes-per-file": false,
@@ -12,6 +13,7 @@
     "variable-name": false,
     "no-console": false,
     "ordered-imports": false,
+    "trailing-comma": false,
     "no-trailing-whitespace": false,
     "no-var-requires": false
   },
