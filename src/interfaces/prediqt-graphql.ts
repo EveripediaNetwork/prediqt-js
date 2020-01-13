@@ -1,3 +1,5 @@
+import { OrderTypesUppercase } from "../enums/prediqt";
+
 export interface MarketIpfsGQL {
     hash: string;
     title: string;
@@ -23,7 +25,7 @@ export interface OrderBookGQL {
     currency: string;
     type: string;
     quantity: number;
-    symbol: string;
+    symbol: OrderTypesUppercase;
     timestamp: Date;
 }
 
