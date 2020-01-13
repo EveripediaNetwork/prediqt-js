@@ -36,7 +36,7 @@ import {
     EVERIPEDIA_CONTRACT,
     PREDIQT_BANK_CONTRACT,
     EOSIO_MULTISIG_CONTRACT,
-} from "./tools/constants";
+} from "./constants";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
