@@ -29,6 +29,7 @@
     "src/interfaces/prediqt.ts",
     "src/interfaces/prediqt-graphql.ts",
     "src/tools/utils.ts",
-    "src/tools/graphql-queries.ts"
+    "src/tools/graphql-queries.ts",
+    "src/tools/index.ts"
   ]
 }
