@@ -14,7 +14,7 @@
     "posttest": "tslint -p .",
     "minify": "jsmin -o ./dist/prediqt.min.js ./dist/prediqt.js",
     "docs": "tsc && documentation readme dist/index.js -s API",
-    "postinstall": "npx tsc && npm run minify"
+    "postinstall": "npx tsc"
   },
   "homepage": "https://github.com/EveripediaNetwork/prediqt-js",
   "repository": {
