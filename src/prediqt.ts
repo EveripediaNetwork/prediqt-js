@@ -26,7 +26,7 @@ import {
 import {OrderTypes} from "./enums/prediqt";
 
 import {transferAction, transferSharesAction} from "./actions";
-import {isObject, processData} from "./tools/utils";
+import {isObject, processData} from "./tools";
 
 import {
     EOSIO_TOKEN_CONTRACT,
@@ -36,7 +36,7 @@ import {
     EVERIPEDIA_CONTRACT,
     PREDIQT_BANK_CONTRACT,
     EOSIO_MULTISIG_CONTRACT,
-} from "./tools/constants";
+} from "./constants";
 
 export class Prediqt {
     private readonly rpc: JsonRpc;

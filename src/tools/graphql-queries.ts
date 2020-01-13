@@ -26,7 +26,6 @@ export const GET_MARKETS_LAZY = (exclude_invalid_ipfs: boolean,
             category
             tags
             resolution_description
-            content_type
           }
           is_active
           is_resolved
@@ -74,12 +73,25 @@ export const GET_MARKET = (marketId: number) => `
         category
         tags
         resolution_description
-        content_type
       }
       is_active
       is_resolved
       is_verified
+      is_hidden
       end_time
+      volume {
+        eos
+      }
+      order_book {
+        order_id
+        creator
+        price
+        currency
+        type
+        quantity
+        symbol
+        timestamp
+      }
     }
   }
 `;
@@ -104,7 +116,6 @@ export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<st
         category
         tags
         resolution_description
-        content_type
       }
       is_active
       is_resolved

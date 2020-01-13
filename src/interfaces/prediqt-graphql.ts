@@ -47,7 +47,11 @@ export interface MarketGQL {
     is_hidden: boolean;
     end_time: Date;
     volume: MarketVolumeGQL;
-    order_book: OrderBookGQL;
+    order_book: OrderBookGQL[];
+}
+
+export interface ExtendedMarketGQL extends MarketGQL {
+    trade_history: TradeHistoryGQL[];
 }
 
 export interface ShareHolderGQL {
@@ -82,20 +86,6 @@ export interface MarketPageGQL {
     trade_history: TradeHistoryGQL[];
     volume: MarketVolumeGQL;
     related: RelatedMarketGQL[];
-}
-
-export interface MarketUpdateGQL {
-    id: number;
-    creator: UserGQL;
-    resolver: UserGQL;
-    trade_history: TradeHistoryGQL[];
-    resolution: string;
-    resolution_markettime: Date;
-    ipfs: MarketIpfsGQL;
-    is_active: boolean;
-    is_resolved: boolean;
-    is_verified: boolean;
-    end_time: Date;
 }
 
 export interface PlatformFeesGQL {

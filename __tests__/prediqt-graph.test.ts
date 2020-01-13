@@ -10,6 +10,11 @@ test("Prediqt.getMarkets", async () => {
     expect(!!response).toBeTruthy();
 });
 
+test("Prediqt.getMarket", async () => {
+    const response = await client.getMarket(0);
+    expect(!!response).toBeTruthy();
+});
+
 test("Prediqt.getMarketPage", async () => {
     const response = await client.getMarketPage(12, null);
     expect(!!response).toBeTruthy();
