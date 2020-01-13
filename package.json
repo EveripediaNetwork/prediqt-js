@@ -13,7 +13,8 @@
     "test": "jest --coverage",
     "posttest": "tslint -p .",
     "minify": "jsmin -o ./dist/prediqt.min.js ./dist/prediqt.js",
-    "docs": "tsc && documentation readme dist/index.js -s API"
+    "docs": "tsc && documentation readme dist/index.js -s API",
+    "postinstall": "npx tsc && npm run minify"
   },
   "homepage": "https://github.com/EveripediaNetwork/prediqt-js",
   "repository": {
