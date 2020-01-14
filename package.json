@@ -1,6 +1,6 @@
 {
   "name": "@everipedia/prediqt-js",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "PredIQt JavaScript/TypeScript Client Library",
   "license": "MIT",
   "main": "dist/index.js",
@@ -13,8 +13,7 @@
     "test": "jest --coverage",
     "posttest": "tslint -p .",
     "minify": "jsmin -o ./dist/prediqt.min.js ./dist/prediqt.js",
-    "docs": "tsc && documentation readme dist/index.js -s API",
-    "postinstall": "npx tsc"
+    "docs": "tsc && documentation readme dist/index.js -s API"
   },
   "homepage": "https://github.com/EveripediaNetwork/prediqt-js",
   "repository": {
