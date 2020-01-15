@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "prepublishOnly": "tsc && npm run minify",
+    "prepublishOnly": "tsc && yarn minify",
     "test": "jest --coverage",
     "posttest": "tslint -p .",
     "minify": "jsmin -o ./dist/prediqt.min.js ./dist/prediqt.js",
