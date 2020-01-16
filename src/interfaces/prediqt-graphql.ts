@@ -1,4 +1,5 @@
 import { OrderTypesUppercase } from "../enums/prediqt";
+import { Nullable } from "../tools";
 
 export interface MarketIpfsGQL {
     hash: string;
@@ -41,7 +42,7 @@ export interface MarketGQL {
     creator: UserGQL;
     resolver: UserGQL;
     resolution: string;
-    resolution_markettime: Date;
+    resolution_markettime: Nullable<Date>;
     ipfs: MarketIpfsGQL;
     is_active: boolean;
     is_resolved: boolean;
@@ -77,7 +78,7 @@ export interface MarketPageGQL {
     creator: UserGQL;
     resolver: UserGQL;
     resolution: string;
-    resolution_markettime: Date;
+    resolution_markettime: Nullable<Date>;
     ipfs: MarketIpfsGQL;
     is_active: boolean;
     is_resolved: boolean;
