@@ -53,7 +53,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.markets as MarketGQL[];
+        return json.data.markets;
     }
 
     public async getMarkets(
@@ -78,7 +78,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.markets as MarketGQL[];
+        return json.data.markets;
     }
 
     public async getMarket(marketId: number): Promise<ExtendedMarketGQL> {
@@ -86,7 +86,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.market_by_id as ExtendedMarketGQL;
+        return json.data.market_by_id;
     }
 
     public async getMarketPage(
@@ -99,7 +99,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.market_by_id as MarketPageGQL;
+        return json.data.market_by_id;
     }
 
     public async getPlatformFees(): Promise<PlatformFeesGQL[]> {
@@ -107,7 +107,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.platform_fees as PlatformFeesGQL[];
+        return json.data.platform_fees;
     }
 
     public async getCategoriesAndTags(): Promise<CategoriesGQL[]> {
@@ -115,7 +115,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.categories as CategoriesGQL[];
+        return json.data.categories;
     }
 
     public async getDappInfo(): Promise<DappInfoGQL[]> {
@@ -123,7 +123,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.dapp_info as DappInfoGQL[];
+        return json.data.dapp_info;
     }
 
     public async getUserProfile(
@@ -133,7 +133,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.user_profile as UserProfileGQL;
+        return json.data.user_profile;
     }
 
     public async getShareHolders(
@@ -146,7 +146,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.market_by_id.shareholders as ShareHolderGQL[];
+        return json.data.market_by_id.shareholders;
     }
 
     public async getChainInfo(): Promise<ChainInfoGQL> {
@@ -154,7 +154,7 @@ export class PrediqtGraph {
 
         const json = await result.json();
 
-        return json.data.chain_info as ChainInfoGQL;
+        return json.data.chain_info;
     }
 
     private async query(query: string): Promise<any> {

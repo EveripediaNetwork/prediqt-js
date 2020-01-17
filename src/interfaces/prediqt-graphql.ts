@@ -61,7 +61,7 @@ export interface ShareHolderGQL {
     market: { id: number };
     shareholder: UserGQL;
     quantity: number;
-    symbol: string;
+    symbol: OrderTypesUppercase;
     updated_at: { num: number; id: string, time: Date; };
 }
 
@@ -69,7 +69,7 @@ export interface TradeHistoryGQL {
     price: number;
     currency: string;
     quantity: number;
-    symbol: string;
+    symbol: OrderTypesUppercase;
     block: { time: Date; };
 }
 
@@ -132,7 +132,7 @@ export interface  UserProfileOpenOrderGQL {
     currency: string;
     type: string;
     quantity: number;
-    symbol: string;
+    symbol: OrderTypesUppercase;
     timestamp: Date;
 }
 
@@ -141,7 +141,7 @@ export interface  UserProfileFilledOrderGQL {
         id: number;
         ipfs: { title: string; };
     };
-    symbol: string;
+    symbol: OrderTypesUppercase;
     price: number;
     currency: string;
     quantity: number;
@@ -167,14 +167,14 @@ export interface UserProfileSharesOwnedGQL {
     market: {
         id: number;
         ipfs: { title: string; };
-        last_trade: { price: number; symbol: string; };
+        last_trade: { price: number; symbol: OrderTypesUppercase; };
         is_resolved: boolean;
         resolution: string;
     };
     shareholder: { name: string; };
     user_average_price_per_share: number;
     quantity: number;
-    symbol: string;
+    symbol: OrderTypesUppercase;
 }
 
 export interface UserProfileGQL {
@@ -189,6 +189,6 @@ export interface ShareHolderGQL {
     market: { id: number; };
     shareholder: { name: string; };
     quantity: number;
-    symbol: string;
+    symbol: OrderTypesUppercase;
     updated_at: { num: number; time: Date; id: string; };
 }
