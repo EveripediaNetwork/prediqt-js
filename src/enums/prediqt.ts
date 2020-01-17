@@ -3,7 +3,7 @@ export enum OrderTypes {
     No = "no"
 }
 
-export declare enum OrderTypesUppercase {
+export enum OrderTypesUppercase {
     Yes = "YES",
     No = "NO"
 }
