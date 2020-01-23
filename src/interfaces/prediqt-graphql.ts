@@ -115,6 +115,7 @@ export interface DappInfoGQL {
     medium_url: string;
     telegram_url: string;
     support_email: string;
+    config: { textarea_whitelist: string; };
 }
 
 export interface ChainInfoGQL {

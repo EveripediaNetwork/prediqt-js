@@ -287,6 +287,9 @@ export const GET_DAPP_INFO = `
       medium_url
       telegram_url
       support_email
+      config {
+        textarea_whitelist
+      }
     }
   }
 `;
