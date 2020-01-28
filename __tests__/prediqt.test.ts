@@ -5,8 +5,8 @@ if (currentConfig.error) {
     throw currentConfig.error;
 }
 
-import {Prediqt} from "../src";
-import {JsSignatureProvider} from "eosjs/dist/eosjs-jssig";
+import { Prediqt } from "../src";
+import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
 
 const nodeEndpoint = process.env.NODE_ENDPOINT as string;
 const from = process.env.PREDIQT_FROM as string;
@@ -14,11 +14,12 @@ const keys = process.env.PREDIQT_KEY as string;
 const username = process.env.PREDIQT_USERNAME as string;
 const signatureProvider = new JsSignatureProvider([keys]);
 const auth = [
-{
-    actor: from,
-    permission: "active",
-}];
-const client = new Prediqt(nodeEndpoint, signatureProvider, auth);
+    {
+        actor: from,
+        permission: "active"
+    }
+];
+const client = new Prediqt(nodeEndpoint, { signatureProvider }, auth);
 jest.setTimeout(10000);
 
 test("Prediqt.getFees", async () => {
@@ -42,8 +43,8 @@ test("Prediqt.getMarket", async () => {
 });
 
 test("Prediqt.getUserResources", async () => {
-   const response = await client.getUserResources(username);
-   expect(!!response).toBeTruthy();
+    const response = await client.getUserResources(username);
+    expect(!!response).toBeTruthy();
 });
 
 test("Prediqt.getAccount", async () => {

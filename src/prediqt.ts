@@ -1,5 +1,4 @@
 import { Api, JsonRpc } from "eosjs";
-import { SignatureProvider } from "eosjs/dist/eosjs-api-interfaces";
 
 const fetch = require("isomorphic-fetch");
 
@@ -21,7 +20,7 @@ import {
     CreateMarket,
     SellShares,
     Contracts,
-    ProposeMultiSig
+    ProposeMultiSig, ApiData
 } from "./interfaces/prediqt";
 import { OrderTypes } from "./enums/prediqt";
 
@@ -40,7 +39,7 @@ import {
 
 export class Prediqt {
     private readonly rpc: JsonRpc;
-    private readonly api: Api;
+    private readonly api: Api | any;
     private readonly prediqtContract: string;
     private readonly prediqtMarketContract: string;
     private readonly iqTokenContract: string;
@@ -57,9 +56,9 @@ export class Prediqt {
 
     constructor(
         nodeEndpoint: string,
-        signatureProvider: SignatureProvider,
+        apiData: ApiData,
         auth: Authorization[] = [],
-        contracts: Contracts = {}
+        contracts: Contracts = {},
     ) {
         this.prediqtContract = contracts.prediqt || PREDIQT_CONTRACT;
         this.prediqtMarketContract =
@@ -71,7 +70,13 @@ export class Prediqt {
         this.eosioContract = EOSIO_CONTRACT;
         this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
         this.rpc = new JsonRpc(nodeEndpoint, { fetch: fetch as any });
-        this.api = new Api({ rpc: this.rpc, signatureProvider });
+        if (apiData.customApi) {
+            this.api = apiData.customApi;
+        } else if (apiData.signatureProvider) {
+            this.api = new Api({ rpc: this.rpc, signatureProvider: apiData.signatureProvider });
+        } else {
+            throw new Error("Api has not been created.");
+        }
         this.auth = auth;
     }
 
