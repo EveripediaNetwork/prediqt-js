@@ -1,4 +1,5 @@
 import { OrderTypes } from "../enums/prediqt";
+import { SignatureProvider } from "eosjs/dist/eosjs-api-interfaces";
 
 export interface TransactParams {
     blocksBehind: number;
@@ -148,4 +149,12 @@ export interface IqBalance {
 
 export interface ObjectKeys {
     [key: string]: any;
+}
+
+export interface ApiData {
+    createApi?: {
+        signatureProvider: SignatureProvider,
+        nodeEndpoint: string
+    };
+    customApi?: any;
 }
