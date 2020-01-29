@@ -19,7 +19,10 @@ const auth = [
         permission: "active"
     }
 ];
-const client = new Prediqt(nodeEndpoint, { signatureProvider }, auth);
+const client = new Prediqt(
+    { createApi: { signatureProvider, nodeEndpoint } },
+    auth
+);
 jest.setTimeout(10000);
 
 test("Prediqt.getFees", async () => {

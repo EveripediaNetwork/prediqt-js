@@ -55,7 +55,6 @@ export class Prediqt {
     };
 
     constructor(
-        nodeEndpoint: string,
         apiData: ApiData,
         auth: Authorization[] = [],
         contracts: Contracts = {},
@@ -69,11 +68,13 @@ export class Prediqt {
         this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
         this.eosioContract = EOSIO_CONTRACT;
         this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
-        this.rpc = new JsonRpc(nodeEndpoint, { fetch: fetch as any });
         if (apiData.customApi) {
             this.api = apiData.customApi;
-        } else if (apiData.signatureProvider) {
-            this.api = new Api({ rpc: this.rpc, signatureProvider: apiData.signatureProvider });
+            this.rpc = apiData.customApi.rpc;
+        } else if (apiData.createApi?.signatureProvider) {
+            const { nodeEndpoint, signatureProvider } = apiData.createApi;
+            this.rpc = new JsonRpc(nodeEndpoint, { fetch: fetch as any });
+            this.api = new Api({ rpc: this.rpc, signatureProvider });
         } else {
             throw new Error("Api has not been created.");
         }

@@ -152,6 +152,9 @@ export interface ObjectKeys {
 }
 
 export interface ApiData {
-    signatureProvider?: SignatureProvider;
+    createApi?: {
+        signatureProvider: SignatureProvider,
+        nodeEndpoint: string
+    };
     customApi?: any;
 }
