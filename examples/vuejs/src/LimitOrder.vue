@@ -6,8 +6,8 @@
             <p>{{ activeUser.name }}</p>
             <form v-if="activeUser.name" class="form">
                 <div>
-                    yes: <input type="radio" value="yes" v-model="nameId" /> no:
-                    <input type="radio" value="no" v-model="nameId" />
+                    <label>yes: <input type="radio" value="yes" v-model="nameId" /></label>
+                    <label>no: <input type="radio" value="no" v-model="nameId" /></label>
                 </div>
                 <input placeholder="market id" v-model="marketId" />
                 <input placeholder="limit" v-model="limit" />
@@ -33,14 +33,13 @@ window.ScatterJS = null;
 const network = ScatterJS.Network.fromJson({
     blockchain: "eos",
     chainId: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
-    host: "eos.greymass.com",
+    host: "nodes.get-scatter.com",
     port: "443",
     protocol: "https"
 });
-const EVERIPEDIA_SIGNER =
-    "EOS7SihZ8cfXDpWi35thc4HoCLFR7dBhmwKzvZ2ehR5Dz1xTXwZHY";
-const EVERIPEDIA_API = "https://api.everipedia.org";
-const CREATE_ORDER_REFERRAL = "prediqtbankk";
+const KYES_API_URL = "https://your.api/keys";
+const SIGN_API_URL = "https://your.api/sign";
+const CREATE_ORDER_REFERRAL = "prediqtbottt";
 const EOS_PRECISION = 10000;
 
 const rpc = new JsonRpc(network.fullhost());
@@ -60,7 +59,7 @@ export default {
         afterLogin(user) {
             this.activeUser = user;
             const fetchSignatures = async signargs => {
-                const data = await fetch(`${EVERIPEDIA_API}/v1/chain/sign`, {
+                const data = await fetch(SIGN_API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(signargs)
@@ -70,7 +69,7 @@ export default {
             };
 
             const apiSigner = {
-                getAvailableKeys: async () => [EVERIPEDIA_SIGNER],
+                getAvailableKeys: async () => fetch(KYES_API_URL),
                 sign: async signargs => fetchSignatures(signargs)
             };
             const signatureProvider = ScatterJS.eosMultiHook(network, [
@@ -80,10 +79,6 @@ export default {
 
             this.prediqtApi = new Prediqt({ customApi: api }, [
                 {
-                    actor: "evrpdcronjob",
-                    permission: "active"
-                },
-                {
                     actor: user.name,
                     permission: user.authority
                 }
@@ -92,7 +87,7 @@ export default {
         async tryConnectToScatter() {
             let isConnected;
             try {
-                isConnected = await ScatterJS.scatter.connect("sample", {
+                isConnected = await ScatterJS.scatter.connect("VueJSExample", {
                     network
                 });
             } catch (error) {
