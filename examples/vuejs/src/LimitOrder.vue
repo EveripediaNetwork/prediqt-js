@@ -30,6 +30,7 @@ ScatterJS.plugins(new ScatterEOS());
 
 window.ScatterJS = null;
 
+// value of constants are just examples
 const network = ScatterJS.Network.fromJson({
     blockchain: "eos",
     chainId: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
@@ -39,7 +40,7 @@ const network = ScatterJS.Network.fromJson({
 });
 const KYES_API_URL = "https://your.api/keys";
 const SIGN_API_URL = "https://your.api/sign";
-const CREATE_ORDER_REFERRAL = "prediqtbottt";
+const CREATE_ORDER_REFERRAL = "referralnick";
 const EOS_PRECISION = 10000;
 
 const rpc = new JsonRpc(network.fullhost());
