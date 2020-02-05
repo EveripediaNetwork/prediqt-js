@@ -32,6 +32,10 @@ export const GET_MARKETS_LAZY = (exclude_invalid_ipfs: boolean,
           is_verified
           is_hidden
           end_time
+          last_trade {
+            price
+            symbol
+          }
           volume {
             eos
           }
@@ -59,10 +63,6 @@ export const GET_MARKET = (marketId: number) => `
       resolver {
         name
       }
-      trade_history {
-        price
-        symbol
-      }
       resolution
       resolution_markettime
       ipfs {
@@ -79,6 +79,14 @@ export const GET_MARKET = (marketId: number) => `
       is_verified
       is_hidden
       end_time
+      last_trade {
+        price
+        symbol
+      }
+      trade_history {
+        price
+        symbol
+      }
       volume {
         eos
       }
@@ -121,6 +129,10 @@ export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<st
       is_resolved
       is_verified
       end_time
+      last_trade {
+        price
+        symbol
+      }
       ${loggedInUser ? `shareholders(shareholder: "${loggedInUser}") {
         market {
           id
@@ -178,6 +190,10 @@ export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<st
         }
         volume {
           eos
+        }
+        last_trade {
+          price
+          symbol
         }
       }
     }
