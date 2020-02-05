@@ -16,6 +16,10 @@ export const GET_MARKETS_LAZY = (exclude_invalid_ipfs: boolean,
           resolver {
             name
           }
+          last_trade {
+            price
+            symbol
+          }
           resolution
           resolution_markettime
           ipfs {
@@ -58,6 +62,10 @@ export const GET_MARKET = (marketId: number) => `
       }
       resolver {
         name
+      }
+      last_trade {
+        price
+        symbol
       }
       trade_history {
         price

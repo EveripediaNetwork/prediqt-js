@@ -1,6 +1,6 @@
 {
   "name": "@everipedia/prediqt-js",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "PredIQt JavaScript/TypeScript Client Library",
   "license": "MIT",
   "main": "dist/index.js",
@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "prepublishOnly": "tsc && yarn minify",
+    "postinstall": "tsc",
     "test": "jest --coverage",
     "posttest": "tslint -p .",
     "minify": "jsmin -o ./dist/prediqt.min.js ./dist/prediqt.js",
