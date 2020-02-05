@@ -19,3 +19,8 @@ test("Prediqt.getMarketPage", async () => {
     const response = await client.getMarketPage(12, null);
     expect(!!response).toBeTruthy();
 });
+
+test("Prediqt.getChainInfo", async () => {
+    const response = await client.getChainInfo();
+    expect(!!response).toBeTruthy();
+});
