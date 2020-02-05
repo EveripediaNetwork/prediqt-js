@@ -10,7 +10,6 @@
   ],
   "scripts": {
     "prepublishOnly": "tsc && yarn minify",
-    "postinstall": "npx tsc",
     "test": "jest --coverage",
     "posttest": "tslint -p .",
     "minify": "jsmin -o ./dist/prediqt.min.js ./dist/prediqt.js",
