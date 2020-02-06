@@ -19,6 +19,11 @@ export interface MarketVolumeGQL {
     eos: number;
 }
 
+export interface LastTrade {
+    price: number;
+    symbol: OrderTypesUppercase;
+}
+
 export interface OrderBookGQL {
     order_id: number;
     creator: string;
@@ -35,6 +40,7 @@ export interface RelatedMarketGQL {
     ipfs: MarketIpfsGQL;
     order_book: OrderBookGQL;
     volume: MarketVolumeGQL;
+    last_trade: Nullable<LastTrade>;
 }
 
 export interface MarketGQL {
@@ -50,6 +56,7 @@ export interface MarketGQL {
     is_hidden: boolean;
     end_time: Date;
     volume: MarketVolumeGQL;
+    last_trade: Nullable<LastTrade>;
     order_book: OrderBookGQL[];
 }
 
@@ -88,6 +95,7 @@ export interface MarketPageGQL {
     order_book: OrderBookGQL[];
     trade_history: TradeHistoryGQL[];
     volume: MarketVolumeGQL;
+    last_trade: Nullable<LastTrade>;
     related: RelatedMarketGQL[];
 }
 
@@ -168,7 +176,7 @@ export interface UserProfileSharesOwnedGQL {
     market: {
         id: number;
         ipfs: { title: string; };
-        last_trade: { price: number; symbol: OrderTypesUppercase; };
+        last_trade: Nullable<LastTrade>;
         is_resolved: boolean;
         resolution: string;
     };

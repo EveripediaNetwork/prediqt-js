@@ -10,7 +10,7 @@
     "prediqt-cli": "./src/main.js"
   },
   "dependencies": {
-    "@everipedia/prediqt-js": "0.0.21",
+    "@everipedia/prediqt-js": "0.0.23",
     "colors": "^1.4.0",
     "commander": "^4.1.1",
     "eosjs": "^20.0.3",
