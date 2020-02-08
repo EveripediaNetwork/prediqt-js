@@ -21,7 +21,7 @@ jobs:
       run: |
         yarn
         yarn docs
-        npm publish --access public
+        NPM_TOKEN=$NPM_TOKEN npm publish --access public
       env:
         CI: true
         NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
