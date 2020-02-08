@@ -19,6 +19,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Build & Deploy to npm
       run: |
+        yarn
         yarn docs
         yarn minify
         npm publish --access public
