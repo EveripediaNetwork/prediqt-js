@@ -2,25 +2,26 @@ name: npm-publish
 on:
   push:
     branches:
-      - master # Change this to your default branch
+      - master
 jobs:
-  npm-publish:
-    name: npm-publish
+  build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@master
-    - name: Set up Node.js
-      uses: actions/setup-node@master
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
       with:
-        node-version: 12.10.0
-    - run: npm install typescript -g
-    - name: Publish if version has been updated
-      uses: pascalgn/npm-publish-action@51fdb4531e99aac1873764ef7271af448dc42ab4
-      with: # All of theses inputs are optional
-        tag_name: "v%s"
-        tag_message: "v%s"
-        commit_pattern: "^Release (\\S+)"
-      env: # More info about the environment variables in the README
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
+        node-version: ${{ matrix.node-version }}
+    - name: Build & Deploy to npm
+      run: |
+        yarn docs
+        yarn minify
+        npm publish --access public
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
