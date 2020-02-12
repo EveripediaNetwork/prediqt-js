@@ -20,16 +20,20 @@ jobs:
            package.json
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-    - uses: actions/checkout@v1
+    - name: Print Diffset
+      run: ls -al ${{ steps.diffset.outputs.files }}  
+    - name: Checkout branch
+      if: steps.diffset.outputs.special_files
+      uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
-      if: diffset.outputs.special_files
+      if: steps.diffset.outputs.special_files
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
         registry-url: 'https://registry.npmjs.org'  
 
     - name: Build & Deploy to npm
-      if: diffset.outputs.special_files
+      if: steps.diffset.outputs.special_files
       run: |
         yarn
         yarn docs
