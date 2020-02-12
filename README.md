@@ -48,11 +48,17 @@ const client = new Prediqt(endpoint, { fetch })
 
 ### setAuth
 
-Utility methods
+Set authorisation to execute transactions
 
 #### Parameters
 
--   `auth`  
+-   `auth` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** 
+    -   `auth[].actor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `auth[].permission` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### resetAuth
+
+Reset authorisation to execute transactions
 
 ### setFee
 
@@ -60,7 +66,9 @@ Set a fee for the platform (admin only)
 
 #### Parameters
 
--   `fee`  
+-   `fee` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `fee.id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `fee.fee` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### acceptMarket
 
@@ -68,8 +76,8 @@ Accept a proposed market
 
 #### Parameters
 
--   `resolver`  
--   `marketId`  
+-   `resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### claimShares
 
@@ -77,8 +85,8 @@ Claim shares for a particular market
 
 #### Parameters
 
--   `user`  
--   `marketId`  
+-   `user` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### cancelOrder
 
@@ -86,10 +94,10 @@ Cancel an order
 
 #### Parameters
 
--   `nameId`  
--   `user`  
--   `marketId`  
--   `id`  
+-   `nameId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** takes "yes" or "no"
+-   `user` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### createMarket
 

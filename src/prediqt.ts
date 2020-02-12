@@ -82,9 +82,11 @@ export class Prediqt {
     }
 
     /**
-     * Utility methods
+     * Set authorisation to execute transactions
+     * @param {Array.<object>} auth
+     * @param {string} auth[].actor
+     * @param {string} auth[].permission
      */
-
     public setAuth(auth: Authorization[]): void {
         if (Array.isArray(auth)) {
             if (auth.every(item => isObject(item))) {
@@ -97,12 +99,18 @@ export class Prediqt {
         }
     }
 
+    /**
+     * Reset authorisation to execute transactions
+     */
     public resetAuth(): void {
         this.auth = [];
     }
 
     /**
      * Set a fee for the platform (admin only)
+     * @param {Object} fee
+     * @param {number} fee.id
+     * @param {number} fee.fee
      */
     public async setFee(fee: Fee): Promise<any> {
         return await this.api.transact(
@@ -125,6 +133,8 @@ export class Prediqt {
 
     /**
      * Accept a proposed market
+     * @param {string} resolver
+     * @param {number} marketId
      */
     public async acceptMarket(
         resolver: string,
@@ -150,6 +160,8 @@ export class Prediqt {
 
     /**
      * Claim shares for a particular market
+     * @param {string} user
+     * @param {number} marketId
      */
     public async claimShares(user: string, marketId: number): Promise<any> {
         return await this.api.transact(
@@ -172,6 +184,10 @@ export class Prediqt {
 
     /**
      * Cancel an order
+     * @param {string} nameId - takes "yes" or "no"
+     * @param {string} user
+     * @param {number} marketId
+     * @param {number} id
      */
     public async cancelOrder(
         nameId: OrderTypes,
