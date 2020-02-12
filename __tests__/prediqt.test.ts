@@ -1,12 +1,15 @@
 import dotenv from "dotenv";
+import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
+
+import { OrderTypes } from "../src/enums/prediqt";
+
+import { Prediqt } from "../src";
+
 const currentConfig = dotenv.config({ path: `${__dirname}/../.env.test` });
 
 if (currentConfig.error) {
     throw currentConfig.error;
 }
-
-import { Prediqt } from "../src";
-import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
 
 const nodeEndpoint = process.env.NODE_ENDPOINT as string;
 const from = process.env.PREDIQT_FROM as string;
@@ -57,5 +60,14 @@ test("Prediqt.getAccount", async () => {
 
 test("Prediqt.getIqBalance", async () => {
     const response = await client.getIqBalance(username);
+    expect(!!response).toBeTruthy();
+});
+
+test("Prediqt.getOrders", async () => {
+    const response = await client.getOrders({
+        nameId: OrderTypes.Yes,
+        marketId: 4,
+        limit: 50
+    });
     expect(!!response).toBeTruthy();
 });

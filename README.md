@@ -52,7 +52,7 @@ Set authorisation to execute transactions
 
 #### Parameters
 
--   `auth` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** 
+-   `auth` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** 
     -   `auth[].actor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
     -   `auth[].permission` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
@@ -66,7 +66,7 @@ Set a fee for the platform (admin only)
 
 #### Parameters
 
--   `fee` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `fee` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `fee.id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
     -   `fee.fee` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
@@ -105,7 +105,7 @@ Create a Market
 
 #### Parameters
 
--   `data` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `data.creator` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
     -   `data.resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
     -   `data.ipfs` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
@@ -118,7 +118,7 @@ Delete an existing Market
 
 #### Parameters
 
--   `marketId`  
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### limitOrder
 
@@ -126,7 +126,15 @@ Open an order for shares in a market
 
 #### Parameters
 
--   `data`  
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.nameId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** takes "yes" or "no"
+    -   `data.user` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.shares` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.limit` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.transferToken` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.referral` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.buy` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
 ### marketInvalid
 
@@ -134,8 +142,8 @@ Set a market as invalid (only resolver)
 
 #### Parameters
 
--   `marketId`  
--   `memo`  
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `memo` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### marketResolve
 
@@ -143,7 +151,11 @@ Set the outcome of a market (only resolver)
 
 #### Parameters
 
--   `data`  
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.shareType` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+    -   `data.memo` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### proposeMarket
 
@@ -151,12 +163,12 @@ Propose a market to be part of the active markets
 
 #### Parameters
 
--   `creator`  
--   `resolver`  
--   `ipfs`  
--   `timeIn`  
--   `transferToken`  
--   `transferMemo`  
+-   `creator` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `ipfs` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `timeIn` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `transferToken` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `transferMemo` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### rejectMarket
 
@@ -164,8 +176,8 @@ Reject a proposed market (resolver only)
 
 #### Parameters
 
--   `resolver`  
--   `marketId`  
+-   `resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### setResolver
 
@@ -173,8 +185,8 @@ Change resolver for a market (admin only)
 
 #### Parameters
 
--   `resolver`  
--   `marketId`  
+-   `resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### withdraw
 
@@ -182,8 +194,8 @@ Withdraw from user balance
 
 #### Parameters
 
--   `user`  
--   `quantity`  
+-   `user` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `quantity` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### syncBank
 
@@ -191,19 +203,27 @@ Sync Bank
 
 ### transferShares
 
-Transfer shares between users
+Transfer shares to user
 
 #### Parameters
 
--   `data`  
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.from` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.to` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.shares` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.shareType` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### cancelShares
 
-Cancel user's shares
+Cancel transferred shares
 
 #### Parameters
 
--   `data`  
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.from` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.sharedId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### buyShares
 
@@ -211,7 +231,13 @@ Buy shares
 
 #### Parameters
 
--   `data`  
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.from` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.price` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.shares` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.shareType` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.transferToken` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### sellShares
 
@@ -219,7 +245,23 @@ Sell shares
 
 #### Parameters
 
--   `data`  
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.from` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.shares` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.shareType` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.price` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### proposeMultiSig
+
+Propose MultiSignature
+
+#### Parameters
+
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.proposalName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.proposer` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.requested` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** 
 
 ### getFees
 
@@ -227,8 +269,8 @@ Get fees related to the contract
 
 #### Parameters
 
--   `limit`   (optional, default `100`)
--   `offset`   (optional, default `0`)
+-   `limit` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `100`)
+-   `offset` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `0`)
 
 ### getShares
 
@@ -236,9 +278,9 @@ Get shares related to a market
 
 #### Parameters
 
--   `marketId`  
--   `limit`   (optional, default `100`)
--   `offset`   (optional, default `0`)
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `limit` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `100`)
+-   `offset` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `0`)
 
 ### getReferrals
 
@@ -246,9 +288,9 @@ Get referral shares related to a market
 
 #### Parameters
 
--   `marketId`  
--   `limit`   (optional, default `100`)
--   `offset`   (optional, default `0`)
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `limit` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `100`)
+-   `offset` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `0`)
 
 ### getMarkets
 
@@ -256,9 +298,9 @@ Get markets
 
 #### Parameters
 
--   `limit`   (optional, default `100`)
--   `offset`   (optional, default `0`)
--   `tableKey`   (optional, default `""`)
+-   `tableKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**  (optional, default `""`)
+-   `limit` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `100`)
+-   `offset` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `0`)
 
 ### getMarket
 
@@ -266,29 +308,20 @@ Get a single market
 
 #### Parameters
 
--   `marketId`  
+-   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-### getOrdersYes
+### getOrders
 
-Get order of type Yes for a market
-
-#### Parameters
-
--   `marketId`  
--   `limit`   (optional, default `100`)
--   `offset`   (optional, default `0`)
--   `tableKey`   (optional, default `""`)
-
-### getOrdersNo
-
-Get order of type No for a market
+Get orders for a market
 
 #### Parameters
 
--   `marketId`  
--   `limit`   (optional, default `100`)
--   `offset`   (optional, default `0`)
--   `tableKey`   (optional, default `""`)
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.nameId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** takes "yes" or "no"
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.tableKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**  (optional, default `""`)
+    -   `data.limit` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `100`)
+    -   `data.offset` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**  (optional, default `0`)
 
 ### getBalance
 
@@ -296,8 +329,8 @@ Get balance of an user
 
 #### Parameters
 
--   `username`  
--   `symbol`  
+-   `username` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `symbol` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### getIqBalance
 
@@ -305,7 +338,7 @@ Get IQ balance of an user
 
 #### Parameters
 
--   `username`  
+-   `username` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### getUserResources
 
@@ -313,7 +346,7 @@ Get resources of an user
 
 #### Parameters
 
--   `username`  
+-   `username` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### getAccount
 
@@ -321,4 +354,4 @@ Get account data of an user
 
 #### Parameters
 
--   `username`  
+-   `username` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 

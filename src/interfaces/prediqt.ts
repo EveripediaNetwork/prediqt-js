@@ -136,6 +136,14 @@ export interface BuyShares {
     transferToken: string;
 }
 
+export interface GetOrders {
+    nameId: OrderTypes;
+    marketId: number;
+    tableKey?: string;
+    limit?: number;
+    offset?: number;
+}
+
 export interface UserResources {
     owner: string;
     net_weight: string;
@@ -153,8 +161,8 @@ export interface ObjectKeys {
 
 export interface ApiData {
     createApi?: {
-        signatureProvider: SignatureProvider,
-        nodeEndpoint: string
+        signatureProvider: SignatureProvider;
+        nodeEndpoint: string;
     };
     customApi?: any;
 }

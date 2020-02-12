@@ -33,6 +33,10 @@ export class PrediqtGraph {
         this.url = url;
     }
 
+    /**
+     * Get proposed markets
+     */
+
     public async getProposedMarkets(
         skip: number,
         count: number,
