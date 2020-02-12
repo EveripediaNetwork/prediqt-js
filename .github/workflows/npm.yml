@@ -12,23 +12,21 @@ jobs:
         node-version: [12.x]
 
     steps:
-    #- name: Diffset
-    #  id: diffset
-    #  uses: softprops/diffset@v1
-    #  env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-    - name: Checkout branch
-    #  if: steps.diffset.outputs.special_files
-      uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - uses: technote-space/get-diff-action@v1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PREFIX_FILTER: |
+          package.json
     - name: Use Node.js ${{ matrix.node-version }}
-    #  if: steps.diffset.outputs.special_files
+      if: env.GIT_DIFF
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
         registry-url: 'https://registry.npmjs.org'  
 
     - name: Build & Deploy to npm
-    #  if: steps.diffset.outputs.special_files
+      if: env.GIT_DIFF
       run: |
         yarn
         yarn docs
