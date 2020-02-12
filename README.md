@@ -4,7 +4,7 @@
  [![npm version](https://badge.fury.io/js/%40everipedia%2Fprediqt-js.svg)](https://badge.fury.io/js/%40everipedia%2Fprediqt-js)
  [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/everipedianetwork/prediqt-js/master/LICENSE)
 
-> General purpose library for the Prediqt
+> General purpose library for the PredIQt
 
 ## Installation
 
