@@ -27,16 +27,16 @@ const fetch = require("isomorphic-fetch");
 export class PrediqtGraph {
     private readonly url: string;
 
-    constructor(
-        url: string = "https://prediqt-api-mainnet.azurewebsites.net/graphql"
-    ) {
+    constructor(url: string) {
         this.url = url;
     }
 
     /**
      * Get proposed markets
+     * @param {number} skip
+     * @param {number} count
+     * @param {string} [creator=""]
      */
-
     public async getProposedMarkets(
         skip: number,
         count: number,
@@ -60,6 +60,9 @@ export class PrediqtGraph {
         return json.data.markets;
     }
 
+    /**
+     * Get markets
+     */
     public async getMarkets(
         exclude_invalid_ipfs: boolean,
         skip: number,
@@ -85,6 +88,10 @@ export class PrediqtGraph {
         return json.data.markets;
     }
 
+    /**
+     * Get market
+     * @param {number} marketId
+     */
     public async getMarket(marketId: number): Promise<ExtendedMarketGQL> {
         const result = await this.query(GET_MARKET(marketId));
 
@@ -93,6 +100,11 @@ export class PrediqtGraph {
         return json.data.market_by_id;
     }
 
+    /**
+     * Get market page
+     * @param {number} marketId
+     * @param {string} [loggedInUser]
+     */
     public async getMarketPage(
         marketId: number,
         loggedInUser: Nullable<string>
@@ -106,6 +118,9 @@ export class PrediqtGraph {
         return json.data.market_by_id;
     }
 
+    /**
+     * Get platform fees
+     */
     public async getPlatformFees(): Promise<PlatformFeesGQL[]> {
         const result = await this.query(GET_PLATFORM_FEES);
 
@@ -114,6 +129,9 @@ export class PrediqtGraph {
         return json.data.platform_fees;
     }
 
+    /**
+     * Get categories and tags
+     */
     public async getCategoriesAndTags(): Promise<CategoriesGQL[]> {
         const result = await this.query(GET_CATEGORIES_TAGS);
 
@@ -122,6 +140,9 @@ export class PrediqtGraph {
         return json.data.categories;
     }
 
+    /**
+     * Get information about dapp
+     */
     public async getDappInfo(): Promise<DappInfoGQL[]> {
         const result = await this.query(GET_DAPP_INFO);
 
@@ -130,19 +151,26 @@ export class PrediqtGraph {
         return json.data.dapp_info;
     }
 
-    public async getUserProfile(
-        userName: Nullable<string>
-    ): Promise<UserProfileGQL> {
-        const result = await this.query(GET_USER_PROFILE(userName));
+    /**
+     * Get user's profile
+     * @param {string} username
+     */
+    public async getUserProfile(username: string): Promise<UserProfileGQL> {
+        const result = await this.query(GET_USER_PROFILE(username));
 
         const json = await result.json();
 
         return json.data.user_profile;
     }
 
+    /**
+     * Get shareholders
+     * @param {number} marketId
+     * @param {string} loggedInUser
+     */
     public async getShareHolders(
         marketId: number,
-        loggedInUser: Nullable<string>
+        loggedInUser: string
     ): Promise<ShareHolderGQL[]> {
         const result = await this.query(
             GET_SHAREHOLDER(marketId, loggedInUser)
@@ -153,6 +181,9 @@ export class PrediqtGraph {
         return json.data.market_by_id.shareholders;
     }
 
+    /**
+     * Get info about node's backlog
+     */
     public async getChainInfo(): Promise<ChainInfoGQL> {
         const result = await this.query(GET_BLOCKS_BEHIND_INFO);
 

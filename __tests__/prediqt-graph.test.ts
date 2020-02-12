@@ -1,12 +1,18 @@
-import {PrediqtGraph} from "../src";
+import dotenv from "dotenv";
+import { PrediqtGraph } from "../src";
 
-const client = new PrediqtGraph("https://prediqt-api-mainnet.azurewebsites.net/graphql");
+try {
+    dotenv.config({ path: `${__dirname}/../.env.test` });
+} catch (error) {
+    console.error(error.message);
+}
+
+const apiUrl = process.env.PREDIQT_API_URL as string;
+const client = new PrediqtGraph(apiUrl);
 jest.setTimeout(10000);
 
 test("Prediqt.getMarkets", async () => {
-    const response = await client.getMarkets(
-        true, 0, 100,
-        "all", "", null);
+    const response = await client.getMarkets(true, 0, 100, "all", "", null);
     expect(!!response).toBeTruthy();
 });
 

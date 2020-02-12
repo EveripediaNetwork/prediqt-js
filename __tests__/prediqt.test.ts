@@ -5,10 +5,10 @@ import { OrderTypes } from "../src/enums/prediqt";
 
 import { Prediqt } from "../src";
 
-const currentConfig = dotenv.config({ path: `${__dirname}/../.env.test` });
-
-if (currentConfig.error) {
-    throw currentConfig.error;
+try {
+    dotenv.config({ path: `${__dirname}/../.env.test` });
+} catch (error) {
+    console.error(error.message);
 }
 
 const nodeEndpoint = process.env.NODE_ENDPOINT as string;
