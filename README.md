@@ -1,4 +1,4 @@
-# Prediqt JavaScript/TypeScript Client Library
+# PredIQt JavaScript/TypeScript Client Library
 
 [![CircleCI](https://circleci.com/gh/EveripediaNetwork/prediqt-js/tree/master.svg?style=svg)](https://circleci.com/gh/EveripediaNetwork/prediqt-js/tree/master)
  [![npm version](https://badge.fury.io/js/%40everipedia%2Fprediqt-js.svg)](https://badge.fury.io/js/%40everipedia%2Fprediqt-js)
