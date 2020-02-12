@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-const currentConfig = dotenv.config({ path: `${__dirname}/../.env.test` });
 
-if (currentConfig.error) {
-    throw currentConfig.error;
+try {
+    dotenv.config({ path: `${__dirname}/../.env.test` });
+} catch (error) {
+    console.log("message that does not have a sence");
 }
 
 import { Prediqt } from "../src";
