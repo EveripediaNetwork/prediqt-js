@@ -52,7 +52,7 @@ Set authorisation to execute transactions
 
 #### Parameters
 
--   `auth` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** 
+-   `auth` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** 
     -   `auth[].actor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
     -   `auth[].permission` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
@@ -66,7 +66,7 @@ Set a fee for the platform (admin only)
 
 #### Parameters
 
--   `fee` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `fee` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
     -   `fee.id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
     -   `fee.fee` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
@@ -105,7 +105,12 @@ Create a Market
 
 #### Parameters
 
--   `data`  
+-   `data` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.creator` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.ipfs` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.timeIn` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.transferToken` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### deleteMarket
 

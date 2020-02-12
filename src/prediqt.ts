@@ -83,7 +83,7 @@ export class Prediqt {
 
     /**
      * Set authorisation to execute transactions
-     * @param {Array.<object>} auth
+     * @param {object[]} auth
      * @param {string} auth[].actor
      * @param {string} auth[].permission
      */
@@ -108,7 +108,7 @@ export class Prediqt {
 
     /**
      * Set a fee for the platform (admin only)
-     * @param {Object} fee
+     * @param {object} fee
      * @param {number} fee.id
      * @param {number} fee.fee
      */
@@ -221,6 +221,12 @@ export class Prediqt {
 
     /**
      * Create a Market
+     * @param {object} data
+     * @param {string} data.creator
+     * @param {string} data.resolver
+     * @param {string} data.ipfs
+     * @param {number} data.timeIn
+     * @param {string} data.transferToken
      */
     public async createMarket(data: CreateMarket): Promise<any> {
         const { creator, resolver, ipfs, timeIn, transferToken } = data;
