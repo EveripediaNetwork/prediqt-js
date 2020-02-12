@@ -15,9 +15,6 @@ jobs:
     - name: Diffset
       id: diffset
       uses: softprops/diffset@v1
-      with:
-         special_files: |
-           package.json
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
     - name: Print Diffset
