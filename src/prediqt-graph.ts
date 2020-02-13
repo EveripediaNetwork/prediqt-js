@@ -36,12 +36,15 @@ export class PrediqtGraph {
      * @param {number} skip
      * @param {number} count
      * @param {string} [creator=""]
+     * @param {Object} [filterUrlParam]
+     * @param {string} filterUrlParam.paramName
+     * @param {string} filterUrlParam.paramValue
      */
     public async getProposedMarkets(
         skip: number,
         count: number,
-        filterURLParam: Nullable<{ paramName: string; paramValue: string }>,
-        creator: string = ""
+        creator: string = "",
+        filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
     ): Promise<MarketGQL[]> {
         const result = await this.query(
             GET_MARKETS_LAZY(
@@ -51,7 +54,7 @@ export class PrediqtGraph {
                 "all",
                 creator,
                 true,
-                filterURLParam
+                filterUrlParam
             )
         );
 
@@ -62,24 +65,32 @@ export class PrediqtGraph {
 
     /**
      * Get markets
+     * @param {boolean} excludeInvalidIpfs
+     * @param {number} skip
+     * @param {number} count
+     * @param {string} isVerified
+     * @param {string} creator
+     * @param {Object} [filterUrlParam]
+     * @param {string} filterUrlParam.paramName
+     * @param {string} filterUrlParam.paramValue
      */
     public async getMarkets(
-        exclude_invalid_ipfs: boolean,
+        excludeInvalidIpfs: boolean,
         skip: number,
         count: number,
-        is_verified: string,
+        isVerified: string,
         creator: string,
-        filterURLParam: Nullable<{ paramName: string; paramValue: string }>
+        filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
     ): Promise<MarketGQL[]> {
         const result = await this.query(
             GET_MARKETS_LAZY(
-                exclude_invalid_ipfs,
+                excludeInvalidIpfs,
                 skip,
                 count,
-                is_verified,
+                isVerified,
                 creator,
                 false,
-                filterURLParam
+                filterUrlParam
             )
         );
 
