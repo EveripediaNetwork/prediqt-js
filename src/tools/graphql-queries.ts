@@ -223,76 +223,105 @@ export const GET_SHAREHOLDER = (marketId: number, loggedInUser: Nullable<string>
 `;
 
 export const GET_USER_PROFILE = (userName: Nullable<string>) => `
-  {
+{
     user_profile(name: "${userName}") {
-      name
-      referrals {
-        market {
-          id
-          end_time
-          ipfs {
-            title
-          }
+        name
+        markets_creator {
+            id
+            creator {
+                name
+            }
+            resolver {
+                name
+            }
+            resolution
+            resolution_markettime
+            ipfs {
+                hash
+                title
+                description
+                image_url
+                category
+                tags
+                resolution_description
+                content_type
+            }
+            is_active
+            is_resolved
+            is_verified
+            end_time
+            volume {
+                eos
+            }
         }
-        yes_shares
-        no_shares
-        referrer
-      }
-      shares_owned {
-        market {
-          id
-          ipfs {
-            title
-          }
-          last_trade {
-            price
+        referrals {
+            market {
+                id
+                end_time
+                resolution
+                ipfs {
+                    title
+                }
+            }
+            yes_shares
+            no_shares
+            referrer
+        }
+        shares_owned {
+            market {
+                id
+                ipfs {
+                    title
+                }
+                last_trade {
+                    price
+                    symbol
+                }
+                is_resolved
+                resolution
+            }
+            shareholder {
+                name
+            }
+            user_average_price_per_share
+            quantity
             symbol
-          }
-          is_resolved
-          resolution
         }
-        shareholder {
-          name
+        orders_open {
+            market {
+                id
+                ipfs {
+                    title
+                }
+            }
+            order_id
+            creator
+            price
+            currency
+            type
+            quantity
+            symbol
+            timestamp
         }
-        user_average_price_per_share
-        quantity
-        symbol
-      }
-      orders_open {
-        market {
-          id
-          ipfs {
-            title
-          }
+        orders_filled {
+            market {
+                id
+                ipfs {
+                    title
+                }
+            }
+            symbol
+            price
+            currency
+            quantity
+            block {
+                num
+                id
+                time
+            }
         }
-        order_id
-        creator
-        price
-        currency
-        type
-        quantity
-        symbol
-        timestamp
-      }
-      orders_filled {
-        market {
-          id
-          ipfs {
-            title
-          }
-        }
-        symbol
-        price
-        currency
-        quantity
-        block {
-          num
-          id
-          time
-        }
-      }
     }
-  }
+}
 `;
 
 export const GET_DAPP_INFO = `
