@@ -59,10 +59,9 @@ Server usage
 
 const { Prediqt } = require("prediqt-js");
 const fetch = require("isomorphic-fetch");
+const { Api, JsonRpc } = require("eosjs");
 
-import { Api, JsonRpc } from "eosjs";
-
-const rpc = new JsonRpc(nodeEndpoint);
+const rpc = new JsonRpc(nodeEndpoint, { fetch });
 const api = new Api({ rpc, signatureProvider });       // create rpc and signatureProvider with eosjs or based on it libs
 
 const client = new Prediqt(
