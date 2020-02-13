@@ -57,9 +57,9 @@ Server usage
 
 // or you can pass created api
 
-const { Prediqt } = require("prediqt-js");
-const fetch = require("isomorphic-fetch");
+const { Prediqt } = require("@everipedia/prediqt-js");
 const { Api, JsonRpc } = require("eosjs");
+const fetch = require("isomorphic-fetch");
 
 const rpc = new JsonRpc(nodeEndpoint, { fetch });
 const api = new Api({ rpc, signatureProvider });       // create rpc and signatureProvider with eosjs or based on it libs
