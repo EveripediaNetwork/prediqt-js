@@ -29,21 +29,21 @@ import { Prediqt } from "prediqt-js"
 
 // you must pass params for api
 
-const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use other node
+const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use any other node
 const client = new Prediqt(
-    { createApi: { signatureProvider, nodeEndpoint }}, // 
+    { createApi: { signatureProvider, nodeEndpoint }}, // create signatureProvider with eosjs or based on it libs
     auth,                                              // (optional) Array with authorization objects, you can set it later with setAuth method
-    contracts                                          // (optional)
+    contracts                                          // (optional) Object that takes prediqt, prediqtMarket, iqToken, prediqtBank contracts' names
 );
 
 // or you can pass created api
 
 const rpc = new JsonRpc(nodeEndpoint);
-const api = new Api({ rpc, signatureProvider });    
+const api = new Api({ rpc, signatureProvider });       // create rpc and signatureProvider with eosjs or based on it libs
 
 const client = new Prediqt(
-    { customApi: api},
-    ...
+    { customApi: api },
+    ...                                                // the same parameters
 );
 ```
 
