@@ -1,3 +1,5 @@
+const fetch = require("isomorphic-fetch");
+
 import {
     CategoriesGQL,
     ChainInfoGQL,
@@ -21,8 +23,6 @@ import {
     GET_USER_PROFILE,
     Nullable
 } from "./tools";
-
-const fetch = require("isomorphic-fetch");
 
 export class PrediqtGraph {
     private readonly url: string;

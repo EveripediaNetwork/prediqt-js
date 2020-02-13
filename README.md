@@ -22,9 +22,10 @@ npm install --save @everipedia/prediqt-js
 
 ## Quick Start
 
-**Frontend usage**
+**API initialization**
 
-API initialization 
+Frontend usage
+
 ```js
 import { Prediqt } from "@everipedia/prediqt-js"
 
@@ -49,11 +50,32 @@ const client = new Prediqt(
 );
 ```
 
-Graph API initialization 
+Server usage
+
+```js
+... 
+
+// or you can pass created api
+
+const { Prediqt } = require("prediqt-js");
+const fetch = require("isomorphic-fetch");
+
+import { Api, JsonRpc } from "eosjs";
+
+const rpc = new JsonRpc(nodeEndpoint);
+const api = new Api({ rpc, signatureProvider });       // create rpc and signatureProvider with eosjs or based on it libs
+
+const client = new Prediqt(
+    { customApi: api },
+    ...                                                // the same parameters
+);
+```
+
+**Graph API initialization** 
 ```js
 import { PrediqtGraph } from "@everipedia/prediqt-js";
 
-const apiEndponit = "https://prediqt-api-kylin.azurewebsites.net/graphql"; // you can use any other api endpoint 
+const apiEndponit = "https://prediqt-api-kylin.azurewebsites.net/graphql"; // endpoint for mainnet - https://prediqt-api-mainnet.azurewebsites.net/graphql 
 
 const graphClient = new PrediqtGraph(apiEndponit);
 ```
