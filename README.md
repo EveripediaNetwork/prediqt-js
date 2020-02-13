@@ -22,24 +22,25 @@ npm install --save @everipedia/prediqt-js
 
 ## Quick Start
 
-**CommonJS**
+**Frontend usage**
 
 ```js
-const { Prediqt } = require("prediqt-js")
-const fetch = require("isomorphic-fetch")
-
-const endpoint = "https://api.kylin.alohaeos.com"
-const client = new Prediqt(endpoint, { fetch })
-```
-
-**TypeScript**
-
-```ts
 import { Prediqt } from "prediqt-js"
-import fetch from "isomorphic-fetch"
 
-const endpoint = "https://api.kylin.alohaeos.com"
-const client = new Prediqt(endpoint, { fetch })
+const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use other node
+const client = new Prediqt(
+    { createApi: { signatureProvider, nodeEndpoint }},
+    auth,
+    contracts
+);
+
+const rpc = new JsonRpc(network.fullhost());
+const api = new Api({ rpc, signatureProvider });    
+
+const client = new Prediqt(
+    { customApi: api},
+    ...
+);
 ```
 
 ## API
