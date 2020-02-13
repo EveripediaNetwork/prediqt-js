@@ -27,9 +27,8 @@ npm install --save @everipedia/prediqt-js
 ```js
 import { Prediqt } from "prediqt-js"
 
-// you must pass params for api
-
 const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use any other node
+
 const client = new Prediqt(
     { createApi: { signatureProvider, nodeEndpoint }}, // create signatureProvider with eosjs or based on it libs
     auth,                                              // (optional) Array with authorization objects, you can set it later with setAuth method
@@ -37,6 +36,8 @@ const client = new Prediqt(
 );
 
 // or you can pass created api
+
+import { Api, JsonRpc } from "eosjs";
 
 const rpc = new JsonRpc(nodeEndpoint);
 const api = new Api({ rpc, signatureProvider });       // create rpc and signatureProvider with eosjs or based on it libs
