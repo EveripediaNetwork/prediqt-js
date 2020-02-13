@@ -25,7 +25,7 @@ npm install --save @everipedia/prediqt-js
 **Frontend usage**
 
 ```js
-import { Prediqt } from "prediqt-js"
+import { Prediqt } from "@everipedia/prediqt-js"
 
 const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use any other node
 
@@ -46,6 +46,14 @@ const client = new Prediqt(
     { customApi: api },
     ...                                                // the same parameters
 );
+```
+
+```js
+import { PrediqtGraph } from "@everipedia/prediqt-js";
+
+const apiEndponit = "https://prediqt-api-kylin.azurewebsites.net/graphql"; // you can use any other node
+
+const graphClient = new PrediqtGraph(apiEndponit);
 ```
 
 ## API
