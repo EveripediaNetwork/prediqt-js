@@ -24,10 +24,11 @@ npm install --save @everipedia/prediqt-js
 
 **Frontend usage**
 
+API initialization 
 ```js
 import { Prediqt } from "@everipedia/prediqt-js"
 
-const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use any other node
+const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use any other node endpoint
 
 const client = new Prediqt(
     { createApi: { signatureProvider, nodeEndpoint }}, // create signatureProvider with eosjs or based on it libs
@@ -48,10 +49,11 @@ const client = new Prediqt(
 );
 ```
 
+Graph API initialization 
 ```js
 import { PrediqtGraph } from "@everipedia/prediqt-js";
 
-const apiEndponit = "https://prediqt-api-kylin.azurewebsites.net/graphql"; // you can use any other node
+const apiEndponit = "https://prediqt-api-kylin.azurewebsites.net/graphql"; // you can use any other api endpoint 
 
 const graphClient = new PrediqtGraph(apiEndponit);
 ```
