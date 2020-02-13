@@ -100,7 +100,7 @@ Set authorisation to execute transactions
 
 Reset authorisation to execute transactions
 
-
+---
 *Methods that requires authorization*
 
 ### setFee
@@ -306,6 +306,7 @@ Propose MultiSignature
     -   `data.proposer` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
     -   `data.requested` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** 
 
+---
 *Methods that doesn't require authorization*
 
 ### getFees
