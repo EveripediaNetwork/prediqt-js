@@ -27,14 +27,18 @@ npm install --save @everipedia/prediqt-js
 ```js
 import { Prediqt } from "prediqt-js"
 
+// you must pass params for api
+
 const nodeEndpoint = "https://api.kylin.alohaeos.com"; // you can use other node
 const client = new Prediqt(
-    { createApi: { signatureProvider, nodeEndpoint }},
-    auth,
-    contracts
+    { createApi: { signatureProvider, nodeEndpoint }}, // 
+    auth,                                              // (optional) Array with authorization objects, you can set it later with setAuth method
+    contracts                                          // (optional)
 );
 
-const rpc = new JsonRpc(network.fullhost());
+// or you can pass created api
+
+const rpc = new JsonRpc(nodeEndpoint);
 const api = new Api({ rpc, signatureProvider });    
 
 const client = new Prediqt(
