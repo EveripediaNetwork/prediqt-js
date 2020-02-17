@@ -12,13 +12,21 @@ jobs:
         node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - uses: technote-space/get-diff-action@v1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PREFIX_FILTER: |
+          package.json
     - name: Use Node.js ${{ matrix.node-version }}
+      if: env.GIT_DIFF
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        registry-url: 'https://registry.npmjs.org' 
+        registry-url: 'https://registry.npmjs.org'  
+
     - name: Build & Deploy to npm
+      if: env.GIT_DIFF
       run: |
         yarn
         yarn docs
