@@ -24,7 +24,7 @@ npm install --save @everipedia/prediqt-js
 
 **API initialization**
 
-_Frontend usage_
+*Frontend usage*
 
 ```js
 import { Prediqt } from "@everipedia/prediqt-js"
@@ -50,7 +50,7 @@ const client = new Prediqt(
 );
 ```
 
-_Server usage_
+*Server usage*
 
 ```js
 ... 
