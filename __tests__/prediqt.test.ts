@@ -1,13 +1,8 @@
-import dotenv from "dotenv";
-
-try {
-    dotenv.config({ path: `${__dirname}/../.env.test` });
-} catch (error) {
-    console.log("message that does not have a sence");
-}
+import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
 
 import { Prediqt } from "../src";
-import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
+
+import { OrderTypes } from "../src/enums/prediqt";
 
 const nodeEndpoint = process.env.NODE_ENDPOINT as string;
 const from = process.env.PREDIQT_FROM as string;
@@ -58,5 +53,14 @@ test("Prediqt.getAccount", async () => {
 
 test("Prediqt.getIqBalance", async () => {
     const response = await client.getIqBalance(username);
+    expect(!!response).toBeTruthy();
+});
+
+test("Prediqt.getOrders", async () => {
+    const response = await client.getOrders({
+        nameId: OrderTypes.Yes,
+        marketId: 4,
+        limit: 50
+    });
     expect(!!response).toBeTruthy();
 });

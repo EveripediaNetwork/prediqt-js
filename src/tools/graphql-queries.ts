@@ -1,14 +1,20 @@
 export type Nullable<T> = T | null;
 
-export const GET_MARKETS_LAZY = (exclude_invalid_ipfs: boolean,
-                                 skip: number,
-                                 count: number,
-                                 is_verified: string,
-                                 creator: string,
-                                 only_proposed: boolean,
-                                 filterURLParam: Nullable<{ paramName: string, paramValue: string }>): string => `
+export const GET_MARKETS_LAZY = (
+    excludeInvalidIpfs: boolean,
+    skip: number,
+    count: number,
+    isVerified: string,
+    creator: string,
+    onlyProposed: boolean,
+    filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
+): string => `
     query {
-        markets(sort_by: "ending_latest", exclude_invalid_ipfs: ${exclude_invalid_ipfs}, skip: ${skip}, count: ${count}, is_verified: "${is_verified}", creator: "${creator}"${filterURLParam ? `, ${filterURLParam.paramName}: "${filterURLParam.paramValue}"` : ""}${only_proposed ? ", is_proposal: true, is_resolved: false" : ""}) {
+        markets(sort_by: "ending_latest", exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, is_verified: "${isVerified}", creator: "${creator}"${
+    filterUrlParam
+        ? `, ${filterUrlParam.paramName}: "${filterUrlParam.paramValue}"`
+        : ""
+}${onlyProposed ? ", is_proposal: true, is_resolved: false" : ""}) {
           id
           creator {
             name
@@ -104,7 +110,10 @@ export const GET_MARKET = (marketId: number) => `
   }
 `;
 
-export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<string>) => `
+export const GET_MARKET_PAGE_DATA = (
+    marketId: number,
+    loggedInUser: Nullable<string>
+) => `
   {
     market_by_id(id: ${marketId}) {
       id
@@ -133,7 +142,9 @@ export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<st
         price
         symbol
       }
-      ${loggedInUser ? `shareholders(shareholder: "${loggedInUser}") {
+      ${
+          loggedInUser
+              ? `shareholders(shareholder: "${loggedInUser}") {
         market {
           id
         }
@@ -147,7 +158,9 @@ export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<st
           id
           time
         }
-      }` : ""}
+      }`
+              : ""
+      }
       order_book {
         order_id
         creator
@@ -200,7 +213,7 @@ export const GET_MARKET_PAGE_DATA = (marketId: number, loggedInUser: Nullable<st
   }
 `;
 
-export const GET_SHAREHOLDER = (marketId: number, loggedInUser: Nullable<string>) => `
+export const GET_SHAREHOLDER = (marketId: number, loggedInUser: string) => `
   {
     market_by_id(id: ${marketId}) {
       shareholders(shareholder: "${loggedInUser}") {
@@ -222,9 +235,9 @@ export const GET_SHAREHOLDER = (marketId: number, loggedInUser: Nullable<string>
   }
 `;
 
-export const GET_USER_PROFILE = (userName: Nullable<string>) => `
+export const GET_USER_PROFILE = (username: string) => `
   {
-    user_profile(name: "${userName}") {
+    user_profile(name: "${username}") {
       name
       referrals {
         market {
