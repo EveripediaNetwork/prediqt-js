@@ -89,7 +89,7 @@ export class Prediqt {
     }
 
     /**
-     * Set authorisation to execute transactions
+     * Set authorization to execute transactions
      * @param {Object[]} auth
      * @param {string} auth[].actor
      * @param {string} auth[].permission
@@ -107,7 +107,7 @@ export class Prediqt {
     }
 
     /**
-     * Reset authorisation to execute transactions
+     * Reset authorization to execute transactions
      */
     public resetAuth(): void {
         this.auth = [];
