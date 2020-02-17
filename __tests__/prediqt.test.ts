@@ -51,16 +51,21 @@ test("Prediqt.getAccount", async () => {
     expect(!!response).toBeTruthy();
 });
 
-test("Prediqt.getIqBalance", async () => {
-    const response = await client.getIqBalance(username);
-    expect(!!response).toBeTruthy();
-});
-
 test("Prediqt.getOrders", async () => {
     const response = await client.getOrders({
         nameId: OrderTypes.Yes,
         marketId: 4,
         limit: 50
     });
+    expect(!!response).toBeTruthy();
+});
+
+test("Prediqt.getIqBalance", async () => {
+    const response = await client.getIqBalance(username);
+    expect(!!response).toBeTruthy();
+});
+
+test("Prediqt.searchInOracles", async () => {
+    const response = await client.searchInOracles(username);
     expect(!!response).toBeTruthy();
 });

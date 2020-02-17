@@ -88,7 +88,7 @@ const graphClient = new PrediqtGraph(apiEndponit);
 
 ### setAuth
 
-Set authorisation to execute transactions
+Set authorization to execute transactions
 
 #### Parameters
 
@@ -98,10 +98,10 @@ Set authorisation to execute transactions
 
 ### resetAuth
 
-Reset authorisation to execute transactions
+Reset authorization to execute transactions
 
 ---
-*Methods that requires authorization*
+*Methods that require authorization*
 
 ### setFee
 
@@ -199,6 +199,17 @@ Set the outcome of a market (only resolver)
     -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
     -   `data.shareType` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
     -   `data.memo` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### marketResolveOracle
+
+Set the outcome of a market (only resolver)
+
+#### Parameters
+
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+    -   `data.account` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+    -   `data.marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+    -   `data.vote` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
 ### proposeMarket
 
@@ -307,7 +318,7 @@ Propose MultiSignature
     -   `data.requested` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** 
 
 ---
-*Methods that doesn't require authorization*
+*Methods that don't require authorization*
 
 ### getFees
 
@@ -389,6 +400,14 @@ Get IQ balance of an user
 ### getUserResources
 
 Get resources of an user
+
+#### Parameters
+
+-   `username` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### searchInOracles
+
+Search user in table of oracles
 
 #### Parameters
 

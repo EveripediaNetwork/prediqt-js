@@ -22,7 +22,9 @@ import {
     Contracts,
     ProposeMultiSig,
     ApiData,
-    GetOrders
+    GetOrders,
+    MarketResolveOracle,
+    UserOracle
 } from "./interfaces/prediqt";
 import { OrderTypes } from "./enums/prediqt";
 
@@ -36,7 +38,8 @@ import {
     PREDIQT_MARKET_CONTRACT,
     EVERIPEDIA_CONTRACT,
     PREDIQT_BANK_CONTRACT,
-    EOSIO_MULTISIG_CONTRACT
+    EOSIO_MULTISIG_CONTRACT,
+    PREDIQT_ORACL_CONTRACT
 } from "./constants";
 
 export class Prediqt {
@@ -49,6 +52,7 @@ export class Prediqt {
     private readonly eosioTokenContract: string;
     private readonly eosioContract: string;
     private readonly eosioMultiSigContract: string;
+    private readonly prediqtOraclContract: string;
     private auth: Authorization[];
 
     private transactParams: TransactParams = {
@@ -70,6 +74,7 @@ export class Prediqt {
         this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
         this.eosioContract = EOSIO_CONTRACT;
         this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
+        this.prediqtOraclContract = PREDIQT_ORACL_CONTRACT;
         if (apiData.customApi) {
             this.api = apiData.customApi;
             this.rpc = apiData.customApi.rpc;
@@ -84,7 +89,7 @@ export class Prediqt {
     }
 
     /**
-     * Set authorisation to execute transactions
+     * Set authorization to execute transactions
      * @param {Object[]} auth
      * @param {string} auth[].actor
      * @param {string} auth[].permission
@@ -102,7 +107,7 @@ export class Prediqt {
     }
 
     /**
-     * Reset authorisation to execute transactions
+     * Reset authorization to execute transactions
      */
     public resetAuth(): void {
         this.auth = [];
@@ -381,6 +386,29 @@ export class Prediqt {
                     {
                         account: this.prediqtContract,
                         name: "mktresolve",
+                        authorization: this.auth,
+                        data: processData(data)
+                    }
+                ]
+            },
+            this.transactParams
+        );
+    }
+
+    /**
+     * Set the outcome of a market (only resolver)
+     * @param {Object} data
+     * @param {string} data.account
+     * @param {number} data.marketId
+     * @param {number} data.vote
+     */
+    public async marketResolveOracle(data: MarketResolveOracle): Promise<any> {
+        return await this.api.transact(
+            {
+                actions: [
+                    {
+                        account: this.prediqtOraclContract,
+                        name: "voteresult",
                         authorization: this.auth,
                         data: processData(data)
                     }
@@ -851,6 +879,23 @@ export class Prediqt {
             table: "userres",
             json: true,
             table_key: username
+        });
+        return table.rows[0];
+    }
+
+    /**
+     * Search user in table of oracles
+     * @param {string} username
+     */
+    public async searchInOracles(username: string): Promise<UserOracle> {
+        const table = await this.rpc.get_table_rows({
+            code: this.prediqtOraclContract,
+            scope: this.prediqtOraclContract,
+            table: "oracles",
+            json: true,
+            limit: 100,
+            lower_bound: username,
+            upper_bound: username
         });
         return table.rows[0];
     }
