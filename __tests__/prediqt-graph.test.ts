@@ -1,11 +1,4 @@
-import dotenv from "dotenv";
 import { PrediqtGraph } from "../src";
-
-try {
-    dotenv.config({ path: `${__dirname}/../.env.test` });
-} catch (error) {
-    console.error(error.message);
-}
 
 const apiUrl = process.env.PREDIQT_API_URL as string;
 const client = new PrediqtGraph(apiUrl);

@@ -1,15 +1,8 @@
-import dotenv from "dotenv";
 import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
-
-import { OrderTypes } from "../src/enums/prediqt";
 
 import { Prediqt } from "../src";
 
-try {
-    dotenv.config({ path: `${__dirname}/../.env.test` });
-} catch (error) {
-    console.error(error.message);
-}
+import { OrderTypes } from "../src/enums/prediqt";
 
 const nodeEndpoint = process.env.NODE_ENDPOINT as string;
 const from = process.env.PREDIQT_FROM as string;
