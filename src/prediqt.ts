@@ -22,7 +22,8 @@ import {
     Contracts,
     ProposeMultiSig,
     ApiData,
-    GetOrders
+    GetOrders,
+    MarketResolveOracl
 } from "./interfaces/prediqt";
 import { OrderTypes } from "./enums/prediqt";
 
@@ -36,7 +37,8 @@ import {
     PREDIQT_MARKET_CONTRACT,
     EVERIPEDIA_CONTRACT,
     PREDIQT_BANK_CONTRACT,
-    EOSIO_MULTISIG_CONTRACT
+    EOSIO_MULTISIG_CONTRACT,
+    PREDIQT_ORACL_CONTRACT
 } from "./constants";
 
 export class Prediqt {
@@ -49,6 +51,7 @@ export class Prediqt {
     private readonly eosioTokenContract: string;
     private readonly eosioContract: string;
     private readonly eosioMultiSigContract: string;
+    private readonly prediqtOraclContract: string;
     private auth: Authorization[];
 
     private transactParams: TransactParams = {
@@ -70,6 +73,7 @@ export class Prediqt {
         this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
         this.eosioContract = EOSIO_CONTRACT;
         this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
+        this.prediqtOraclContract = PREDIQT_ORACL_CONTRACT;
         if (apiData.customApi) {
             this.api = apiData.customApi;
             this.rpc = apiData.customApi.rpc;
@@ -381,6 +385,29 @@ export class Prediqt {
                     {
                         account: this.prediqtContract,
                         name: "mktresolve",
+                        authorization: this.auth,
+                        data: processData(data)
+                    }
+                ]
+            },
+            this.transactParams
+        );
+    }
+
+    /**
+     * Set the outcome of a market (only resolver)
+     * @param {Object} data
+     * @param {string} data.account
+     * @param {number} data.marketId
+     * @param {number} data.vote
+     */
+    public async marketResolveOracl(data: MarketResolveOracl) {
+        return await this.api.transact(
+            {
+                actions: [
+                    {
+                        account: this.prediqtOraclContract,
+                        name: "voteresult",
                         authorization: this.auth,
                         data: processData(data)
                     }

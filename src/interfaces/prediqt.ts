@@ -99,6 +99,12 @@ export interface MarketResolve {
     memo: string;
 }
 
+export interface MarketResolveOracl {
+    account: string;
+    marketId: number;
+    vote: number;
+}
+
 export interface LimitOrder {
     nameId: OrderTypes;
     user: string;
