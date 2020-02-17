@@ -1,10 +1,10 @@
-# Prediqt JavaScript/TypeScript Client Library
+# PredIQt JavaScript/TypeScript Client Library
 
 [![CircleCI](https://circleci.com/gh/EveripediaNetwork/prediqt-js/tree/master.svg?style=svg)](https://circleci.com/gh/EveripediaNetwork/prediqt-js/tree/master)
 [![npm version](https://badge.fury.io/js/@everipedia%2Fprediqt-js.svg)](https://badge.fury.io/js/@everipedia%2Fprediqt-js)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/everipedianetwork/prediqt-js/master/LICENSE)
 
-> General purpose library for the Prediqt
+> General purpose library for the PredIQt
 
 ## Installation
 
