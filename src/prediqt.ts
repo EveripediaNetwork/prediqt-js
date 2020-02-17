@@ -23,7 +23,8 @@ import {
     ProposeMultiSig,
     ApiData,
     GetOrders,
-    MarketResolveOracl
+    MarketResolveOracle,
+    UserOracle
 } from "./interfaces/prediqt";
 import { OrderTypes } from "./enums/prediqt";
 
@@ -401,7 +402,7 @@ export class Prediqt {
      * @param {number} data.marketId
      * @param {number} data.vote
      */
-    public async marketResolveOracl(data: MarketResolveOracl) {
+    public async marketResolveOracle(data: MarketResolveOracle): Promise<any> {
         return await this.api.transact(
             {
                 actions: [
@@ -878,6 +879,23 @@ export class Prediqt {
             table: "userres",
             json: true,
             table_key: username
+        });
+        return table.rows[0];
+    }
+
+    /**
+     * Search user in table of oracles
+     * @param {string} username
+     */
+    public async searchInOracles(username: string): Promise<UserOracle> {
+        const table = await this.rpc.get_table_rows({
+            code: this.prediqtOraclContract,
+            scope: this.prediqtOraclContract,
+            table: "oracles",
+            json: true,
+            limit: 100,
+            lower_bound: username,
+            upper_bound: username
         });
         return table.rows[0];
     }

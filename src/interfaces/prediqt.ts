@@ -99,7 +99,7 @@ export interface MarketResolve {
     memo: string;
 }
 
-export interface MarketResolveOracl {
+export interface MarketResolveOracle {
     account: string;
     marketId: number;
     vote: number;
@@ -159,6 +159,10 @@ export interface UserResources {
 
 export interface IqBalance {
     balance: string;
+}
+
+export interface UserOracle {
+    account: string;
 }
 
 export interface ObjectKeys {
