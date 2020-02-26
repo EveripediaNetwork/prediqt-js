@@ -48,15 +48,14 @@ export interface MarketGQL {
     creator: UserGQL;
     resolver: UserGQL;
     resolution: string;
-    resolution_markettime: Nullable<Date>;
+    resolved_at: Nullable<EosTransactionGQL>;
     ipfs: MarketIpfsGQL;
-    is_active: boolean;
-    is_resolved: boolean;
-    is_verified: boolean;
     is_hidden: boolean;
+    is_stale: boolean;
+    state: string;
     end_time: Date;
-    volume: MarketVolumeGQL;
     last_trade: Nullable<LastTrade>;
+    volume: MarketVolumeGQL;
     order_book: OrderBookGQL[];
 }
 
@@ -69,7 +68,7 @@ export interface ShareHolderGQL {
     shareholder: UserGQL;
     quantity: number;
     symbol: OrderTypesUppercase;
-    updated_at: { num: number; id: string, time: Date; };
+    updated_at: BlockInfoGQL;
 }
 
 export interface TradeHistoryGQL {
@@ -77,7 +76,7 @@ export interface TradeHistoryGQL {
     currency: string;
     quantity: number;
     symbol: OrderTypesUppercase;
-    block: { time: Date; };
+    block: BlockInfoGQL;
 }
 
 export interface MarketPageGQL {
@@ -85,18 +84,29 @@ export interface MarketPageGQL {
     creator: UserGQL;
     resolver: UserGQL;
     resolution: string;
-    resolution_markettime: Nullable<Date>;
+    resolved_at: Nullable<EosTransactionGQL>;
     ipfs: MarketIpfsGQL;
-    is_active: boolean;
-    is_resolved: boolean;
-    is_verified: boolean;
+    is_stale: boolean;
+    state: string;
     end_time: Date;
+    last_trade: Nullable<LastTrade>;
     shareholders: ShareHolderGQL[];
     order_book: OrderBookGQL[];
     trade_history: TradeHistoryGQL[];
     volume: MarketVolumeGQL;
-    last_trade: Nullable<LastTrade>;
     related: RelatedMarketGQL[];
+}
+
+export interface BlockInfoGQL {
+    num: number;
+    time: Date;
+    id: string;
+}
+
+export interface EosTransactionGQL {
+    trx_id: string;
+    trx_url: string;
+    block: BlockInfoGQL;
 }
 
 export interface PlatformFeesGQL {
@@ -105,11 +115,7 @@ export interface PlatformFeesGQL {
     name: string;
     description: string;
     currency: string;
-    updated_at: {
-        num: number;
-        time: Date;
-        id: string;
-    };
+    updated_at: BlockInfoGQL;
 }
 
 export interface CategoriesGQL {
@@ -123,17 +129,17 @@ export interface DappInfoGQL {
     medium_url: string;
     telegram_url: string;
     support_email: string;
-    config: { textarea_whitelist: string; };
+    config: { textarea_whitelist: string };
 }
 
 export interface ChainInfoGQL {
     blocks_behind: number;
 }
 
-export interface  UserProfileOpenOrderGQL {
+export interface UserProfileOpenOrderGQL {
     market: {
         id: number;
-        ipfs: { title: string; };
+        ipfs: { title: string };
     };
     order_id: number;
     creator: string;
@@ -145,27 +151,23 @@ export interface  UserProfileOpenOrderGQL {
     timestamp: Date;
 }
 
-export interface  UserProfileFilledOrderGQL {
+export interface UserProfileFilledOrderGQL {
     market: {
         id: number;
-        ipfs: { title: string; };
+        ipfs: { title: string };
     };
     symbol: OrderTypesUppercase;
     price: number;
     currency: string;
     quantity: number;
-    block: {
-        num: number;
-        time: Date;
-        id: string;
-    };
+    block: BlockInfoGQL;
 }
 
-export interface UserProfileReferralGQL  {
+export interface UserProfileReferralGQL {
     market: {
         id: number;
         end_time: Date;
-        ipfs: { title: string; };
+        ipfs: { title: string };
     };
     yes_shares: number;
     no_shares: number;
@@ -175,12 +177,12 @@ export interface UserProfileReferralGQL  {
 export interface UserProfileSharesOwnedGQL {
     market: {
         id: number;
-        ipfs: { title: string; };
+        ipfs: { title: string };
         last_trade: Nullable<LastTrade>;
-        is_resolved: boolean;
+        state: string;
         resolution: string;
     };
-    shareholder: { name: string; };
+    shareholder: { name: string };
     user_average_price_per_share: number;
     quantity: number;
     symbol: OrderTypesUppercase;
@@ -195,9 +197,38 @@ export interface UserProfileGQL {
 }
 
 export interface ShareHolderGQL {
-    market: { id: number; };
-    shareholder: { name: string; };
+    market: { id: number };
+    shareholder: { name: string };
     quantity: number;
     symbol: OrderTypesUppercase;
-    updated_at: { num: number; time: Date; id: string; };
+    updated_at: BlockInfoGQL;
+}
+
+export interface Asset {
+    asset: string;
+    quantity: number;
+}
+
+export interface StatsByPeriodGQL {
+    report_start: Date;
+    report_end: Date;
+    total_markets_proposed: number;
+    total_markets_accepted: number;
+    total_markets_rejected: number;
+    total_trade_volume: Asset[];
+}
+
+export interface LeaderboardTraderGQL {
+    period: string;
+    rank: number;
+    name: string;
+    shares_traded: number;
+    profitable_trades: number;
+    roi: number;
+}
+
+export interface LeaderboardGQL {
+    period: string;
+    page: number;
+    traders: LeaderboardTraderGQL[];
 }

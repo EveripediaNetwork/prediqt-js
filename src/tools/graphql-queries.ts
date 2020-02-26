@@ -4,17 +4,16 @@ export const GET_MARKETS_LAZY = (
     excludeInvalidIpfs: boolean,
     skip: number,
     count: number,
-    isVerified: string,
     creator: string,
     onlyProposed: boolean,
     filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
 ): string => `
     query {
-        markets(sort_by: "ending_latest", exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, is_verified: "${isVerified}", creator: "${creator}"${
+        markets(sort_by: ENDING_LATEST, exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, creator: "${creator}"${
     filterUrlParam
         ? `, ${filterUrlParam.paramName}: "${filterUrlParam.paramValue}"`
         : ""
-}${onlyProposed ? ", is_proposal: true, is_resolved: false" : ""}) {
+}${onlyProposed ? ", state: [PROPOSED]" : ", state:[APPROVED, RESOLVED]"}) {
           id
           creator {
             name
@@ -23,7 +22,11 @@ export const GET_MARKETS_LAZY = (
             name
           }
           resolution
-          resolution_markettime
+          resolved_at{
+            block{
+              time
+            }
+          }
           ipfs {
             hash
             title
@@ -33,10 +36,9 @@ export const GET_MARKETS_LAZY = (
             tags
             resolution_description
           }
-          is_active
-          is_resolved
-          is_verified
           is_hidden
+          is_stale
+          state
           end_time
           last_trade {
             price
@@ -70,7 +72,11 @@ export const GET_MARKET = (marketId: number) => `
         name
       }
       resolution
-      resolution_markettime
+      resolved_at{
+        block{
+          time
+        }
+      }
       ipfs {
         hash
         title
@@ -80,10 +86,9 @@ export const GET_MARKET = (marketId: number) => `
         tags
         resolution_description
       }
-      is_active
-      is_resolved
-      is_verified
       is_hidden
+      is_stale
+      state
       end_time
       last_trade {
         price
@@ -123,8 +128,12 @@ export const GET_MARKET_PAGE_DATA = (
       resolver {
         name
       }
-      resolution
-      resolution_markettime
+      resolution      
+      resolved_at{
+        block{
+          time
+        }
+      }
       ipfs {
         hash
         title
@@ -134,9 +143,8 @@ export const GET_MARKET_PAGE_DATA = (
         tags
         resolution_description
       }
-      is_active
-      is_resolved
-      is_verified
+      is_stale
+      state
       end_time
       last_trade {
         price
@@ -261,7 +269,6 @@ export const GET_USER_PROFILE = (username: string) => `
             price
             symbol
           }
-          is_resolved
           resolution
         }
         shareholder {
@@ -355,4 +362,41 @@ export const GET_BLOCKS_BEHIND_INFO = `
       blocks_behind
     }
   }
+`;
+
+export const GET_LEADERBOARD = (period: string) => `
+{
+  get_leaderboard(period: ${period}) {
+    period
+    page
+    traders {
+      period
+      rank
+      name
+      shares_traded
+      profitable_trades
+      roi
+    }
+  }
+}
+`;
+
+export const GET_STATS_BY_PERIOD = (
+    group_by: string,
+    end_date: Date,
+    limit: number
+) => `
+{
+  stats_by_period(group_by:${group_by} end_date:${end_date} limit:${limit}){
+    report_start
+    report_end
+    total_markets_proposed
+    total_markets_accepted
+    total_markets_rejected
+    total_trade_volume{
+      asset
+      quantity
+    }
+  }
+}
 `;
