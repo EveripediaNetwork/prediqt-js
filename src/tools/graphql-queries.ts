@@ -55,7 +55,11 @@ export const GET_MARKETS_LAZY = (
             type
             quantity
             symbol
-            timestamp
+            transaction{
+              block{
+                time
+              }
+            }
           }
         }
       }
@@ -109,7 +113,11 @@ export const GET_MARKET = (marketId: number) => `
         type
         quantity
         symbol
-        timestamp
+        transaction{
+          block{
+            time
+          }
+        }
       }
     }
   }
@@ -177,15 +185,21 @@ export const GET_MARKET_PAGE_DATA = (
         type
         quantity
         symbol
-        timestamp
+        transaction{
+          block{
+            time
+          }
+        }
       }
       trade_history {
         price
         currency
         quantity
         symbol
-        block{
-          time
+        transaction{
+          block{
+            time
+          }
         }
       }
       volume {
@@ -207,7 +221,11 @@ export const GET_MARKET_PAGE_DATA = (
           type
           quantity
           symbol
-          timestamp
+          transaction{
+            block{
+              time
+            }
+          }
         }
         volume {
           eos
@@ -292,7 +310,11 @@ export const GET_USER_PROFILE = (username: string) => `
         type
         quantity
         symbol
-        timestamp
+        transaction{
+          block{
+            time
+          }
+        }
       }
       orders_filled {
         market {
@@ -305,10 +327,10 @@ export const GET_USER_PROFILE = (username: string) => `
         price
         currency
         quantity
-        block {
-          num
-          id
-          time
+        transaction{
+          block{
+            time
+          }
         }
       }
     }

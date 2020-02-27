@@ -32,7 +32,7 @@ export interface OrderBookGQL {
     type: string;
     quantity: number;
     symbol: OrderTypesUppercase;
-    timestamp: Date;
+    transaction: EosTransactionGQL;
 }
 
 export interface RelatedMarketGQL {
@@ -76,7 +76,7 @@ export interface TradeHistoryGQL {
     currency: string;
     quantity: number;
     symbol: OrderTypesUppercase;
-    block: BlockInfoGQL;
+    transaction: EosTransactionGQL;
 }
 
 export interface MarketPageGQL {
@@ -148,7 +148,7 @@ export interface UserProfileOpenOrderGQL {
     type: string;
     quantity: number;
     symbol: OrderTypesUppercase;
-    timestamp: Date;
+    transaction: EosTransactionGQL;
 }
 
 export interface UserProfileFilledOrderGQL {
@@ -160,7 +160,7 @@ export interface UserProfileFilledOrderGQL {
     price: number;
     currency: string;
     quantity: number;
-    block: BlockInfoGQL;
+    transaction: EosTransactionGQL;
 }
 
 export interface UserProfileReferralGQL {
