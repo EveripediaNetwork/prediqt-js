@@ -22,8 +22,27 @@ export const GET_MARKETS_LAZY = (
             name
           }
           resolution
-          resolved_at{
-            block{
+          resolved_at {
+            trx_url
+            block {
+              time
+            }
+          }
+          proposed_at {
+            trx_url
+            block {
+              time
+            }
+          }
+          approved_at {
+            trx_url
+            block {
+              time
+            }
+          }
+          rejected_at {
+            trx_url
+            block {
               time
             }
           }
@@ -41,8 +60,7 @@ export const GET_MARKETS_LAZY = (
           state
           end_time
           last_trade {
-            price
-            symbol
+            yes_price
           }
           volume {
             eos
@@ -95,12 +113,10 @@ export const GET_MARKET = (marketId: number) => `
       state
       end_time
       last_trade {
-        price
-        symbol
+        yes_price
       }
       trade_history {
-        price
-        symbol
+        yes_price
       }
       volume {
         eos
@@ -155,8 +171,7 @@ export const GET_MARKET_PAGE_DATA = (
       state
       end_time
       last_trade {
-        price
-        symbol
+        yes_price
       }
       ${
           loggedInUser
@@ -192,10 +207,10 @@ export const GET_MARKET_PAGE_DATA = (
         }
       }
       trade_history {
-        price
+        yes_price
+        no_price
         currency
-        quantity
-        symbol
+        size
         transaction{
           block{
             time
@@ -231,8 +246,7 @@ export const GET_MARKET_PAGE_DATA = (
           eos
         }
         last_trade {
-          price
-          symbol
+          yes_price
         }
       }
     }
@@ -284,8 +298,7 @@ export const GET_USER_PROFILE = (username: string) => `
             title
           }
           last_trade {
-            price
-            symbol
+            yes_price
           }
           resolution
         }

@@ -20,8 +20,7 @@ export interface MarketVolumeGQL {
 }
 
 export interface LastTrade {
-    price: number;
-    symbol: OrderTypesUppercase;
+    yes_price: number;
 }
 
 export interface OrderBookGQL {
@@ -49,6 +48,9 @@ export interface MarketGQL {
     resolver: UserGQL;
     resolution: string;
     resolved_at: Nullable<EosTransactionGQL>;
+    proposed_at: Nullable<EosTransactionGQL>;
+    approved_at: Nullable<EosTransactionGQL>;
+    rejected_at: Nullable<EosTransactionGQL>;
     ipfs: MarketIpfsGQL;
     is_hidden: boolean;
     is_stale: boolean;
@@ -72,10 +74,10 @@ export interface ShareHolderGQL {
 }
 
 export interface TradeHistoryGQL {
-    price: number;
+    yes_price: number;
+    no_price: number;
     currency: string;
-    quantity: number;
-    symbol: OrderTypesUppercase;
+    size: number;
     transaction: EosTransactionGQL;
 }
 
