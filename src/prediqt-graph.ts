@@ -19,8 +19,9 @@ import {
     GET_DAPP_INFO,
     GET_LEADERBOARD,
     GET_MARKET,
-    GET_MARKET_PAGE_DATA,
     GET_MARKETS_LAZY,
+    GET_MARKET_METADATA,
+    GET_MARKET_PAGE_DATA,
     GET_PLATFORM_FEES,
     GET_SHAREHOLDER,
     GET_STATS_BY_PERIOD,
@@ -99,6 +100,20 @@ export class PrediqtGraph {
      */
     public async getMarket(marketId: number): Promise<ExtendedMarketGQL> {
         const result = await this.query(GET_MARKET(marketId));
+
+        const json = await result.json();
+
+        return json.data.market_by_id;
+    }
+
+    /**
+     * Get market metadata only
+     * @param {number} marketId
+     */
+    public async getMarketMetadata(
+        marketId: number
+    ): Promise<ExtendedMarketGQL> {
+        const result = await this.query(GET_MARKET_METADATA(marketId));
 
         const json = await result.json();
 
@@ -214,7 +229,9 @@ export class PrediqtGraph {
      * Returns the leaderboard data group by period
      * @param {string} period
      */
-    public async getLeaderboardByPerid(period: string): Promise<LeaderboardGQL> {
+    public async getLeaderboardByPerid(
+        period: string
+    ): Promise<LeaderboardGQL> {
         const result = await this.query(GET_LEADERBOARD(period));
 
         const json = await result.json();

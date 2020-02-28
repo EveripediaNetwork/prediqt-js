@@ -74,6 +74,7 @@ export const GET_MARKETS_LAZY = (
             quantity
             symbol
             transaction{
+              trx_url
               block{
                 time
               }
@@ -82,6 +83,23 @@ export const GET_MARKETS_LAZY = (
         }
       }
     `;
+
+export const GET_MARKET_METADATA = (marketId: number) => `
+{
+    market_by_id(id: ${marketId}) {
+      id
+      ipfs {
+        hash
+        title
+        description
+        image_url
+        category
+        tags
+        resolution_description
+      }
+    }
+  }
+`;
 
 export const GET_MARKET = (marketId: number) => `
   {
@@ -95,6 +113,7 @@ export const GET_MARKET = (marketId: number) => `
       }
       resolution
       resolved_at{
+        trx_url
         block{
           time
         }
@@ -130,6 +149,7 @@ export const GET_MARKET = (marketId: number) => `
         quantity
         symbol
         transaction{
+          trx_url
           block{
             time
           }
@@ -154,6 +174,7 @@ export const GET_MARKET_PAGE_DATA = (
       }
       resolution      
       resolved_at{
+        trx_url
         block{
           time
         }
@@ -201,6 +222,7 @@ export const GET_MARKET_PAGE_DATA = (
         quantity
         symbol
         transaction{
+          trx_url
           block{
             time
           }
@@ -212,6 +234,7 @@ export const GET_MARKET_PAGE_DATA = (
         currency
         size
         transaction{
+          trx_url
           block{
             time
           }
@@ -237,6 +260,7 @@ export const GET_MARKET_PAGE_DATA = (
           quantity
           symbol
           transaction{
+            trx_url
             block{
               time
             }
@@ -324,6 +348,7 @@ export const GET_USER_PROFILE = (username: string) => `
         quantity
         symbol
         transaction{
+          trx_url
           block{
             time
           }
@@ -341,6 +366,7 @@ export const GET_USER_PROFILE = (username: string) => `
         currency
         quantity
         transaction{
+          trx_url
           block{
             time
           }
