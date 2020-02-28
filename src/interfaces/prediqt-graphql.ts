@@ -151,6 +151,8 @@ export interface UserProfileOpenOrderGQL {
     type: string;
     quantity: number;
     symbol: OrderTypesUppercase;
+    side: string;
+    size: OrderSizeGQL;
     transaction: EosTransactionGQL;
 }
 

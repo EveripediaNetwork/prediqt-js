@@ -347,6 +347,12 @@ export const GET_USER_PROFILE = (username: string) => `
         type
         quantity
         symbol
+        side
+        size{
+          ordered
+          filled
+          available
+        }
         transaction{
           trx_url
           block{
