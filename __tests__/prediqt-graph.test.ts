@@ -5,7 +5,7 @@ const client = new PrediqtGraph(apiUrl);
 jest.setTimeout(10000);
 
 test("Prediqt.getMarkets", async () => {
-    const response = await client.getMarkets(true, 0, 100, "all", "", null);
+    const response = await client.getMarkets(true, 0, 100, "", null);
     expect(!!response).toBeTruthy();
 });
 
