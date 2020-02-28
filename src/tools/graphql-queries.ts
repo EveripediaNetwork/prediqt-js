@@ -364,7 +364,12 @@ export const GET_USER_PROFILE = (username: string) => `
         symbol
         price
         currency
-        quantity
+        size{
+          ordered
+          filled
+          available
+        }
+        filled_reason
         transaction{
           trx_url
           block{
@@ -395,7 +400,11 @@ export const GET_CATEGORIES_TAGS = `
   {
     categories {
       name
-      tags
+      is_creation_enabled
+      subcategories{
+        is_creation_enabled
+        name
+      }
     }
   }
 `;

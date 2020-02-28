@@ -122,7 +122,8 @@ export interface PlatformFeesGQL {
 
 export interface CategoriesGQL {
     name: string;
-    tags: string[];
+    is_creation_enabled: boolean;
+    subcategories: CategoriesGQL[];
 }
 
 export interface DappInfoGQL {
@@ -161,8 +162,15 @@ export interface UserProfileFilledOrderGQL {
     symbol: OrderTypesUppercase;
     price: number;
     currency: string;
-    quantity: number;
+    size: OrderSizeGQL;
+    filled_reason: string;
     transaction: EosTransactionGQL;
+}
+
+export interface OrderSizeGQL {
+    ordered: number;
+    filled: number;
+    available: number;
 }
 
 export interface UserProfileReferralGQL {
