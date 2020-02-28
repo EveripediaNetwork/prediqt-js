@@ -4,17 +4,16 @@ export const GET_MARKETS_LAZY = (
     excludeInvalidIpfs: boolean,
     skip: number,
     count: number,
-    isVerified: string,
     creator: string,
     onlyProposed: boolean,
     filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
 ): string => `
     query {
-        markets(sort_by: "ending_latest", exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, is_verified: "${isVerified}", creator: "${creator}"${
+        markets(sort_by: ENDING_LATEST, exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, creator: "${creator}"${
     filterUrlParam
         ? `, ${filterUrlParam.paramName}: "${filterUrlParam.paramValue}"`
         : ""
-}${onlyProposed ? ", is_proposal: true, is_resolved: false" : ""}) {
+}${onlyProposed ? ", state: [PROPOSED]" : ", state:[APPROVED, RESOLVED]"}) {
           id
           creator {
             name
@@ -23,7 +22,30 @@ export const GET_MARKETS_LAZY = (
             name
           }
           resolution
-          resolution_markettime
+          resolved_at {
+            trx_url
+            block {
+              time
+            }
+          }
+          proposed_at {
+            trx_url
+            block {
+              time
+            }
+          }
+          approved_at {
+            trx_url
+            block {
+              time
+            }
+          }
+          rejected_at {
+            trx_url
+            block {
+              time
+            }
+          }
           ipfs {
             hash
             title
@@ -33,14 +55,12 @@ export const GET_MARKETS_LAZY = (
             tags
             resolution_description
           }
-          is_active
-          is_resolved
-          is_verified
           is_hidden
+          is_stale
+          state
           end_time
           last_trade {
-            price
-            symbol
+            yes_price
           }
           volume {
             eos
@@ -53,11 +73,33 @@ export const GET_MARKETS_LAZY = (
             type
             quantity
             symbol
-            timestamp
+            transaction{
+              trx_url
+              block{
+                time
+              }
+            }
           }
         }
       }
     `;
+
+export const GET_MARKET_METADATA = (marketId: number) => `
+{
+    market_by_id(id: ${marketId}) {
+      id
+      ipfs {
+        hash
+        title
+        description
+        image_url
+        category
+        tags
+        resolution_description
+      }
+    }
+  }
+`;
 
 export const GET_MARKET = (marketId: number) => `
   {
@@ -70,7 +112,12 @@ export const GET_MARKET = (marketId: number) => `
         name
       }
       resolution
-      resolution_markettime
+      resolved_at{
+        trx_url
+        block{
+          time
+        }
+      }
       ipfs {
         hash
         title
@@ -80,18 +127,15 @@ export const GET_MARKET = (marketId: number) => `
         tags
         resolution_description
       }
-      is_active
-      is_resolved
-      is_verified
       is_hidden
+      is_stale
+      state
       end_time
       last_trade {
-        price
-        symbol
+        yes_price
       }
       trade_history {
-        price
-        symbol
+        yes_price
       }
       volume {
         eos
@@ -104,7 +148,12 @@ export const GET_MARKET = (marketId: number) => `
         type
         quantity
         symbol
-        timestamp
+        transaction{
+          trx_url
+          block{
+            time
+          }
+        }
       }
     }
   }
@@ -123,8 +172,13 @@ export const GET_MARKET_PAGE_DATA = (
       resolver {
         name
       }
-      resolution
-      resolution_markettime
+      resolution      
+      resolved_at{
+        trx_url
+        block{
+          time
+        }
+      }
       ipfs {
         hash
         title
@@ -134,13 +188,11 @@ export const GET_MARKET_PAGE_DATA = (
         tags
         resolution_description
       }
-      is_active
-      is_resolved
-      is_verified
+      is_stale
+      state
       end_time
       last_trade {
-        price
-        symbol
+        yes_price
       }
       ${
           loggedInUser
@@ -169,15 +221,23 @@ export const GET_MARKET_PAGE_DATA = (
         type
         quantity
         symbol
-        timestamp
+        transaction{
+          trx_url
+          block{
+            time
+          }
+        }
       }
       trade_history {
-        price
+        yes_price
+        no_price
         currency
-        quantity
-        symbol
-        block{
-          time
+        size
+        transaction{
+          trx_url
+          block{
+            time
+          }
         }
       }
       volume {
@@ -199,14 +259,18 @@ export const GET_MARKET_PAGE_DATA = (
           type
           quantity
           symbol
-          timestamp
+          transaction{
+            trx_url
+            block{
+              time
+            }
+          }
         }
         volume {
           eos
         }
         last_trade {
-          price
-          symbol
+          yes_price
         }
       }
     }
@@ -258,10 +322,8 @@ export const GET_USER_PROFILE = (username: string) => `
             title
           }
           last_trade {
-            price
-            symbol
+            yes_price
           }
-          is_resolved
           resolution
         }
         shareholder {
@@ -285,7 +347,18 @@ export const GET_USER_PROFILE = (username: string) => `
         type
         quantity
         symbol
-        timestamp
+        side
+        size{
+          ordered
+          filled
+          available
+        }
+        transaction{
+          trx_url
+          block{
+            time
+          }
+        }
       }
       orders_filled {
         market {
@@ -297,11 +370,17 @@ export const GET_USER_PROFILE = (username: string) => `
         symbol
         price
         currency
-        quantity
-        block {
-          num
-          id
-          time
+        size{
+          ordered
+          filled
+          available
+        }
+        filled_reason
+        transaction{
+          trx_url
+          block{
+            time
+          }
         }
       }
     }
@@ -327,7 +406,11 @@ export const GET_CATEGORIES_TAGS = `
   {
     categories {
       name
-      tags
+      is_creation_enabled
+      subcategories{
+        is_creation_enabled
+        name
+      }
     }
   }
 `;
@@ -355,4 +438,41 @@ export const GET_BLOCKS_BEHIND_INFO = `
       blocks_behind
     }
   }
+`;
+
+export const GET_LEADERBOARD = (period: string) => `
+{
+  get_leaderboard(period: ${period}) {
+    period
+    page
+    traders {
+      period
+      rank
+      name
+      shares_traded
+      profitable_trades
+      roi
+    }
+  }
+}
+`;
+
+export const GET_STATS_BY_PERIOD = (
+    group_by: string,
+    end_date: Date,
+    limit: number
+) => `
+{
+  stats_by_period(group_by:${group_by} end_date:${end_date} limit:${limit}){
+    report_start
+    report_end
+    total_markets_proposed
+    total_markets_accepted
+    total_markets_rejected
+    total_trade_volume{
+      asset
+      quantity
+    }
+  }
+}
 `;

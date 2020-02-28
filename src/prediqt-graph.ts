@@ -9,17 +9,22 @@ import {
     PlatformFeesGQL,
     ShareHolderGQL,
     UserProfileGQL,
-    ExtendedMarketGQL
+    ExtendedMarketGQL,
+    StatsByPeriodGQL,
+    LeaderboardGQL
 } from "./interfaces/prediqt-graphql";
 import {
     GET_BLOCKS_BEHIND_INFO,
     GET_CATEGORIES_TAGS,
     GET_DAPP_INFO,
+    GET_LEADERBOARD,
     GET_MARKET,
-    GET_MARKET_PAGE_DATA,
     GET_MARKETS_LAZY,
+    GET_MARKET_METADATA,
+    GET_MARKET_PAGE_DATA,
     GET_PLATFORM_FEES,
     GET_SHAREHOLDER,
+    GET_STATS_BY_PERIOD,
     GET_USER_PROFILE,
     Nullable
 } from "./tools";
@@ -47,15 +52,7 @@ export class PrediqtGraph {
         filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
     ): Promise<MarketGQL[]> {
         const result = await this.query(
-            GET_MARKETS_LAZY(
-                true,
-                skip,
-                count,
-                "all",
-                creator,
-                true,
-                filterUrlParam
-            )
+            GET_MARKETS_LAZY(true, skip, count, creator, true, filterUrlParam)
         );
 
         const json = await result.json();
@@ -78,7 +75,6 @@ export class PrediqtGraph {
         excludeInvalidIpfs: boolean,
         skip: number,
         count: number,
-        isVerified: string,
         creator: string,
         filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
     ): Promise<MarketGQL[]> {
@@ -87,7 +83,6 @@ export class PrediqtGraph {
                 excludeInvalidIpfs,
                 skip,
                 count,
-                isVerified,
                 creator,
                 false,
                 filterUrlParam
@@ -105,6 +100,20 @@ export class PrediqtGraph {
      */
     public async getMarket(marketId: number): Promise<ExtendedMarketGQL> {
         const result = await this.query(GET_MARKET(marketId));
+
+        const json = await result.json();
+
+        return json.data.market_by_id;
+    }
+
+    /**
+     * Get market metadata only
+     * @param {number} marketId
+     */
+    public async getMarketMetadata(
+        marketId: number
+    ): Promise<ExtendedMarketGQL> {
+        const result = await this.query(GET_MARKET_METADATA(marketId));
 
         const json = await result.json();
 
@@ -201,6 +210,33 @@ export class PrediqtGraph {
         const json = await result.json();
 
         return json.data.chain_info;
+    }
+
+    /**
+     * Returns the platform stats by period (Weekly), limit: 20
+     */
+    public async getStatsByPeriod(): Promise<StatsByPeriodGQL> {
+        const result = await this.query(
+            GET_STATS_BY_PERIOD("WEEK", new Date(), 20)
+        );
+
+        const json = await result.json();
+
+        return json.data.stats_by_period;
+    }
+
+    /**
+     * Returns the leaderboard data group by period
+     * @param {string} period
+     */
+    public async getLeaderboardByPerid(
+        period: string
+    ): Promise<LeaderboardGQL> {
+        const result = await this.query(GET_LEADERBOARD(period));
+
+        const json = await result.json();
+
+        return json.data.get_leaderboard;
     }
 
     private async query(query: string): Promise<any> {
