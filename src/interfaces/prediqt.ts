@@ -23,12 +23,19 @@ export interface Fee {
     fee: number;
 }
 
+export interface AllowedAsset {
+    symbol: string;
+    contract_key: string;
+}
+
 export interface CreateMarket {
     creator: string;
     resolver: string;
     ipfs: string;
     timeIn: number;
+    symbol: string;
     transferToken: string;
+    transferMemo: string;
 }
 
 export interface Market {

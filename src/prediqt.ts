@@ -24,7 +24,7 @@ import {
     ApiData,
     GetOrders,
     MarketResolveOracle,
-    UserOracle
+    UserOracle, AllowedAsset
 } from "./interfaces/prediqt";
 import { OrderTypes } from "./enums/prediqt";
 
@@ -236,7 +236,7 @@ export class Prediqt {
      * @param {string} data.transferToken
      */
     public async createMarket(data: CreateMarket): Promise<any> {
-        const { creator, resolver, ipfs, timeIn, transferToken } = data;
+        const { creator, resolver, ipfs, timeIn, symbol, transferToken, transferMemo } = data;
 
         return await this.api.transact(
             {
@@ -247,7 +247,7 @@ export class Prediqt {
                         creator,
                         this.prediqtContract,
                         transferToken,
-                        "createmarket 5 IQ"
+                        transferMemo
                     ),
                     {
                         account: this.prediqtContract,
@@ -257,7 +257,8 @@ export class Prediqt {
                             creator,
                             resolver,
                             ipfs,
-                            time_in: timeIn
+                            time_in: timeIn,
+                            symbol
                         }
                     }
                 ]
@@ -424,6 +425,7 @@ export class Prediqt {
      * @param {string} resolver
      * @param {string} ipfs
      * @param {number} timeIn
+     * @param {string} symbol
      * @param {string} transferToken
      * @param {string} transferMemo
      */
@@ -432,6 +434,7 @@ export class Prediqt {
         resolver: string,
         ipfs: string,
         timeIn: number,
+        symbol: string,
         transferToken: string,
         transferMemo: string
     ): Promise<any> {
@@ -454,7 +457,8 @@ export class Prediqt {
                             creator,
                             resolver,
                             ipfs,
-                            time_in: timeIn
+                            time_in: timeIn,
+                            symbol
                         }
                     }
                 ]
@@ -693,6 +697,19 @@ export class Prediqt {
                 }
             ]
         });
+    }
+
+    /**
+     * Get allowed assets
+     */
+    public async getAllowedAssets(): Promise<[AllowedAsset]> {
+        const table = await this.rpc.get_table_rows({
+            code: this.prediqtContract,
+            scope: 0,
+            table: "allowedasset",
+            json: true
+        });
+        return table.rows;
     }
 
     /**
