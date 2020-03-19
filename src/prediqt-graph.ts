@@ -229,7 +229,7 @@ export class PrediqtGraph {
      * Returns the leaderboard data group by period
      * @param {string} period
      */
-    public async getLeaderboardByPerid(
+    public async getLeaderboardByPeriod(
         period: string
     ): Promise<LeaderboardGQL> {
         const result = await this.query(GET_LEADERBOARD(period));

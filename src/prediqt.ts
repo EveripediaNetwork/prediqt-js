@@ -590,15 +590,16 @@ export class Prediqt {
      */
     public async cancelShares(data: CancelShares): Promise<any> {
         return await this.api.transact({
-            actions: [
-                {
-                    account: this.prediqtMarketContract,
-                    name: "cancelshares",
-                    authorization: this.auth,
-                    data: processData(data)
-                }
-            ]
-        });
+                actions: [
+                    {
+                        account: this.prediqtMarketContract,
+                        name: "cancelshares",
+                        authorization: this.auth,
+                        data: processData(data)
+                    }
+                ]
+            },
+            this.transactParams);
     }
 
     /**
@@ -622,29 +623,30 @@ export class Prediqt {
         } = data;
 
         return await this.api.transact({
-            actions: [
-                transferAction(
-                    this.eosioTokenContract,
-                    this.auth,
-                    from,
-                    this.prediqtContract,
-                    transferToken,
-                    `create order for secondary market ${marketId}`
-                ),
-                {
-                    account: this.prediqtMarketContract,
-                    name: "buyshares",
-                    authorization: this.auth,
-                    data: {
+                actions: [
+                    transferAction(
+                        this.eosioTokenContract,
+                        this.auth,
                         from,
-                        price,
-                        shares,
-                        sharetype: shareType,
-                        market_id: marketId
+                        this.prediqtContract,
+                        transferToken,
+                        `create order for secondary market ${marketId}`
+                    ),
+                    {
+                        account: this.prediqtMarketContract,
+                        name: "buyshares",
+                        authorization: this.auth,
+                        data: {
+                            from,
+                            price,
+                            shares,
+                            sharetype: shareType,
+                            market_id: marketId
+                        }
                     }
-                }
-            ]
-        });
+                ]
+            },
+            this.transactParams);
     }
 
     /**
@@ -660,22 +662,23 @@ export class Prediqt {
         const { from, shares, shareType, marketId } = data;
 
         return await this.api.transact({
-            actions: [
-                transferSharesAction(this.prediqtContract, this.auth, {
-                    from,
-                    to: this.prediqtMarketContract,
-                    shares,
-                    shareType,
-                    marketId
-                }),
-                {
-                    account: this.prediqtMarketContract,
-                    name: "sellshares",
-                    authorization: this.auth,
-                    data: processData(data)
-                }
-            ]
-        });
+                actions: [
+                    transferSharesAction(this.prediqtContract, this.auth, {
+                        from,
+                        to: this.prediqtMarketContract,
+                        shares,
+                        shareType,
+                        marketId
+                    }),
+                    {
+                        account: this.prediqtMarketContract,
+                        name: "sellshares",
+                        authorization: this.auth,
+                        data: processData(data)
+                    }
+                ]
+            },
+            this.transactParams);
     }
 
     /**
@@ -688,15 +691,16 @@ export class Prediqt {
 
     public async proposeMultiSig(data: ProposeMultiSig): Promise<any> {
         return await this.api.transact({
-            actions: [
-                {
-                    account: this.eosioMultiSigContract,
-                    name: "propose",
-                    authorization: this.auth,
-                    data: processData(data)
-                }
-            ]
-        });
+                actions: [
+                    {
+                        account: this.eosioMultiSigContract,
+                        name: "propose",
+                        authorization: this.auth,
+                        data: processData(data)
+                    }
+                ]
+            },
+            this.transactParams);
     }
 
     /**
