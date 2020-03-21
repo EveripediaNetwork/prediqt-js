@@ -1,6 +1,12 @@
 import { OrderTypesUppercase } from "../enums/prediqt";
 import { Nullable } from "../tools";
 
+export interface EosAssetGQL {
+    symbol: string;
+    precision: number;
+    contract: string;
+}
+
 export interface MarketIpfsGQL {
     hash: string;
     title: string;
@@ -16,7 +22,8 @@ export interface UserGQL {
 }
 
 export interface MarketVolumeGQL {
-    eos: number;
+    quantity: number;
+    asset: EosAssetGQL;
 }
 
 export interface LastTrade {
@@ -27,9 +34,9 @@ export interface OrderBookGQL {
     order_id: number;
     creator: string;
     price: number;
-    currency: string;
-    type: string;
-    quantity: number;
+    asset: EosAssetGQL;
+    side: string;
+    size: OrderSizeGQL;
     symbol: OrderTypesUppercase;
     transaction: EosTransactionGQL;
 }
@@ -37,6 +44,7 @@ export interface OrderBookGQL {
 export interface RelatedMarketGQL {
     id: number;
     ipfs: MarketIpfsGQL;
+    asset: EosAssetGQL;
     order_book: OrderBookGQL;
     volume: MarketVolumeGQL;
     last_trade: Nullable<LastTrade>;
@@ -52,6 +60,7 @@ export interface MarketGQL {
     approved_at: Nullable<EosTransactionGQL>;
     rejected_at: Nullable<EosTransactionGQL>;
     ipfs: MarketIpfsGQL;
+    asset: EosAssetGQL;
     is_hidden: boolean;
     is_stale: boolean;
     state: string;
@@ -88,6 +97,7 @@ export interface MarketPageGQL {
     resolution: string;
     resolved_at: Nullable<EosTransactionGQL>;
     ipfs: MarketIpfsGQL;
+    asset: EosAssetGQL;
     is_stale: boolean;
     state: string;
     end_time: Date;
@@ -143,16 +153,15 @@ export interface UserProfileOpenOrderGQL {
     market: {
         id: number;
         ipfs: { title: string };
+        asset: EosAssetGQL;
     };
     order_id: number;
     creator: string;
     price: number;
-    currency: string;
-    type: string;
-    quantity: number;
-    symbol: OrderTypesUppercase;
+    asset: EosAssetGQL;
     side: string;
     size: OrderSizeGQL;
+    symbol: OrderTypesUppercase;
     transaction: EosTransactionGQL;
 }
 
@@ -160,11 +169,11 @@ export interface UserProfileFilledOrderGQL {
     market: {
         id: number;
         ipfs: { title: string };
+        asset: EosAssetGQL;
     };
     symbol: OrderTypesUppercase;
     price: number;
-    currency: string;
-    size: OrderSizeGQL;
+    asset: EosAssetGQL;
     filled_reason: string;
     transaction: EosTransactionGQL;
 }
@@ -180,6 +189,7 @@ export interface UserProfileReferralGQL {
         id: number;
         end_time: Date;
         ipfs: { title: string };
+        asset: EosAssetGQL;
     };
     yes_shares: number;
     no_shares: number;
@@ -190,6 +200,7 @@ export interface UserProfileSharesOwnedGQL {
     market: {
         id: number;
         ipfs: { title: string };
+        asset: EosAssetGQL;
         last_trade: Nullable<LastTrade>;
         state: string;
         resolution: string;

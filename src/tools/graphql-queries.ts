@@ -54,6 +54,11 @@ export const GET_MARKETS_LAZY = (
             category
             tags
             resolution_description
+          }          
+          asset {
+              symbol
+              precision
+              contract
           }
           is_hidden
           is_stale
@@ -63,15 +68,28 @@ export const GET_MARKETS_LAZY = (
             yes_price
           }
           volume {
-            eos
+            quantity
+            asset{
+              symbol
+              precision
+              contract
+            }
           }
           order_book {
             order_id
             creator
             price
-            currency
-            type
-            quantity
+            asset{
+              symbol
+              precision
+              contract
+            }
+            side
+            size{
+              ordered
+              filled
+              available
+            }
             symbol
             transaction{
               trx_url
@@ -96,6 +114,11 @@ export const GET_MARKET_METADATA = (marketId: number) => `
         category
         tags
         resolution_description
+      }      
+      asset {
+          symbol
+          precision
+          contract
       }
     }
   }
@@ -126,6 +149,11 @@ export const GET_MARKET = (marketId: number) => `
         category
         tags
         resolution_description
+      }      
+      asset {
+        symbol
+        precision
+        contract
       }
       is_hidden
       is_stale
@@ -138,15 +166,28 @@ export const GET_MARKET = (marketId: number) => `
         yes_price
       }
       volume {
-        eos
+        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
       }
       order_book {
         order_id
         creator
         price
-        currency
-        type
-        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
+        side
+        size{
+          ordered
+          filled
+          available
+        }
         symbol
         transaction{
           trx_url
@@ -188,6 +229,11 @@ export const GET_MARKET_PAGE_DATA = (
         tags
         resolution_description
       }
+      asset {
+          symbol
+          precision
+          contract
+      }
       is_stale
       state
       end_time
@@ -217,9 +263,17 @@ export const GET_MARKET_PAGE_DATA = (
         order_id
         creator
         price
-        currency
-        type
-        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
+        side
+        size{
+          ordered
+          filled
+          available
+        }
         symbol
         transaction{
           trx_url
@@ -231,7 +285,10 @@ export const GET_MARKET_PAGE_DATA = (
       trade_history {
         yes_price
         no_price
-        currency
+        asset {
+          symbol
+          precision
+        }
         size
         transaction{
           trx_url
@@ -241,7 +298,12 @@ export const GET_MARKET_PAGE_DATA = (
         }
       }
       volume {
-        eos
+        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
       }
       related {
         id
@@ -251,13 +313,26 @@ export const GET_MARKET_PAGE_DATA = (
           image_url
           category
         }
+        asset {
+            symbol
+            precision
+            contract
+        }
         order_book {
           order_id
           creator
           price
-          currency
-          type
-          quantity
+          asset{
+            symbol
+            precision
+            contract
+          }
+          side
+          size{
+            ordered
+            filled
+            available
+          }
           symbol
           transaction{
             trx_url
@@ -267,7 +342,12 @@ export const GET_MARKET_PAGE_DATA = (
           }
         }
         volume {
-          eos
+          quantity
+          asset{
+            symbol
+            precision
+            contract
+          }
         }
         last_trade {
           yes_price
@@ -310,6 +390,11 @@ export const GET_USER_PROFILE = (username: string) => `
           ipfs {
             title
           }
+          asset {
+            symbol
+            precision
+            contract
+          }
         }
         yes_shares
         no_shares
@@ -320,6 +405,11 @@ export const GET_USER_PROFILE = (username: string) => `
           id
           ipfs {
             title
+          }            
+          asset {
+            symbol
+            precision
+            contract
           }
           last_trade {
             yes_price
@@ -339,20 +429,27 @@ export const GET_USER_PROFILE = (username: string) => `
           ipfs {
             title
           }
+          asset {
+            symbol
+            precision
+            contract
+          }
         }
         order_id
         creator
         price
-        currency
-        type
-        quantity
-        symbol
+        asset {
+          symbol
+          precision
+          contract
+        }
         side
-        size{
+        size {
           ordered
           filled
           available
         }
+        symbol
         transaction{
           trx_url
           block{
@@ -369,7 +466,11 @@ export const GET_USER_PROFILE = (username: string) => `
         }
         symbol
         price
-        currency
+        asset {
+          symbol
+          precision
+          contract
+        }
         size{
           ordered
           filled
