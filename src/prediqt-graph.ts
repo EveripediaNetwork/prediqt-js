@@ -11,7 +11,7 @@ import {
     UserProfileGQL,
     ExtendedMarketGQL,
     StatsByPeriodGQL,
-    LeaderboardGQL
+    LeaderboardGQL, UserSettingsGQL
 } from "./interfaces/prediqt-graphql";
 import {
     GET_BLOCKS_BEHIND_INFO,
@@ -26,6 +26,7 @@ import {
     GET_SHAREHOLDER,
     GET_STATS_BY_PERIOD,
     GET_USER_PROFILE,
+    GET_USER_SETTINGS,
     Nullable
 } from "./tools";
 
@@ -228,15 +229,31 @@ export class PrediqtGraph {
     /**
      * Returns the leaderboard data group by period
      * @param {string} period
+     * @param {string} type
      */
     public async getLeaderboardByPeriod(
-        period: string
+        period: string,
+        type: string
     ): Promise<LeaderboardGQL> {
-        const result = await this.query(GET_LEADERBOARD(period));
+        const result = await this.query(GET_LEADERBOARD(period, type));
 
         const json = await result.json();
 
         return json.data.get_leaderboard;
+    }
+
+    /**
+     * Returns the user settings used for notifications
+     * @param {string} username
+     */
+    public async getUserSettings(
+        username: string
+    ): Promise<UserSettingsGQL> {
+        const result = await this.query(GET_USER_SETTINGS(username));
+
+        const json = await result.json();
+
+        return json.data;
     }
 
     private async query(query: string): Promise<any> {

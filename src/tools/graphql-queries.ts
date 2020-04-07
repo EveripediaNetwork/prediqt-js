@@ -240,25 +240,24 @@ export const GET_MARKET_PAGE_DATA = (
       last_trade {
         yes_price
       }
-      ${
-          loggedInUser
-              ? `shareholders(shareholder: "${loggedInUser}") {
-        market {
-          id
+        ${loggedInUser ? 
+            `shareholders(shareholder: "${loggedInUser}") {
+                market {
+                  id
+                }
+                shareholder {
+                  name
+                }
+                quantity
+                symbol
+                updated_at {
+                  num
+                  id
+                  time
+                }
+              }` 
+            : ""
         }
-        shareholder {
-          name
-        }
-        quantity
-        symbol
-        updated_at {
-          num
-          id
-          time
-        }
-      }`
-              : ""
-      }
       order_book {
         order_id
         creator
@@ -541,21 +540,21 @@ export const GET_BLOCKS_BEHIND_INFO = `
   }
 `;
 
-export const GET_LEADERBOARD = (period: string) => `
+export const GET_LEADERBOARD = (period: string, type: string) => `
 {
-  get_leaderboard(period: ${period}) {
+  get_leaderboard(period: ${period}, type: ${type}) {
+    type
     period
     page
-    traders {
+    users {
       period
       rank
       name
-      shares_traded
-      profitable_trades
-      roi
+      profit
     }
   }
 }
+
 `;
 
 export const GET_STATS_BY_PERIOD = (
@@ -574,6 +573,31 @@ export const GET_STATS_BY_PERIOD = (
       asset
       quantity
     }
+  }
+}
+`;
+
+// email {
+//   address
+//   is_verified
+// }
+
+export const GET_USER_SETTINGS = (
+    username: string
+) => `
+{
+  user_profile(name: "${username}") {
+    name
+    subscriptions {
+      user
+      type
+      events
+    }
+  }
+  subscribable_events {
+    id
+    name
+    description
   }
 }
 `;

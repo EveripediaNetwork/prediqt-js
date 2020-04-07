@@ -322,7 +322,7 @@ export class Prediqt {
             {
                 actions: [
                     transferAction(
-                        this.eosioTokenContract,
+                        this.getContractForToken(transferToken),
                         this.auth,
                         user,
                         this.prediqtContract,
@@ -927,5 +927,16 @@ export class Prediqt {
      */
     public async getAccount(username: string): Promise<any> {
         return await this.rpc.get_account(username);
+    }
+
+    /**
+     * Returns the appropriate smart contract for token
+     * @param {string} token
+     */
+    private getContractForToken(token: string|undefined): string {
+        if (token && token.endsWith("IQ")) {
+            return this.iqTokenContract;
+        }
+        return this.eosioTokenContract;
     }
 }

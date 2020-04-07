@@ -245,13 +245,36 @@ export interface LeaderboardTraderGQL {
     period: string;
     rank: number;
     name: string;
-    shares_traded: number;
-    profitable_trades: number;
-    roi: number;
+    profit: number;
 }
 
 export interface LeaderboardGQL {
+    type: string;
     period: string;
     page: number;
     traders: LeaderboardTraderGQL[];
+}
+
+export interface UserSettingsEmailGQL {
+    address: string;
+    is_verified: boolean;
+}
+
+export interface UserSettingsSubscriptionsGQL {
+    user: string;
+    type: string;
+    events: string[];
+}
+
+export interface UserSettingsGQL {
+    user_profile: {
+        name: string;
+        email: UserSettingsEmailGQL;
+        subscriptions: UserSettingsSubscriptionsGQL[];
+    };
+    subscribable_events: {
+        id: string;
+        name: string;
+        description: string;
+    };
 }
