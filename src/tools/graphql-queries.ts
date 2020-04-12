@@ -577,17 +577,16 @@ export const GET_STATS_BY_PERIOD = (
 }
 `;
 
-// email {
-//   address
-//   is_verified
-// }
-
 export const GET_USER_SETTINGS = (
     username: string
 ) => `
 {
   user_profile(name: "${username}") {
     name
+    email {
+      address
+      is_verified
+    }
     subscriptions {
       user
       type
