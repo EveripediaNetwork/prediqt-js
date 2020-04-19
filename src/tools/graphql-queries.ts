@@ -421,6 +421,7 @@ export const GET_USER_PROFILE = (username: string) => `
         user_average_price_per_share
         quantity
         symbol
+        status
       }
       orders_open {
         market {

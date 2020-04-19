@@ -1,6 +1,6 @@
 {
     "name": "@everipedia/prediqt-js",
-    "version": "2.0.0-alpha.4",
+    "version": "2.0.0-alpha.5",
     "description": "PredIQt JavaScript/TypeScript Client Library",
     "license": "MIT",
     "main": "dist/index.js",

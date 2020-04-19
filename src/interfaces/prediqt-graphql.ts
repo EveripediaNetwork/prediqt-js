@@ -209,6 +209,7 @@ export interface UserProfileSharesOwnedGQL {
     user_average_price_per_share: number;
     quantity: number;
     symbol: OrderTypesUppercase;
+    status: string;
 }
 
 export interface UserProfileGQL {
