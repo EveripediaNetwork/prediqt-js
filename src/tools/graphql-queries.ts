@@ -60,6 +60,11 @@ export const GET_MARKETS_LAZY = (
               precision
               contract
           }
+          open_interest
+          market_cap
+          best_yes_price
+          best_no_price
+          shares_outstanding
           is_hidden
           is_stale
           state
@@ -73,29 +78,6 @@ export const GET_MARKETS_LAZY = (
               symbol
               precision
               contract
-            }
-          }
-          order_book {
-            order_id
-            creator
-            price
-            asset{
-              symbol
-              precision
-              contract
-            }
-            side
-            size{
-              ordered
-              filled
-              available
-            }
-            symbol
-            transaction{
-              trx_url
-              block{
-                time
-              }
             }
           }
         }
@@ -134,6 +116,7 @@ export const GET_MARKET = (marketId: number) => `
       resolver {
         name
       }
+      resolver_info
       resolution
       resolved_at{
         trx_url
@@ -155,6 +138,11 @@ export const GET_MARKET = (marketId: number) => `
         precision
         contract
       }
+      open_interest
+      market_cap
+      best_yes_price
+      best_no_price
+      shares_outstanding
       is_hidden
       is_stale
       state
@@ -213,6 +201,7 @@ export const GET_MARKET_PAGE_DATA = (
       resolver {
         name
       }
+      resolver_info
       resolution      
       resolved_at{
         trx_url
@@ -234,6 +223,11 @@ export const GET_MARKET_PAGE_DATA = (
           precision
           contract
       }
+      open_interest
+      market_cap
+      best_yes_price
+      best_no_price
+      shares_outstanding
       is_stale
       state
       end_time
@@ -250,6 +244,7 @@ export const GET_MARKET_PAGE_DATA = (
                 }
                 quantity
                 symbol
+                status
                 updated_at {
                   num
                   id
@@ -555,7 +550,6 @@ export const GET_LEADERBOARD = (period: string, type: string) => `
     }
   }
 }
-
 `;
 
 export const GET_STATS_BY_PERIOD = (
@@ -564,17 +558,27 @@ export const GET_STATS_BY_PERIOD = (
     limit: number
 ) => `
 {
-  stats_by_period(group_by:${group_by} end_date:${end_date} limit:${limit}){
+  stats_by_period(group_by:${group_by} end_date:"${end_date.toISOString()}" limit:${limit}){
     report_start
     report_end
+    blockchain_users    
+    total_fees_burned {
+      asset {
+        symbol
+        precision
+      }
+      quantity
+    }    
     total_markets_proposed
     total_markets_accepted
     total_markets_rejected
-    total_trade_volume{
-      asset
+    total_trade_volume {
+      asset {
+        symbol
+      }
       quantity
     }
-  }
+    avg_resolution_time
 }
 `;
 

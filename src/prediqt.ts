@@ -24,7 +24,7 @@ import {
     ApiData,
     GetOrders,
     MarketResolveOracle,
-    UserOracle, AllowedAsset
+    UserOracle, AllowedAsset, TotalIqResolutionVotes
 } from "./interfaces/prediqt";
 import { OrderTypes } from "./enums/prediqt";
 
@@ -39,7 +39,8 @@ import {
     EVERIPEDIA_CONTRACT,
     PREDIQT_BANK_CONTRACT,
     EOSIO_MULTISIG_CONTRACT,
-    PREDIQT_ORACL_CONTRACT
+    PREDIQT_ORACL_CONTRACT,
+    IQ_RESOLUTION_CONTRACT
 } from "./constants";
 
 export class Prediqt {
@@ -48,6 +49,7 @@ export class Prediqt {
     private readonly prediqtContract: string;
     private readonly prediqtMarketContract: string;
     private readonly iqTokenContract: string;
+    private readonly iqResolutionContract: string;
     private readonly prediqtBankContract: string;
     private readonly eosioTokenContract: string;
     private readonly eosioContract: string;
@@ -69,6 +71,7 @@ export class Prediqt {
         this.prediqtMarketContract =
             contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
         this.iqTokenContract = contracts.iqToken || EVERIPEDIA_CONTRACT;
+        this.iqResolutionContract = contracts.iqResolution || IQ_RESOLUTION_CONTRACT;
         this.prediqtBankContract =
             contracts.prediqtBank || PREDIQT_BANK_CONTRACT;
         this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
@@ -417,6 +420,44 @@ export class Prediqt {
             },
             this.transactParams
         );
+    }
+
+    /**
+     * IQ resolution method
+     * @param {string} loggedInUser
+     * @param {string} quantity
+     * @param {number} marketId
+     * @param {boolean} isYes
+     */
+    public async marketResolveIQ(loggedInUser: string, quantity: string , marketId: number, isYes: boolean): Promise<any> {
+        return await this.api.transact(
+            {
+                actions: [
+                    transferAction(
+                        this.iqTokenContract,
+                        this.auth,
+                        loggedInUser,
+                        this.iqResolutionContract,
+                        quantity,
+                        `${marketId},${isYes ? 1 : 0}`
+                    ),
+                ]
+            },
+            this.transactParams
+        );
+    }
+
+    /**
+     * Get total IQ votes from IQ resolution method
+     */
+    public async getTotalIqVotes(): Promise<[TotalIqResolutionVotes]> {
+        const table = await this.rpc.get_table_rows({
+            code: this.iqResolutionContract,
+            scope: 0,
+            table: "totalvotes",
+            json: true
+        });
+        return table.rows;
     }
 
     /**

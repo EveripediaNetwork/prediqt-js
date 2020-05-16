@@ -54,6 +54,7 @@ export interface MarketGQL {
     id: number;
     creator: UserGQL;
     resolver: UserGQL;
+    resolver_info: string;
     resolution: string;
     resolved_at: Nullable<EosTransactionGQL>;
     proposed_at: Nullable<EosTransactionGQL>;
@@ -61,13 +62,17 @@ export interface MarketGQL {
     rejected_at: Nullable<EosTransactionGQL>;
     ipfs: MarketIpfsGQL;
     asset: EosAssetGQL;
+    open_interest: number;
+    market_cap: number;
+    best_yes_price: number;
+    best_no_price: number;
+    shares_outstanding: number;
     is_hidden: boolean;
     is_stale: boolean;
     state: string;
     end_time: Date;
     last_trade: Nullable<LastTrade>;
     volume: MarketVolumeGQL;
-    order_book: OrderBookGQL[];
 }
 
 export interface ExtendedMarketGQL extends MarketGQL {
@@ -79,6 +84,7 @@ export interface ShareHolderGQL {
     shareholder: UserGQL;
     quantity: number;
     symbol: OrderTypesUppercase;
+    status: string;
     updated_at: BlockInfoGQL;
 }
 
@@ -94,10 +100,16 @@ export interface MarketPageGQL {
     id: number;
     creator: UserGQL;
     resolver: UserGQL;
+    resolver_info: string;
     resolution: string;
     resolved_at: Nullable<EosTransactionGQL>;
     ipfs: MarketIpfsGQL;
     asset: EosAssetGQL;
+    open_interest: number;
+    market_cap: number;
+    best_yes_price: number;
+    best_no_price: number;
+    shares_outstanding: number;
     is_stale: boolean;
     state: string;
     end_time: Date;
@@ -236,10 +248,13 @@ export interface Asset {
 export interface StatsByPeriodGQL {
     report_start: Date;
     report_end: Date;
+    blockchain_users: number;
+    total_fees_burned: {asset: Asset[], quantity: number};
     total_markets_proposed: number;
     total_markets_accepted: number;
     total_markets_rejected: number;
-    total_trade_volume: Asset[];
+    total_trade_volume: {asset: Asset[], quantity: number};
+    avg_resolution_time: number;
 }
 
 export interface LeaderboardTraderGQL {

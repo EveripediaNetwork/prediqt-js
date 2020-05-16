@@ -216,9 +216,9 @@ export class PrediqtGraph {
     /**
      * Returns the platform stats by period (Weekly), limit: 20
      */
-    public async getStatsByPeriod(): Promise<StatsByPeriodGQL> {
+    public async getStatsByPeriod(group_by: string): Promise<StatsByPeriodGQL> {
         const result = await this.query(
-            GET_STATS_BY_PERIOD("WEEK", new Date(), 20)
+            GET_STATS_BY_PERIOD(group_by, new Date(), 20)
         );
 
         const json = await result.json();

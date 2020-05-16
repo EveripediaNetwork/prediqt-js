@@ -16,6 +16,7 @@ export interface Contracts {
     prediqtMarket?: string;
     iqToken?: string;
     prediqtBank?: string;
+    iqResolution?: string;
 }
 
 export interface Fee {
@@ -26,6 +27,12 @@ export interface Fee {
 export interface AllowedAsset {
     symbol: string;
     contract_key: string;
+}
+
+export interface TotalIqResolutionVotes {
+    market_id: number;
+    yes_votes: number;
+    no_votes: number;
 }
 
 export interface CreateMarket {
