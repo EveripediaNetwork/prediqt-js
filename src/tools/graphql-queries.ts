@@ -579,6 +579,7 @@ export const GET_STATS_BY_PERIOD = (
       quantity
     }
     avg_resolution_time
+  }
 }
 `;
 

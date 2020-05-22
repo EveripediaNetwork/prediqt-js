@@ -305,6 +305,28 @@ export class Prediqt {
      * @param {boolean} data.buy
      */
     public async limitOrder(data: LimitOrder): Promise<any> {
+        
+        return await this.api.transact(
+            {
+                actions: this.getLimitOrderActions(data)
+            },
+            this.transactParams
+        );
+    }
+
+    /**
+     * Gets an action for an order for shares in a market
+     * @param {Object} data
+     * @param {string} data.nameId  - takes "yes" or "no"
+     * @param {string} data.user
+     * @param {number} data.marketId
+     * @param {number} data.shares
+     * @param {string} data.limit
+     * @param {string} data.transferToken
+     * @param {string} data.referral
+     * @param {boolean} data.buy
+     */
+    public getLimitOrderActions(data: LimitOrder): any[] {
         const {
             nameId,
             user,
@@ -317,38 +339,33 @@ export class Prediqt {
         } = data;
         if (!Object.values(OrderTypes).includes(nameId)) {
             throw new Error(
-                `nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`
+              `nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`
             );
         }
 
-        return await this.api.transact(
+        return [
+            transferAction(
+              this.getContractForToken(transferToken),
+              this.auth,
+              user,
+              this.prediqtContract,
+              transferToken,
+              `create order for market ${marketId}`
+            ),
             {
-                actions: [
-                    transferAction(
-                        this.getContractForToken(transferToken),
-                        this.auth,
-                        user,
-                        this.prediqtContract,
-                        transferToken,
-                        `create order for market ${marketId}`
-                    ),
-                    {
-                        account: this.prediqtContract,
-                        name: `lmtorder${nameId}`,
-                        authorization: this.auth,
-                        data: {
-                            user,
-                            market_id: marketId,
-                            shares,
-                            limit,
-                            referral,
-                            buy
-                        }
-                    }
-                ]
-            },
-            this.transactParams
-        );
+                account: this.prediqtContract,
+                name: `lmtorder${nameId}`,
+                authorization: this.auth,
+                data: {
+                    user,
+                    market_id: marketId,
+                    shares,
+                    limit,
+                    referral,
+                    buy
+                }
+            }
+        ];
     }
 
     /**
