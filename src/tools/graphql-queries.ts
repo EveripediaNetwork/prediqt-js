@@ -6,10 +6,11 @@ export const GET_MARKETS_LAZY = (
     count: number,
     creator: string,
     onlyProposed: boolean,
-    filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
+    filterUrlParam: Nullable<{ paramName: string; paramValue: string }>,
+    sort_by: string = "ENDING_LATEST"
 ): string => `
     query {
-        markets(sort_by: ENDING_LATEST, exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, creator: "${creator}"${
+        markets(sort_by: ${sort_by}, exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, creator: "${creator}"${
     filterUrlParam
         ? `, ${filterUrlParam.paramName}: "${filterUrlParam.paramValue}"`
         : ""
@@ -228,6 +229,7 @@ export const GET_MARKET_PAGE_DATA = (
       best_yes_price
       best_no_price
       shares_outstanding
+      is_hidden
       is_stale
       state
       end_time
