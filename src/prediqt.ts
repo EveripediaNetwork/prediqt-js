@@ -344,14 +344,14 @@ export class Prediqt {
         }
 
         return [
-            transferAction(
+             ... (buy ? [transferAction(
               this.getContractForToken(transferToken),
               this.auth,
               user,
               this.prediqtContract,
               transferToken,
               `create order for market ${marketId}`
-            ),
+            )] : []),
             {
                 account: this.prediqtContract,
                 name: `lmtorder${nameId}`,
