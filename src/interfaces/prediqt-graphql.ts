@@ -82,7 +82,9 @@ export interface ExtendedMarketGQL extends MarketGQL {
 export interface ShareHolderGQL {
     market: { id: number };
     shareholder: UserGQL;
+    user_average_price_per_share: number;
     quantity: number;
+    quantity_available: number;
     symbol: OrderTypesUppercase;
     status: string;
     updated_at: BlockInfoGQL;
@@ -220,6 +222,7 @@ export interface UserProfileSharesOwnedGQL {
     shareholder: { name: string };
     user_average_price_per_share: number;
     quantity: number;
+    quantity_available: number;
     symbol: OrderTypesUppercase;
     status: string;
 }
@@ -232,14 +235,6 @@ export interface UserProfileGQL {
     orders_filled: UserProfileFilledOrderGQL[];
 }
 
-export interface ShareHolderGQL {
-    market: { id: number };
-    shareholder: { name: string };
-    quantity: number;
-    symbol: OrderTypesUppercase;
-    updated_at: BlockInfoGQL;
-}
-
 export interface Asset {
     asset: string;
     quantity: number;
@@ -249,11 +244,11 @@ export interface StatsByPeriodGQL {
     report_start: Date;
     report_end: Date;
     blockchain_users: number;
-    total_fees_burned: {asset: Asset[], quantity: number};
+    total_fees_burned: { asset: Asset[]; quantity: number };
     total_markets_proposed: number;
     total_markets_accepted: number;
     total_markets_rejected: number;
-    total_trade_volume: {asset: Asset[], quantity: number};
+    total_trade_volume: { asset: Asset[]; quantity: number };
     avg_resolution_time: number;
 }
 

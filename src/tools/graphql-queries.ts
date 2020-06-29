@@ -244,7 +244,9 @@ export const GET_MARKET_PAGE_DATA = (
                 shareholder {
                   name
                 }
+                user_average_price_per_share
                 quantity
+                quantity_available
                 symbol
                 status
                 updated_at {
@@ -363,8 +365,11 @@ export const GET_SHAREHOLDER = (marketId: number, loggedInUser: string) => `
         shareholder {
           name
         }
+        user_average_price_per_share
         quantity
+        quantity_available
         symbol
+        status
         updated_at {
           num
           id
@@ -417,6 +422,7 @@ export const GET_USER_PROFILE = (username: string) => `
         }
         user_average_price_per_share
         quantity
+        quantity_available
         symbol
         status
       }
