@@ -52,6 +52,7 @@ export class Prediqt {
     private readonly iqResolutionContract: string;
     private readonly prediqtBankContract: string;
     private readonly eosioTokenContract: string;
+    private readonly tokenContractMapping?: { [symbol: string]: string; };
     private readonly eosioContract: string;
     private readonly eosioMultiSigContract: string;
     private readonly prediqtOraclContract: string;
@@ -78,6 +79,7 @@ export class Prediqt {
         this.eosioContract = EOSIO_CONTRACT;
         this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
         this.prediqtOraclContract = PREDIQT_ORACL_CONTRACT;
+        this.tokenContractMapping = contracts.tokenContractMapping;
         if (apiData.customApi) {
             this.api = apiData.customApi;
             this.rpc = apiData.customApi.rpc;
@@ -683,7 +685,7 @@ export class Prediqt {
         return await this.api.transact({
                 actions: [
                     transferAction(
-                        this.eosioTokenContract,
+                      this.getContractForToken(transferToken) || this.eosioTokenContract,
                         this.auth,
                         from,
                         this.prediqtContract,
@@ -994,6 +996,13 @@ export class Prediqt {
     private getContractForToken(token: string|undefined): string {
         if (token && token.endsWith("IQ")) {
             return this.iqTokenContract;
+        }
+        let symbol: string | string[] | undefined = token?.split(" ");
+        if (symbol && symbol.length === 2) {
+            symbol = symbol[1];
+            if (this.tokenContractMapping && symbol in this.tokenContractMapping) {
+                return this.tokenContractMapping[symbol];
+            }
         }
         return this.eosioTokenContract;
     }

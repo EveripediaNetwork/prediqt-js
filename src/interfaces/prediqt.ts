@@ -17,6 +17,7 @@ export interface Contracts {
     iqToken?: string;
     prediqtBank?: string;
     iqResolution?: string;
+    tokenContractMapping?: { [symbol: string]: string; };
 }
 
 export interface Fee {
