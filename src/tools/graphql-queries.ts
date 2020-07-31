@@ -60,6 +60,9 @@ export const GET_MARKETS_LAZY = (
               symbol
               precision
               contract
+              USDT: quote(to:USDT)
+              EOS: quote(to:EOS)
+              IQ: quote(to:IQ)
           }
           open_interest
           market_cap
@@ -102,6 +105,9 @@ export const GET_MARKET_METADATA = (marketId: number) => `
           symbol
           precision
           contract
+          USDT: quote(to:USDT)
+          EOS: quote(to:EOS)
+          IQ: quote(to:IQ)
       }
     }
   }
@@ -138,6 +144,9 @@ export const GET_MARKET = (marketId: number) => `
         symbol
         precision
         contract
+        USDT: quote(to:USDT)
+        EOS: quote(to:EOS)
+        IQ: quote(to:IQ)
       }
       open_interest
       market_cap
@@ -210,6 +219,12 @@ export const GET_MARKET_PAGE_DATA = (
           time
         }
       }
+      proposed_at{
+        trx_url
+        block{
+          time
+        }
+      }
       ipfs {
         hash
         title
@@ -223,6 +238,9 @@ export const GET_MARKET_PAGE_DATA = (
           symbol
           precision
           contract
+          USDT: quote(to:USDT)
+          EOS: quote(to:EOS)
+          IQ: quote(to:IQ)
       }
       open_interest
       market_cap
