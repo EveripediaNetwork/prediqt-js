@@ -144,33 +144,6 @@ export class Prediqt {
     }
 
     /**
-     * Accept a proposed market
-     * @param {string} resolver
-     * @param {number} marketId
-     */
-    public async acceptMarket(
-        resolver: string,
-        marketId: number
-    ): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [
-                    {
-                        account: this.prediqtContract,
-                        name: "acceptmarket",
-                        authorization: this.auth,
-                        data: {
-                            resolver,
-                            market_id: marketId
-                        }
-                    }
-                ]
-            },
-            this.transactParams
-        );
-    }
-
-    /**
      * Claim shares for a particular market
      * @param {string} user
      * @param {number} marketId

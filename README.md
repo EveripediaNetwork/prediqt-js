@@ -108,15 +108,6 @@ Set a fee for the platform (admin only)
     -   `fee.id` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
     -   `fee.fee` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-### acceptMarket
-
-Accept a proposed market
-
-#### Parameters
-
--   `resolver` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
-
 ### claimShares
 
 Claim shares for a particular market
