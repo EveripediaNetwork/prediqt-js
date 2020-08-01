@@ -344,30 +344,6 @@ export class Prediqt {
     }
 
     /**
-     * Set a market as invalid (only resolver)
-     * @param {number} marketId
-     * @param {string} memo
-     */
-    public async marketInvalid(marketId: number, memo: string): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [
-                    {
-                        account: this.prediqtContract,
-                        name: "mktinvalid",
-                        authorization: this.auth,
-                        data: {
-                            market_id: marketId,
-                            memo
-                        }
-                    }
-                ]
-            },
-            this.transactParams
-        );
-    }
-
-    /**
      * Set the outcome of a market (only resolver)
      * @param {Object} data
      * @param {string} data.resolver

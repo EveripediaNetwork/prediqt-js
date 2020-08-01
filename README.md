@@ -181,15 +181,6 @@ Gets an action for an order for shares in a market
     -   `data.referral` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
     -   `data.buy` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
-### marketInvalid
-
-Set a market as invalid (only resolver)
-
-#### Parameters
-
--   `marketId` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
--   `memo` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
-
 ### marketResolve
 
 Set the outcome of a market (only resolver)
