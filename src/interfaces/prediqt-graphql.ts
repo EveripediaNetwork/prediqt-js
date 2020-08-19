@@ -240,16 +240,29 @@ export interface Asset {
     quantity: number;
 }
 
+export interface QuantityAssetGQL {
+  quantity: number;
+  asset: EosAssetGQL;
+}
+
 export interface StatsByPeriodGQL {
     report_start: Date;
     report_end: Date;
     blockchain_users: number;
     total_fees_burned: { asset: Asset[]; quantity: number };
-    total_markets_proposed: number;
-    total_markets_accepted: number;
-    total_markets_rejected: number;
+    markets_created: number;
     total_trade_volume: { asset: Asset[]; quantity: number };
     avg_resolution_time: number;
+}
+
+export interface CurrentStatsGQL {
+  open_interest: QuantityAssetGQL[];
+  asset_price: number;
+}
+
+export interface StatsHomePageGQL {
+    stats_by_period: StatsByPeriodGQL;
+    current_stats: CurrentStatsGQL;
 }
 
 export interface LeaderboardTraderGQL {

@@ -594,10 +594,8 @@ export const GET_STATS_BY_PERIOD = (
         precision
       }
       quantity
-    }    
-    total_markets_proposed
-    total_markets_accepted
-    total_markets_rejected
+    }
+    markets_created
     total_trade_volume {
       asset {
         symbol
@@ -605,6 +603,15 @@ export const GET_STATS_BY_PERIOD = (
       quantity
     }
     avg_resolution_time
+  }  
+  current_stats {
+    open_interest {
+      quantity
+      asset {
+        symbol
+      }
+    }
+    asset_price(from: IQ, to: USD)
   }
 }
 `;

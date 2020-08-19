@@ -1,17 +1,16 @@
 const fetch = require("isomorphic-fetch");
 
 import {
-    CategoriesGQL,
-    ChainInfoGQL,
-    DappInfoGQL,
-    MarketGQL,
-    MarketPageGQL,
-    PlatformFeesGQL,
-    ShareHolderGQL,
-    UserProfileGQL,
-    ExtendedMarketGQL,
-    StatsByPeriodGQL,
-    LeaderboardGQL, UserSettingsGQL
+  CategoriesGQL,
+  ChainInfoGQL,
+  DappInfoGQL,
+  MarketGQL,
+  MarketPageGQL,
+  PlatformFeesGQL,
+  ShareHolderGQL,
+  UserProfileGQL,
+  ExtendedMarketGQL,
+  LeaderboardGQL, UserSettingsGQL, StatsHomePageGQL
 } from "./interfaces/prediqt-graphql";
 import {
     GET_BLOCKS_BEHIND_INFO,
@@ -216,14 +215,14 @@ export class PrediqtGraph {
     /**
      * Returns the platform stats by period (Weekly), limit: 20
      */
-    public async getStatsByPeriod(group_by: string): Promise<StatsByPeriodGQL> {
+    public async getStatsByPeriod(group_by: string): Promise<StatsHomePageGQL> {
         const result = await this.query(
             GET_STATS_BY_PERIOD(group_by, new Date(), 20)
         );
 
         const json = await result.json();
 
-        return json.data.stats_by_period;
+        return json.data;
     }
 
     /**
