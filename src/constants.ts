@@ -8,3 +8,4 @@ export const EOSIO_TOKEN_CONTRACT = "eosio.token";
 export const EOSIO_CONTRACT = "eosio";
 export const EOSIO_MULTISIG_CONTRACT = "eosio.msig";
 export const PREDIQT_ORACL_CONTRACT = "prediqtoracl";
+export const PREDIQT_IQ_DISPUTE_CONTRACT = "prediqtiqdis";

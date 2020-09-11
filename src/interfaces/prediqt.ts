@@ -36,6 +36,22 @@ export interface TotalIqResolutionVotes {
     no_votes: number;
 }
 
+// prediqtiqdis BEGIN
+
+export interface IqDisputeUserVotes {
+  user: number;
+  yes_votes: number;
+  no_votes: number;
+  invalid_votes: number;
+}
+
+export interface IqDisputeConfig {
+  id: number;
+  value: number;
+}
+
+// prediqtiqdis END
+
 export interface CreateMarket {
     creator: string;
     resolver: string;
@@ -118,6 +134,14 @@ export interface MarketResolveOracle {
     account: string;
     marketId: number;
     vote: number;
+}
+
+export interface MarketResolutionDispute {
+    from: string;
+    amount: string;
+    marketId: number;
+    shareType: number;
+    contract: string;
 }
 
 export interface LimitOrder {

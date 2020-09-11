@@ -632,3 +632,131 @@ export const GET_USER_SETTINGS = (
   }
 }
 `;
+
+export const GET_PENDING_RESOLUTION = () => `
+{
+  pending_resolution {
+    id
+    creator {
+      name
+    }
+    resolver {
+      name
+    }
+    resolver_info
+    resolution
+    resolved_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    proposed_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    ipfs {
+      hash
+      title
+      description
+      image_url
+      category
+      tags
+      resolution_description
+    }
+    asset {
+      symbol
+      precision
+      contract
+      USDT: quote(to: USDT)
+      EOS: quote(to: EOS)
+      IQ: quote(to: IQ)
+    }
+    open_interest
+    market_cap
+    best_yes_price
+    best_no_price
+    shares_outstanding
+    is_hidden
+    is_stale
+    state
+    end_time
+    last_trade {
+      yes_price
+    }
+    resolution_meta {
+      source
+      votes_yes
+      votes_no
+      votes_invalid
+      round
+    }
+  }
+}
+`;
+
+export const GET_IQ_DISPUTE_MARKET = (id: number) => `
+{
+  market_by_id(id: ${id}) {
+    id
+    creator {
+      name
+    }
+    resolver {
+      name
+    }
+    resolver_info
+    resolution
+    resolved_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    proposed_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    ipfs {
+      hash
+      title
+      description
+      image_url
+      category
+      tags
+      resolution_description
+    }
+    asset {
+      symbol
+      precision
+      contract
+      USDT: quote(to: USDT)
+      EOS: quote(to: EOS)
+      IQ: quote(to: IQ)
+    }
+    open_interest
+    market_cap
+    best_yes_price
+    best_no_price
+    shares_outstanding
+    is_hidden
+    is_stale
+    state
+    end_time
+    last_trade {
+      yes_price
+    }
+    resolution_meta {
+      source
+      votes_yes
+      votes_no
+      votes_invalid
+      round
+    }
+  }
+}
+`;
