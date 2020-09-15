@@ -63,6 +63,9 @@ export const GET_MARKETS_LAZY = (
               USDT: quote(to:USDT)
               EOS: quote(to:EOS)
               IQ: quote(to:IQ)
+          }          
+          resolution_meta {
+            round
           }
           open_interest
           market_cap
@@ -109,6 +112,12 @@ export const GET_MARKET_METADATA = (marketId: number) => `
           EOS: quote(to:EOS)
           IQ: quote(to:IQ)
       }
+      resolution_meta {
+        round
+      }
+      state
+      is_stale
+      resolution
     }
   }
 `;
@@ -147,6 +156,9 @@ export const GET_MARKET = (marketId: number) => `
         USDT: quote(to:USDT)
         EOS: quote(to:EOS)
         IQ: quote(to:IQ)
+      }      
+      resolution_meta {
+        round
       }
       open_interest
       market_cap
@@ -241,6 +253,9 @@ export const GET_MARKET_PAGE_DATA = (
           USDT: quote(to:USDT)
           EOS: quote(to:EOS)
           IQ: quote(to:IQ)
+      }
+      resolution_meta {
+        round
       }
       open_interest
       market_cap
@@ -692,6 +707,22 @@ export const GET_PENDING_RESOLUTION = () => `
       votes_no
       votes_invalid
       round
+      round_ends_at
+      resolver_bounty{
+        asset{
+          symbol
+          precision
+        }
+        quantity
+        to
+      }
+      history{
+        vote_res
+        vote_quantity
+        transaction{
+          trx_id
+        }
+      }
     }
   }
 }
@@ -756,6 +787,22 @@ export const GET_IQ_DISPUTE_MARKET = (id: number) => `
       votes_no
       votes_invalid
       round
+      round_ends_at
+      resolver_bounty{
+        asset{
+          symbol
+          precision
+        }
+        quantity
+        to
+      }
+      history{
+        vote_res
+        vote_quantity
+        transaction{
+          trx_id
+        }
+      }
     }
   }
 }

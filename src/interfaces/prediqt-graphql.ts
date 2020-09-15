@@ -62,6 +62,7 @@ export interface MarketGQL {
   rejected_at: Nullable<EosTransactionGQL>;
   ipfs: MarketIpfsGQL;
   asset: EosAssetGQL;
+  resolution_meta: { round: number };
   open_interest: number;
   market_cap: number;
   best_yes_price: number;
@@ -107,6 +108,7 @@ export interface MarketPageGQL {
   resolved_at: Nullable<EosTransactionGQL>;
   ipfs: MarketIpfsGQL;
   asset: EosAssetGQL;
+  resolution_meta: { round: number };
   open_interest: number;
   market_cap: number;
   best_yes_price: number;
@@ -297,5 +299,16 @@ export interface PendingResolutionGQL extends MarketGQL {
     votes_no: number;
     votes_invalid: number;
     round: number
+    round_ends_at: Date,
+    resolver_bounty: {
+      asset: EosAssetGQL,
+      quantity: number,
+      to: number
+    },
+    history: {
+      vote_res: string,
+      vote_quantity: number,
+      transaction: EosTransactionGQL
+    }
   };
 }
