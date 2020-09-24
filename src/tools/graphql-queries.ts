@@ -14,7 +14,7 @@ export const GET_MARKETS_LAZY = (
     filterUrlParam
         ? `, ${filterUrlParam.paramName}: "${filterUrlParam.paramValue}"`
         : ""
-}${onlyProposed ? ", state: [PROPOSED]" : ", state:[APPROVED, RESOLVED]"}) {
+}${onlyProposed ? ", state: [PROPOSED]" : ", state:[APPROVED, MATURED, RESOLVING, WAITING_DISPUTE, RESOLVED]"}) {
           id
           creator {
             name
@@ -534,6 +534,11 @@ export const GET_DAPP_INFO = `
       support_email
       config {
         textarea_whitelist
+        voting_period_duration
+        losing_vote_penalty
+        min_iq_vote
+        iq_dispute_threshold
+        open_reporting_period
       }
     }
   }
@@ -707,6 +712,7 @@ export const GET_PENDING_RESOLUTION = () => `
       votes_no
       votes_invalid
       round
+      round_threshold
       round_ends_at
       resolver_bounty{
         asset{
@@ -787,6 +793,7 @@ export const GET_IQ_DISPUTE_MARKET = (id: number) => `
       votes_no
       votes_invalid
       round
+      round_threshold
       round_ends_at
       resolver_bounty{
         asset{

@@ -158,7 +158,14 @@ export interface DappInfoGQL {
   medium_url: string;
   telegram_url: string;
   support_email: string;
-  config: { textarea_whitelist: string };
+  config: {
+    textarea_whitelist: string;
+    voting_period_duration: number;
+    losing_vote_penalty: number;
+    min_iq_vote: number;
+    iq_dispute_threshold: number;
+    open_reporting_period: number;
+  };
 }
 
 export interface ChainInfoGQL {
@@ -299,6 +306,7 @@ export interface PendingResolutionGQL extends MarketGQL {
     votes_no: number;
     votes_invalid: number;
     round: number
+    round_threshold: number;
     round_ends_at: Date,
     resolver_bounty: {
       asset: EosAssetGQL,
