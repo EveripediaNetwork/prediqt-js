@@ -223,7 +223,7 @@ export class PrediqtGraph {
 
     const json = await result.json();
 
-    return json.data.stats_by_period;
+    return json.data;
   }
 
   /**

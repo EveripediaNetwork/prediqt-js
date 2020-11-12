@@ -604,27 +604,31 @@ export const GET_STATS_BY_PERIOD = (
     limit: number
 ) => `
 {
-  stats_by_period(group_by:${group_by} end_date:"${end_date.toISOString()}" limit:${limit}){
+  stats_all_time {
     report_start
     report_end
-    blockchain_users    
+    blockchain_users
     total_fees_burned {
+      quantity
       asset {
         symbol
-        precision
       }
-      quantity
-    }    
-    total_markets_proposed
-    total_markets_accepted
-    total_markets_rejected
+    }
+    markets_created
     total_trade_volume {
       asset {
         symbol
       }
       quantity
     }
-    avg_resolution_time
+  }
+  current_stats {
+    open_interest {
+      asset {
+        symbol
+      }
+      quantity
+    }
   }
 }
 `;
