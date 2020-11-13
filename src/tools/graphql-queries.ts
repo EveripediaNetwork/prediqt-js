@@ -449,6 +449,11 @@ export const GET_USER_PROFILE = (username: string) => `
             yes_price
           }
           resolution
+          state
+          end_time
+          resolution_meta {
+            round
+          }
         }
         shareholder {
           name
@@ -469,6 +474,12 @@ export const GET_USER_PROFILE = (username: string) => `
             symbol
             precision
             contract
+          }
+          resolution
+          state
+          end_time
+          resolution_meta {
+            round
           }
         }
         order_id
@@ -498,6 +509,12 @@ export const GET_USER_PROFILE = (username: string) => `
           id
           ipfs {
             title
+          }
+          resolution
+          state
+          end_time
+          resolution_meta {
+            round
           }
         }
         symbol

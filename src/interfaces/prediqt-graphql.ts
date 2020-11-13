@@ -177,6 +177,12 @@ export interface UserProfileOpenOrderGQL {
     id: number;
     ipfs: { title: string };
     asset: EosAssetGQL;
+    state: string;
+    resolution: string;
+    end_time: Date;
+    resolution_meta: {
+      round: number;
+    }
   };
   order_id: number;
   creator: string;
@@ -193,6 +199,12 @@ export interface UserProfileFilledOrderGQL {
     id: number;
     ipfs: { title: string };
     asset: EosAssetGQL;
+    state: string;
+    resolution: string;
+    end_time: Date;
+    resolution_meta: {
+      round: number;
+    }
   };
   symbol: OrderTypesUppercase;
   price: number;
@@ -227,6 +239,10 @@ export interface UserProfileSharesOwnedGQL {
     last_trade: Nullable<LastTrade>;
     state: string;
     resolution: string;
+    end_time: Date;
+    resolution_meta: {
+      round: number;
+    }
   };
   shareholder: { name: string };
   user_average_price_per_share: number;
