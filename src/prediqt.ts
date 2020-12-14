@@ -3,28 +3,28 @@ import { Api, JsonRpc } from "eosjs";
 const fetch = require("isomorphic-fetch");
 
 import {
-    TransactParams,
-    Authorization,
-    Balance,
-    Fee,
-    Market,
-    Order,
-    Share,
-    TransferShares,
-    MarketResolve,
-    LimitOrder,
-    UserResources,
-    IqBalance,
-    CancelShares,
-    BuyShares,
-    CreateMarket,
-    SellShares,
-    Contracts,
-    ProposeMultiSig,
-    ApiData,
-    GetOrders,
-    MarketResolveOracle,
-    UserOracle
+  TransactParams,
+  Authorization,
+  Balance,
+  Fee,
+  Market,
+  Order,
+  Share,
+  TransferShares,
+  MarketResolve,
+  LimitOrder,
+  UserResources,
+  IqBalance,
+  CancelShares,
+  BuyShares,
+  CreateMarket,
+  SellShares,
+  Contracts,
+  ProposeMultiSig,
+  ApiData,
+  GetOrders,
+  MarketResolveOracle,
+  UserOracle, AllowedAsset, TotalIqResolutionVotes, MarketResolutionDispute, IqDisputeUserVotes, IqDisputeConfig
 } from "./interfaces/prediqt";
 import { OrderTypes } from "./enums/prediqt";
 
@@ -39,7 +39,9 @@ import {
     EVERIPEDIA_CONTRACT,
     PREDIQT_BANK_CONTRACT,
     EOSIO_MULTISIG_CONTRACT,
-    PREDIQT_ORACL_CONTRACT
+    PREDIQT_ORACL_CONTRACT,
+    IQ_RESOLUTION_CONTRACT,
+    PREDIQT_IQ_DISPUTE_CONTRACT
 } from "./constants";
 
 export class Prediqt {
@@ -48,11 +50,14 @@ export class Prediqt {
     private readonly prediqtContract: string;
     private readonly prediqtMarketContract: string;
     private readonly iqTokenContract: string;
+    private readonly iqResolutionContract: string;
     private readonly prediqtBankContract: string;
     private readonly eosioTokenContract: string;
+    private readonly tokenContractMapping?: { [symbol: string]: string; };
     private readonly eosioContract: string;
     private readonly eosioMultiSigContract: string;
     private readonly prediqtOraclContract: string;
+    private readonly prediqtIqDisputeContract: string;
     private auth: Authorization[];
 
     private transactParams: TransactParams = {
@@ -69,12 +74,15 @@ export class Prediqt {
         this.prediqtMarketContract =
             contracts.prediqtMarket || PREDIQT_MARKET_CONTRACT;
         this.iqTokenContract = contracts.iqToken || EVERIPEDIA_CONTRACT;
+        this.iqResolutionContract = contracts.iqResolution || IQ_RESOLUTION_CONTRACT;
         this.prediqtBankContract =
             contracts.prediqtBank || PREDIQT_BANK_CONTRACT;
         this.eosioTokenContract = EOSIO_TOKEN_CONTRACT;
         this.eosioContract = EOSIO_CONTRACT;
         this.eosioMultiSigContract = EOSIO_MULTISIG_CONTRACT;
         this.prediqtOraclContract = PREDIQT_ORACL_CONTRACT;
+        this.prediqtIqDisputeContract = PREDIQT_IQ_DISPUTE_CONTRACT;
+        this.tokenContractMapping = contracts.tokenContractMapping;
         if (apiData.customApi) {
             this.api = apiData.customApi;
             this.rpc = apiData.customApi.rpc;
@@ -130,33 +138,6 @@ export class Prediqt {
                         data: {
                             fee_id: fee.id,
                             fee_amount: fee.fee
-                        }
-                    }
-                ]
-            },
-            this.transactParams
-        );
-    }
-
-    /**
-     * Accept a proposed market
-     * @param {string} resolver
-     * @param {number} marketId
-     */
-    public async acceptMarket(
-        resolver: string,
-        marketId: number
-    ): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [
-                    {
-                        account: this.prediqtContract,
-                        name: "acceptmarket",
-                        authorization: this.auth,
-                        data: {
-                            resolver,
-                            market_id: marketId
                         }
                     }
                 ]
@@ -236,7 +217,7 @@ export class Prediqt {
      * @param {string} data.transferToken
      */
     public async createMarket(data: CreateMarket): Promise<any> {
-        const { creator, resolver, ipfs, timeIn, transferToken } = data;
+        const { creator, resolver, ipfs, timeIn, symbol, transferToken, transferMemo } = data;
 
         return await this.api.transact(
             {
@@ -247,7 +228,7 @@ export class Prediqt {
                         creator,
                         this.prediqtContract,
                         transferToken,
-                        "createmarket 5 IQ"
+                        transferMemo
                     ),
                     {
                         account: this.prediqtContract,
@@ -257,7 +238,8 @@ export class Prediqt {
                             creator,
                             resolver,
                             ipfs,
-                            time_in: timeIn
+                            time_in: timeIn,
+                            symbol
                         }
                     }
                 ]
@@ -301,6 +283,28 @@ export class Prediqt {
      * @param {boolean} data.buy
      */
     public async limitOrder(data: LimitOrder): Promise<any> {
+
+        return await this.api.transact(
+            {
+                actions: this.getLimitOrderActions(data)
+            },
+            this.transactParams
+        );
+    }
+
+    /**
+     * Gets an action for an order for shares in a market
+     * @param {Object} data
+     * @param {string} data.nameId  - takes "yes" or "no"
+     * @param {string} data.user
+     * @param {number} data.marketId
+     * @param {number} data.shares
+     * @param {string} data.limit
+     * @param {string} data.transferToken
+     * @param {string} data.referral
+     * @param {boolean} data.buy
+     */
+    public getLimitOrderActions(data: LimitOrder): any[] {
         const {
             nameId,
             user,
@@ -313,63 +317,89 @@ export class Prediqt {
         } = data;
         if (!Object.values(OrderTypes).includes(nameId)) {
             throw new Error(
-                `nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`
+              `nameId must be "${OrderTypes.Yes}" or "${OrderTypes.No}".`
             );
         }
 
-        return await this.api.transact(
+        return [
+             ... (buy ? [transferAction(
+              this.getContractForToken(transferToken),
+              this.auth,
+              user,
+              this.prediqtContract,
+              transferToken,
+              `create order for market ${marketId}`
+            )] : []),
             {
-                actions: [
-                    transferAction(
-                        this.eosioTokenContract,
-                        this.auth,
-                        user,
-                        this.prediqtContract,
-                        transferToken,
-                        `create order for market ${marketId}`
-                    ),
-                    {
-                        account: this.prediqtContract,
-                        name: `lmtorder${nameId}`,
-                        authorization: this.auth,
-                        data: {
-                            user,
-                            market_id: marketId,
-                            shares,
-                            limit,
-                            referral,
-                            buy
-                        }
-                    }
-                ]
-            },
-            this.transactParams
-        );
+                account: this.prediqtContract,
+                name: `lmtorder${nameId}`,
+                authorization: this.auth,
+                data: {
+                    user,
+                    market_id: marketId,
+                    shares,
+                    limit,
+                    referral,
+                    buy
+                }
+            }
+        ];
     }
 
-    /**
-     * Set a market as invalid (only resolver)
-     * @param {number} marketId
-     * @param {string} memo
-     */
-    public async marketInvalid(marketId: number, memo: string): Promise<any> {
-        return await this.api.transact(
-            {
-                actions: [
-                    {
-                        account: this.prediqtContract,
-                        name: "mktinvalid",
-                        authorization: this.auth,
-                        data: {
-                            market_id: marketId,
-                            memo
-                        }
-                    }
-                ]
-            },
-            this.transactParams
-        );
-    }
+  /**
+   * Get config for prediqtiqdis
+   */
+  public async getPrediqtIqDisConfig(): Promise<[IqDisputeConfig]> {
+    const table = await this.rpc.get_table_rows({
+      code: this.prediqtIqDisputeContract,
+      scope: this.prediqtIqDisputeContract,
+      table: "config",
+      json: true
+    });
+    return table.rows;
+  }
+
+  /**
+   * Get total staked for disputing a specific market
+   */
+  public async getStakedIqForMarket(id: number): Promise<[IqDisputeUserVotes]> {
+      const table = await this.rpc.get_table_rows({
+          code: this.prediqtIqDisputeContract,
+          scope: id,
+          table: "uservotes",
+          json: true
+      });
+      return table.rows;
+  }
+
+  /**
+   * stake for dispute
+   * @param {Object} data
+   * @param {string} data.resolver
+   * @param {number} data.marketId
+   * @param {boolean} data.shareType
+   * @param {string} data.memo
+   */
+  public async marketResolutionDispute(data: MarketResolutionDispute): Promise<any> {
+      const { from, amount, marketId, shareType, contract } = data;
+      const tx = transferAction(
+        this.iqTokenContract,
+        this.auth,
+        from,
+        this.prediqtIqDisputeContract,
+        amount,
+        `${marketId},${shareType},${contract}`
+      );
+      console.log(tx)
+      return await this.api.transact(
+        {
+            actions: [
+                tx
+            ]
+        },
+        this.transactParams
+      );
+  }
 
     /**
      * Set the outcome of a market (only resolver)
@@ -419,11 +449,50 @@ export class Prediqt {
     }
 
     /**
+     * IQ resolution method
+     * @param {string} loggedInUser
+     * @param {string} quantity
+     * @param {number} marketId
+     * @param {boolean} isYes
+     */
+    public async marketResolveIQ(loggedInUser: string, quantity: string , marketId: number, isYes: boolean): Promise<any> {
+        return await this.api.transact(
+            {
+                actions: [
+                    transferAction(
+                        this.iqTokenContract,
+                        this.auth,
+                        loggedInUser,
+                        this.iqResolutionContract,
+                        quantity,
+                        `${marketId},${isYes ? 1 : 0}`
+                    ),
+                ]
+            },
+            this.transactParams
+        );
+    }
+
+    /**
+     * Get total IQ votes from IQ resolution method
+     */
+    public async getTotalIqVotes(): Promise<[TotalIqResolutionVotes]> {
+        const table = await this.rpc.get_table_rows({
+            code: this.iqResolutionContract,
+            scope: 0,
+            table: "totalvotes",
+            json: true
+        });
+        return table.rows;
+    }
+
+    /**
      * Propose a market to be part of the active markets
      * @param {string} creator
      * @param {string} resolver
      * @param {string} ipfs
      * @param {number} timeIn
+     * @param {string} symbol
      * @param {string} transferToken
      * @param {string} transferMemo
      */
@@ -432,6 +501,7 @@ export class Prediqt {
         resolver: string,
         ipfs: string,
         timeIn: number,
+        symbol: string,
         transferToken: string,
         transferMemo: string
     ): Promise<any> {
@@ -454,7 +524,8 @@ export class Prediqt {
                             creator,
                             resolver,
                             ipfs,
-                            time_in: timeIn
+                            time_in: timeIn,
+                            symbol
                         }
                     }
                 ]
@@ -621,7 +692,7 @@ export class Prediqt {
         return await this.api.transact({
                 actions: [
                     transferAction(
-                        this.eosioTokenContract,
+                      this.getContractForToken(transferToken) || this.eosioTokenContract,
                         this.auth,
                         from,
                         this.prediqtContract,
@@ -697,6 +768,19 @@ export class Prediqt {
                 ]
             },
             this.transactParams);
+    }
+
+    /**
+     * Get allowed assets
+     */
+    public async getAllowedAssets(): Promise<[AllowedAsset]> {
+        const table = await this.rpc.get_table_rows({
+            code: this.prediqtContract,
+            scope: 0,
+            table: "allowedasset",
+            json: true
+        });
+        return table.rows;
     }
 
     /**
@@ -910,5 +994,23 @@ export class Prediqt {
      */
     public async getAccount(username: string): Promise<any> {
         return await this.rpc.get_account(username);
+    }
+
+    /**
+     * Returns the appropriate smart contract for token
+     * @param {string} token
+     */
+    private getContractForToken(token: string|undefined): string {
+        if (token && token.endsWith("IQ")) {
+            return this.iqTokenContract;
+        }
+        let symbol: string | string[] | undefined = token?.split(" ");
+        if (symbol && symbol.length === 2) {
+            symbol = symbol[1];
+            if (this.tokenContractMapping && symbol in this.tokenContractMapping) {
+                return this.tokenContractMapping[symbol];
+            }
+        }
+        return this.eosioTokenContract;
     }
 }

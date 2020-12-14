@@ -16,6 +16,8 @@ export interface Contracts {
     prediqtMarket?: string;
     iqToken?: string;
     prediqtBank?: string;
+    iqResolution?: string;
+    tokenContractMapping?: { [symbol: string]: string; };
 }
 
 export interface Fee {
@@ -23,12 +25,41 @@ export interface Fee {
     fee: number;
 }
 
+export interface AllowedAsset {
+    symbol: string;
+    contract_key: string;
+}
+
+export interface TotalIqResolutionVotes {
+    market_id: number;
+    yes_votes: number;
+    no_votes: number;
+}
+
+// prediqtiqdis BEGIN
+
+export interface IqDisputeUserVotes {
+  user: number;
+  yes_votes: number;
+  no_votes: number;
+  invalid_votes: number;
+}
+
+export interface IqDisputeConfig {
+  id: number;
+  value: number;
+}
+
+// prediqtiqdis END
+
 export interface CreateMarket {
     creator: string;
     resolver: string;
     ipfs: string;
     timeIn: number;
+    symbol: string;
     transferToken: string;
+    transferMemo: string;
 }
 
 export interface Market {
@@ -103,6 +134,14 @@ export interface MarketResolveOracle {
     account: string;
     marketId: number;
     vote: number;
+}
+
+export interface MarketResolutionDispute {
+    from: string;
+    amount: string;
+    marketId: number;
+    shareType: number;
+    contract: string;
 }
 
 export interface LimitOrder {

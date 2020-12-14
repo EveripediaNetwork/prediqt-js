@@ -6,14 +6,15 @@ export const GET_MARKETS_LAZY = (
     count: number,
     creator: string,
     onlyProposed: boolean,
-    filterUrlParam: Nullable<{ paramName: string; paramValue: string }>
+    filterUrlParam: Nullable<{ paramName: string; paramValue: string }>,
+    sort_by: string = "ENDING_LATEST"
 ): string => `
     query {
-        markets(sort_by: ENDING_LATEST, exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, creator: "${creator}"${
+        markets(sort_by: ${sort_by}, exclude_invalid_ipfs: ${excludeInvalidIpfs}, skip: ${skip}, count: ${count}, creator: "${creator}"${
     filterUrlParam
         ? `, ${filterUrlParam.paramName}: "${filterUrlParam.paramValue}"`
         : ""
-}${onlyProposed ? ", state: [PROPOSED]" : ", state:[APPROVED, RESOLVED]"}) {
+}${onlyProposed ? ", state: [PROPOSED]" : ", state:[APPROVED, MATURED, RESOLVING, WAITING_DISPUTE, RESOLVED]"}) {
           id
           creator {
             name
@@ -54,7 +55,23 @@ export const GET_MARKETS_LAZY = (
             category
             tags
             resolution_description
+          }          
+          asset {
+              symbol
+              precision
+              contract
+              USDT: quote(to:USDT)
+              EOS: quote(to:EOS)
+              IQ: quote(to:IQ)
+          }          
+          resolution_meta {
+            round
           }
+          open_interest
+          market_cap
+          best_yes_price
+          best_no_price
+          shares_outstanding
           is_hidden
           is_stale
           state
@@ -63,21 +80,11 @@ export const GET_MARKETS_LAZY = (
             yes_price
           }
           volume {
-            eos
-          }
-          order_book {
-            order_id
-            creator
-            price
-            currency
-            type
             quantity
-            symbol
-            transaction{
-              trx_url
-              block{
-                time
-              }
+            asset{
+              symbol
+              precision
+              contract
             }
           }
         }
@@ -96,7 +103,21 @@ export const GET_MARKET_METADATA = (marketId: number) => `
         category
         tags
         resolution_description
+      }      
+      asset {
+          symbol
+          precision
+          contract
+          USDT: quote(to:USDT)
+          EOS: quote(to:EOS)
+          IQ: quote(to:IQ)
       }
+      resolution_meta {
+        round
+      }
+      state
+      is_stale
+      resolution
     }
   }
 `;
@@ -111,6 +132,7 @@ export const GET_MARKET = (marketId: number) => `
       resolver {
         name
       }
+      resolver_info
       resolution
       resolved_at{
         trx_url
@@ -126,7 +148,23 @@ export const GET_MARKET = (marketId: number) => `
         category
         tags
         resolution_description
+      }      
+      asset {
+        symbol
+        precision
+        contract
+        USDT: quote(to:USDT)
+        EOS: quote(to:EOS)
+        IQ: quote(to:IQ)
+      }      
+      resolution_meta {
+        round
       }
+      open_interest
+      market_cap
+      best_yes_price
+      best_no_price
+      shares_outstanding
       is_hidden
       is_stale
       state
@@ -138,15 +176,28 @@ export const GET_MARKET = (marketId: number) => `
         yes_price
       }
       volume {
-        eos
+        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
       }
       order_book {
         order_id
         creator
         price
-        currency
-        type
-        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
+        side
+        size{
+          ordered
+          filled
+          available
+        }
         symbol
         transaction{
           trx_url
@@ -172,8 +223,15 @@ export const GET_MARKET_PAGE_DATA = (
       resolver {
         name
       }
+      resolver_info
       resolution      
       resolved_at{
+        trx_url
+        block{
+          time
+        }
+      }
+      proposed_at{
         trx_url
         block{
           time
@@ -188,38 +246,65 @@ export const GET_MARKET_PAGE_DATA = (
         tags
         resolution_description
       }
+      asset {
+          symbol
+          precision
+          contract
+          USDT: quote(to:USDT)
+          EOS: quote(to:EOS)
+          IQ: quote(to:IQ)
+      }
+      resolution_meta {
+        round
+      }
+      open_interest
+      market_cap
+      best_yes_price
+      best_no_price
+      shares_outstanding
+      is_hidden
       is_stale
       state
       end_time
       last_trade {
         yes_price
       }
-      ${
-          loggedInUser
-              ? `shareholders(shareholder: "${loggedInUser}") {
-        market {
-          id
+        ${loggedInUser ? 
+            `shareholders(shareholder: "${loggedInUser}") {
+                market {
+                  id
+                }
+                shareholder {
+                  name
+                }
+                user_average_price_per_share
+                quantity
+                quantity_available
+                symbol
+                status
+                updated_at {
+                  num
+                  id
+                  time
+                }
+              }` 
+            : ""
         }
-        shareholder {
-          name
-        }
-        quantity
-        symbol
-        updated_at {
-          num
-          id
-          time
-        }
-      }`
-              : ""
-      }
       order_book {
         order_id
         creator
         price
-        currency
-        type
-        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
+        side
+        size{
+          ordered
+          filled
+          available
+        }
         symbol
         transaction{
           trx_url
@@ -231,7 +316,10 @@ export const GET_MARKET_PAGE_DATA = (
       trade_history {
         yes_price
         no_price
-        currency
+        asset {
+          symbol
+          precision
+        }
         size
         transaction{
           trx_url
@@ -241,7 +329,12 @@ export const GET_MARKET_PAGE_DATA = (
         }
       }
       volume {
-        eos
+        quantity
+        asset{
+          symbol
+          precision
+          contract
+        }
       }
       related {
         id
@@ -251,13 +344,26 @@ export const GET_MARKET_PAGE_DATA = (
           image_url
           category
         }
+        asset {
+            symbol
+            precision
+            contract
+        }
         order_book {
           order_id
           creator
           price
-          currency
-          type
-          quantity
+          asset{
+            symbol
+            precision
+            contract
+          }
+          side
+          size{
+            ordered
+            filled
+            available
+          }
           symbol
           transaction{
             trx_url
@@ -267,7 +373,12 @@ export const GET_MARKET_PAGE_DATA = (
           }
         }
         volume {
-          eos
+          quantity
+          asset{
+            symbol
+            precision
+            contract
+          }
         }
         last_trade {
           yes_price
@@ -287,8 +398,11 @@ export const GET_SHAREHOLDER = (marketId: number, loggedInUser: string) => `
         shareholder {
           name
         }
+        user_average_price_per_share
         quantity
+        quantity_available
         symbol
+        status
         updated_at {
           num
           id
@@ -310,6 +424,11 @@ export const GET_USER_PROFILE = (username: string) => `
           ipfs {
             title
           }
+          asset {
+            symbol
+            precision
+            contract
+          }
         }
         yes_shares
         no_shares
@@ -320,18 +439,30 @@ export const GET_USER_PROFILE = (username: string) => `
           id
           ipfs {
             title
+          }            
+          asset {
+            symbol
+            precision
+            contract
           }
           last_trade {
             yes_price
           }
           resolution
+          state
+          end_time
+          resolution_meta {
+            round
+          }
         }
         shareholder {
           name
         }
         user_average_price_per_share
         quantity
+        quantity_available
         symbol
+        status
       }
       orders_open {
         market {
@@ -339,20 +470,33 @@ export const GET_USER_PROFILE = (username: string) => `
           ipfs {
             title
           }
+          asset {
+            symbol
+            precision
+            contract
+          }
+          resolution
+          state
+          end_time
+          resolution_meta {
+            round
+          }
         }
         order_id
         creator
         price
-        currency
-        type
-        quantity
-        symbol
+        asset {
+          symbol
+          precision
+          contract
+        }
         side
-        size{
+        size {
           ordered
           filled
           available
         }
+        symbol
         transaction{
           trx_url
           block{
@@ -366,10 +510,20 @@ export const GET_USER_PROFILE = (username: string) => `
           ipfs {
             title
           }
+          resolution
+          state
+          end_time
+          resolution_meta {
+            round
+          }
         }
         symbol
         price
-        currency
+        asset {
+          symbol
+          precision
+          contract
+        }
         size{
           ordered
           filled
@@ -397,6 +551,11 @@ export const GET_DAPP_INFO = `
       support_email
       config {
         textarea_whitelist
+        voting_period_duration
+        losing_vote_penalty
+        min_iq_vote
+        iq_dispute_threshold
+        open_reporting_period
       }
     }
   }
@@ -440,18 +599,17 @@ export const GET_BLOCKS_BEHIND_INFO = `
   }
 `;
 
-export const GET_LEADERBOARD = (period: string) => `
+export const GET_LEADERBOARD = (period: string, type: string) => `
 {
-  get_leaderboard(period: ${period}) {
+  get_leaderboard(period: ${period}, type: ${type}) {
+    type
     period
     page
-    traders {
+    users {
       period
       rank
       name
-      shares_traded
-      profitable_trades
-      roi
+      profit
     }
   }
 }
@@ -463,15 +621,216 @@ export const GET_STATS_BY_PERIOD = (
     limit: number
 ) => `
 {
-  stats_by_period(group_by:${group_by} end_date:${end_date} limit:${limit}){
+  stats_all_time {
     report_start
     report_end
-    total_markets_proposed
-    total_markets_accepted
-    total_markets_rejected
-    total_trade_volume{
-      asset
+    blockchain_users
+    total_fees_burned {
       quantity
+      asset {
+        symbol
+      }
+    }
+    markets_created
+    total_trade_volume {
+      asset {
+        symbol
+      }
+      quantity
+    }
+  }
+  current_stats {
+    open_interest {
+      asset {
+        symbol
+      }
+      quantity
+    }
+  }
+}
+`;
+
+export const GET_USER_SETTINGS = (
+    username: string
+) => `
+{
+  user_profile(name: "${username}") {
+    name
+    email {
+      address
+      is_verified
+    }
+    subscriptions {
+      user
+      type
+      events
+    }
+  }
+  subscribable_events {
+    id
+    name
+    description
+  }
+}
+`;
+
+export const GET_PENDING_RESOLUTION = () => `
+{
+  pending_resolution {
+    id
+    creator {
+      name
+    }
+    resolver {
+      name
+    }
+    resolver_info
+    resolution
+    resolved_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    proposed_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    ipfs {
+      hash
+      title
+      description
+      image_url
+      category
+      tags
+      resolution_description
+    }
+    asset {
+      symbol
+      precision
+      contract
+      USDT: quote(to: USDT)
+      EOS: quote(to: EOS)
+      IQ: quote(to: IQ)
+    }
+    open_interest
+    market_cap
+    best_yes_price
+    best_no_price
+    shares_outstanding
+    is_hidden
+    is_stale
+    state
+    end_time
+    last_trade {
+      yes_price
+    }
+    resolution_meta {
+      source
+      votes_yes
+      votes_no
+      votes_invalid
+      round
+      round_threshold
+      round_ends_at
+      resolver_bounty{
+        asset{
+          symbol
+          precision
+        }
+        quantity
+        to
+      }
+      history{
+        vote_res
+        vote_quantity
+        transaction{
+          trx_id
+        }
+      }
+    }
+  }
+}
+`;
+
+export const GET_IQ_DISPUTE_MARKET = (id: number) => `
+{
+  market_by_id(id: ${id}) {
+    id
+    creator {
+      name
+    }
+    resolver {
+      name
+    }
+    resolver_info
+    resolution
+    resolved_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    proposed_at {
+      trx_url
+      block {
+        time
+      }
+    }
+    ipfs {
+      hash
+      title
+      description
+      image_url
+      category
+      tags
+      resolution_description
+    }
+    asset {
+      symbol
+      precision
+      contract
+      USDT: quote(to: USDT)
+      EOS: quote(to: EOS)
+      IQ: quote(to: IQ)
+    }
+    open_interest
+    market_cap
+    best_yes_price
+    best_no_price
+    shares_outstanding
+    is_hidden
+    is_stale
+    state
+    end_time
+    last_trade {
+      yes_price
+    }
+    resolution_meta {
+      source
+      votes_yes
+      votes_no
+      votes_invalid
+      round
+      round_threshold
+      round_ends_at
+      resolver_bounty{
+        asset{
+          symbol
+          precision
+        }
+        quantity
+        to
+      }
+      history{
+        vote_res
+        vote_quantity
+        transaction{
+          trx_id
+        }
+      }
     }
   }
 }
